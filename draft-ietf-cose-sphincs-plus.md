@@ -19,11 +19,11 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
-category: info
+title: "SLH-DSA for JOSE and COSE"
+abbrev: "jose-cose-sphincs-plus"
+category: std
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-ietf-cose-sphincs-plus-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
@@ -32,9 +32,11 @@ v: 3
 area: AREA
 workgroup: WG Working Group
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - JOSE
+ - COSE
+ - PQC
+ - SPHINCS+
+ - SLH-DSA
 venue:
   group: WG
   type: Working Group
