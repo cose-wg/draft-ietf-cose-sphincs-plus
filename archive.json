@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-05-26T01:33:56.356549+00:00",
+  "timestamp": "2024-05-28T01:22:53.579824+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -49,6 +49,23 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOLENBks6KKKS0",
+      "title": "Update IANA Registration requests",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/issues/1",
+      "state": "OPEN",
+      "author": "OR13",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Changes to IANA registries need to follow the process described in https://www.rfc-editor.org/rfc/rfc8126.html\r\n\r\nSee the related PR for ML-DSA here:  https://github.com/cose-wg/draft-ietf-cose-dilithium/pull/1\r\n\r\nTLDR:\r\n\r\n- [ ] Name each registry you are adding entries too\r\n- [ ] Provide a completed registration template\r\n",
+      "createdAt": "2024-05-26T20:24:54Z",
+      "updatedAt": "2024-05-26T20:24:54Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": []
 }
