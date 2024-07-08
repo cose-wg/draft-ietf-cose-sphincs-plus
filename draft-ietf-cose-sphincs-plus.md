@@ -207,31 +207,74 @@ randomness.
 
 ### New JOSE Algorithms
 
+IANA is requested to add the following entries to the JSON Web Signature and Encryption Algorithms Registry. The following completed registration templates are provided as described in RFC7518.
+
 #### SLH-DSA-SHA2-128s
 
-* Name: SLH-DSA-SHA2-128s
+* Algorithm Name: SLH-DSA-SHA2-128s
+* Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128s as described in FIPS 205.
+* Algorithm Usage Location(s): alg
+* JOSE Implementation Requirements: Optional
+* Change Controller: IETF
 * Value registry: {{-IANA.jose}} Algorithms
-* Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128s
+* Specification Document(s): RFC XXXX
+* Algorithm Analysis Documents(s):
+  [https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf)
 
 #### SLH-DSA-SHAKE-128s
 
-* Name: SLH-DSA-SHAKE-128s
+* Algorithm Name: SLH-DSA-SHAKE-128s
+* Description: JSON Web Signature Algorithm for SLH-DSA-SHAKE-128s as described in FIPS 205.
+* Algorithm Usage Location(s): alg
+* JOSE Implementation Requirements: Optional
+* Change Controller: IETF
 * Value registry: {{-IANA.jose}} Algorithms
-* Description: JSON Web Signature Algorithm for SLH-DSA-SHAKE-128s
+* Specification Document(s): RFC XXXX
+* Algorithm Analysis Documents(s):
+  [https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf)
 
 #### SLH-DSA-SHA2-128f
 
-* Name: SLH-DSA-SHA2-128f
+* Algorithm Name: SLH-DSA-SHA2-128f
+* Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128f as described in FIPS 205.
+* Algorithm Usage Location(s): alg
+* JOSE Implementation Requirements: Optional
+* Change Controller: IETF
 * Value registry: {{-IANA.jose}} Algorithms
-* Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128f
+* Specification Document(s): RFC XXXX
+* Algorithm Analysis Documents(s):
+  [https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf)
 
 ### New JOSE Key Types
 
+IANA is requested to add the following entries to the JSON Web Key Types Registry. The following completed registration templates are provided as described in RFC7518 RFC7638.
+
 #### SLH-DSA
 
-* Name: SLH-DSA
-* Value registry: {{-IANA.jose}} Algorithms
-* Description: JSON Web Key Type for the SLH-DSA Algorithm Family.
+* "kty" Parameter Value: SLH-DSA
+* Key Type Description: JSON Web Key Type for the SLH-DSA Algorithm Family.
+* JOSE Implementation Requirements: Optional
+* Change Controller: IETF
+* Specification Document(s): RFC XXXX
+
+### New JSON Web Key Parameters
+IANA is requested to add the following entries to the JSON Web Key Parameters Registry. The following completed registration templates are provided as described in RFC7517, and RFC7638.
+
+#### ML-DSA Public Key
+* Parameter Name: pub
+* Parameter Description: Public or verification key
+* Used with "kty" Value(s): SLH-DSA
+* Parameter Information Class: Public
+* Change Controller: IETF
+* Specification Document(s): RFC XXXX
+
+#### ML-DSA Secret Key
+* Parameter Name: priv
+* Parameter Description: Secret, private or signing key
+* Used with "kty" Value(s): SLH-DSA
+* Parameter Information Class: Private
+* Change Controller: IETF
+* Specification Document(s): RFC XXXX
 
 
 --- back
