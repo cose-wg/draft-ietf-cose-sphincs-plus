@@ -5,14 +5,14 @@
 CBOR Object Signing and Encryption                            M. Prorock
 Internet-Draft                                                  mesur.io
 Intended status: Standards Track                               O. Steele
-Expires: 15 July 2024                                          Transmute
+Expires: 9 January 2025                                        Transmute
                                                              R. Misoczki
                                                                   Google
                                                               M. Osborne
                                                                      IBM
                                                          C. Cloostermans
                                                                      NXP
-                                                         12 January 2024
+                                                             8 July 2024
 
 
                        SLH-DSA for JOSE and COSE
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 July 2024.
+   This Internet-Draft will expire on 9 January 2025.
 
 Copyright Notice
 
@@ -88,6 +88,9 @@ Table of Contents
    3.  The SLH-DSA Algorithm Family
    4.  The SLH-DSA Key Type
    5.  Security Considerations
+     5.1.  Validating public keys
+     5.2.  Side channel attacks
+     5.3.  Randomness considerations
    6.  IANA Considerations
      6.1.  Additions to Existing Registries
        6.1.1.  New COSE Algorithms
@@ -206,7 +209,44 @@ Table of Contents
 
 5.  Security Considerations
 
-   TODO Security
+   The following considerations SHOULD apply to all parmeter sets
+   described in this specification, unless otherwise noted.
+
+   Care should be taken to ensure "kty" and intended use match, the
+   algorithms described in this document share many properties with
+   other cryptographic approaches from related families that are used
+   for purposes other than digital signatures.
+
+5.1.  Validating public keys
+
+   All algorithms in that operate on public keys require first
+   validating those keys.  For the sign, verify and proof schemes, the
+   use of KeyValidate is REQUIRED.
+
+5.2.  Side channel attacks
+
+   Implementations of the signing algorithm SHOULD protect the secret
+   key from side-channel attacks.  Multiple best practices exist to
+   protect against side-channel attacks.  Any implementation of the the
+   Sphincs+ signing algorithms SHOULD utilize the following best
+   practices at a minimum:
+
+   *  Constant timing - the implementation should ensure that constant
+      time is utilized in operations
+
+   *  Sequence and memory access persistance - the implemention SHOULD
+      execute the exact same sequence of instructions (at a machine
+      level) with the exact same memory access independent of which
+      polynomial is being operated on.
+
+   *  Uniform sampling - care should be given in implementations to
+      preserve the property of uniform sampling in implementation and to
+      prevent information leakage.
+
+5.3.  Randomness considerations
+
+   It is recommended that the all nonces are from a trusted source of
+   randomness.
 
 6.  IANA Considerations
 
