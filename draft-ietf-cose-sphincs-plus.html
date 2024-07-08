@@ -1197,6 +1197,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.4">
                     <p id="section-toc.1-1.6.2.1.2.4.1"><a href="#section-6.1.4" class="auto internal xref">6.1.4</a>.  <a href="#name-new-jose-key-types" class="internal xref">New JOSE Key Types</a></p>
 </li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.5">
+                    <p id="section-toc.1-1.6.2.1.2.5.1"><a href="#section-6.1.5" class="auto internal xref">6.1.5</a>.  <a href="#name-new-json-web-key-parameters" class="internal xref">New JSON Web Key Parameters</a></p>
+</li>
                 </ul>
 </li>
             </ul>
@@ -1590,6 +1593,7 @@ randomness.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
           <h4 id="name-new-jose-algorithms">
 <a href="#section-6.1.3" class="section-number selfRef">6.1.3. </a><a href="#name-new-jose-algorithms" class="section-name selfRef">New JOSE Algorithms</a>
           </h4>
+<p id="section-6.1.3-1">IANA is requested to add the following entries to the JSON Web Signature and Encryption Algorithms Registry. The following completed registration templates are provided as described in RFC7518.<a href="#section-6.1.3-1" class="pilcrow">¶</a></p>
 <div id="slh-dsa-sha2-128s-1">
 <section id="section-6.1.3.1">
             <h5 id="name-slh-dsa-sha2-128s-2">
@@ -1597,13 +1601,29 @@ randomness.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
             </h5>
 <ul class="normal">
 <li class="normal" id="section-6.1.3.1-1.1">
-                <p id="section-6.1.3.1-1.1.1">Name: SLH-DSA-SHA2-128s<a href="#section-6.1.3.1-1.1.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.3.1-1.1.1">Algorithm Name: SLH-DSA-SHA2-128s<a href="#section-6.1.3.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.1.3.1-1.2">
-                <p id="section-6.1.3.1-1.2.1">Value registry: <span>[<a href="#IANA.jose" class="cite xref">IANA.jose</a>]</span> Algorithms<a href="#section-6.1.3.1-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.3.1-1.2.1">Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128s as described in FIPS 205.<a href="#section-6.1.3.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.1.3.1-1.3">
-                <p id="section-6.1.3.1-1.3.1">Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128s<a href="#section-6.1.3.1-1.3.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.3.1-1.3.1">Algorithm Usage Location(s): alg<a href="#section-6.1.3.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.1-1.4">
+                <p id="section-6.1.3.1-1.4.1">JOSE Implementation Requirements: Optional<a href="#section-6.1.3.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.1-1.5">
+                <p id="section-6.1.3.1-1.5.1">Change Controller: IETF<a href="#section-6.1.3.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.1-1.6">
+                <p id="section-6.1.3.1-1.6.1">Value registry: <span>[<a href="#IANA.jose" class="cite xref">IANA.jose</a>]</span> Algorithms<a href="#section-6.1.3.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.1-1.7">
+                <p id="section-6.1.3.1-1.7.1">Specification Document(s): RFC XXXX<a href="#section-6.1.3.1-1.7.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.1-1.8">
+                <p id="section-6.1.3.1-1.8.1">Algorithm Analysis Documents(s):
+<a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf</a><a href="#section-6.1.3.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -1615,13 +1635,29 @@ randomness.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
             </h5>
 <ul class="normal">
 <li class="normal" id="section-6.1.3.2-1.1">
-                <p id="section-6.1.3.2-1.1.1">Name: SLH-DSA-SHAKE-128s<a href="#section-6.1.3.2-1.1.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.3.2-1.1.1">Algorithm Name: SLH-DSA-SHAKE-128s<a href="#section-6.1.3.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.1.3.2-1.2">
-                <p id="section-6.1.3.2-1.2.1">Value registry: <span>[<a href="#IANA.jose" class="cite xref">IANA.jose</a>]</span> Algorithms<a href="#section-6.1.3.2-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.3.2-1.2.1">Description: JSON Web Signature Algorithm for SLH-DSA-SHAKE-128s as described in FIPS 205.<a href="#section-6.1.3.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.1.3.2-1.3">
-                <p id="section-6.1.3.2-1.3.1">Description: JSON Web Signature Algorithm for SLH-DSA-SHAKE-128s<a href="#section-6.1.3.2-1.3.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.3.2-1.3.1">Algorithm Usage Location(s): alg<a href="#section-6.1.3.2-1.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.2-1.4">
+                <p id="section-6.1.3.2-1.4.1">JOSE Implementation Requirements: Optional<a href="#section-6.1.3.2-1.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.2-1.5">
+                <p id="section-6.1.3.2-1.5.1">Change Controller: IETF<a href="#section-6.1.3.2-1.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.2-1.6">
+                <p id="section-6.1.3.2-1.6.1">Value registry: <span>[<a href="#IANA.jose" class="cite xref">IANA.jose</a>]</span> Algorithms<a href="#section-6.1.3.2-1.6.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.2-1.7">
+                <p id="section-6.1.3.2-1.7.1">Specification Document(s): RFC XXXX<a href="#section-6.1.3.2-1.7.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.2-1.8">
+                <p id="section-6.1.3.2-1.8.1">Algorithm Analysis Documents(s):
+<a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf</a><a href="#section-6.1.3.2-1.8.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -1633,13 +1669,29 @@ randomness.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
             </h5>
 <ul class="normal">
 <li class="normal" id="section-6.1.3.3-1.1">
-                <p id="section-6.1.3.3-1.1.1">Name: SLH-DSA-SHA2-128f<a href="#section-6.1.3.3-1.1.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.3.3-1.1.1">Algorithm Name: SLH-DSA-SHA2-128f<a href="#section-6.1.3.3-1.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.1.3.3-1.2">
-                <p id="section-6.1.3.3-1.2.1">Value registry: <span>[<a href="#IANA.jose" class="cite xref">IANA.jose</a>]</span> Algorithms<a href="#section-6.1.3.3-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.3.3-1.2.1">Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128f as described in FIPS 205.<a href="#section-6.1.3.3-1.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.1.3.3-1.3">
-                <p id="section-6.1.3.3-1.3.1">Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128f<a href="#section-6.1.3.3-1.3.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.3.3-1.3.1">Algorithm Usage Location(s): alg<a href="#section-6.1.3.3-1.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.3-1.4">
+                <p id="section-6.1.3.3-1.4.1">JOSE Implementation Requirements: Optional<a href="#section-6.1.3.3-1.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.3-1.5">
+                <p id="section-6.1.3.3-1.5.1">Change Controller: IETF<a href="#section-6.1.3.3-1.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.3-1.6">
+                <p id="section-6.1.3.3-1.6.1">Value registry: <span>[<a href="#IANA.jose" class="cite xref">IANA.jose</a>]</span> Algorithms<a href="#section-6.1.3.3-1.6.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.3-1.7">
+                <p id="section-6.1.3.3-1.7.1">Specification Document(s): RFC XXXX<a href="#section-6.1.3.3-1.7.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.3.3-1.8">
+                <p id="section-6.1.3.3-1.8.1">Algorithm Analysis Documents(s):
+<a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf</a><a href="#section-6.1.3.3-1.8.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
@@ -1651,6 +1703,7 @@ randomness.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
           <h4 id="name-new-jose-key-types">
 <a href="#section-6.1.4" class="section-number selfRef">6.1.4. </a><a href="#name-new-jose-key-types" class="section-name selfRef">New JOSE Key Types</a>
           </h4>
+<p id="section-6.1.4-1">IANA is requested to add the following entries to the JSON Web Key Types Registry. The following completed registration templates are provided as described in RFC7518 RFC7638.<a href="#section-6.1.4-1" class="pilcrow">¶</a></p>
 <div id="slh-dsa-1">
 <section id="section-6.1.4.1">
             <h5 id="name-slh-dsa-2">
@@ -1658,13 +1711,81 @@ randomness.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
             </h5>
 <ul class="normal">
 <li class="normal" id="section-6.1.4.1-1.1">
-                <p id="section-6.1.4.1-1.1.1">Name: SLH-DSA<a href="#section-6.1.4.1-1.1.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.4.1-1.1.1">"kty" Parameter Value: SLH-DSA<a href="#section-6.1.4.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.1.4.1-1.2">
-                <p id="section-6.1.4.1-1.2.1">Value registry: <span>[<a href="#IANA.jose" class="cite xref">IANA.jose</a>]</span> Algorithms<a href="#section-6.1.4.1-1.2.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.4.1-1.2.1">Key Type Description: JSON Web Key Type for the SLH-DSA Algorithm Family.<a href="#section-6.1.4.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-6.1.4.1-1.3">
-                <p id="section-6.1.4.1-1.3.1">Description: JSON Web Key Type for the SLH-DSA Algorithm Family.<a href="#section-6.1.4.1-1.3.1" class="pilcrow">¶</a></p>
+                <p id="section-6.1.4.1-1.3.1">JOSE Implementation Requirements: Optional<a href="#section-6.1.4.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.4.1-1.4">
+                <p id="section-6.1.4.1-1.4.1">Change Controller: IETF<a href="#section-6.1.4.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.4.1-1.5">
+                <p id="section-6.1.4.1-1.5.1">Specification Document(s): RFC XXXX<a href="#section-6.1.4.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="new-json-web-key-parameters">
+<section id="section-6.1.5">
+          <h4 id="name-new-json-web-key-parameters">
+<a href="#section-6.1.5" class="section-number selfRef">6.1.5. </a><a href="#name-new-json-web-key-parameters" class="section-name selfRef">New JSON Web Key Parameters</a>
+          </h4>
+<p id="section-6.1.5-1">IANA is requested to add the following entries to the JSON Web Key Parameters Registry. The following completed registration templates are provided as described in RFC7517, and RFC7638.<a href="#section-6.1.5-1" class="pilcrow">¶</a></p>
+<div id="ml-dsa-public-key">
+<section id="section-6.1.5.1">
+            <h5 id="name-ml-dsa-public-key">
+<a href="#section-6.1.5.1" class="section-number selfRef">6.1.5.1. </a><a href="#name-ml-dsa-public-key" class="section-name selfRef">ML-DSA Public Key</a>
+            </h5>
+<ul class="normal">
+<li class="normal" id="section-6.1.5.1-1.1">
+                <p id="section-6.1.5.1-1.1.1">Parameter Name: pub<a href="#section-6.1.5.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.1-1.2">
+                <p id="section-6.1.5.1-1.2.1">Parameter Description: Public or verification key<a href="#section-6.1.5.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.1-1.3">
+                <p id="section-6.1.5.1-1.3.1">Used with "kty" Value(s): SLH-DSA<a href="#section-6.1.5.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.1-1.4">
+                <p id="section-6.1.5.1-1.4.1">Parameter Information Class: Public<a href="#section-6.1.5.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.1-1.5">
+                <p id="section-6.1.5.1-1.5.1">Change Controller: IETF<a href="#section-6.1.5.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.1-1.6">
+                <p id="section-6.1.5.1-1.6.1">Specification Document(s): RFC XXXX<a href="#section-6.1.5.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</section>
+</div>
+<div id="ml-dsa-secret-key">
+<section id="section-6.1.5.2">
+            <h5 id="name-ml-dsa-secret-key">
+<a href="#section-6.1.5.2" class="section-number selfRef">6.1.5.2. </a><a href="#name-ml-dsa-secret-key" class="section-name selfRef">ML-DSA Secret Key</a>
+            </h5>
+<ul class="normal">
+<li class="normal" id="section-6.1.5.2-1.1">
+                <p id="section-6.1.5.2-1.1.1">Parameter Name: priv<a href="#section-6.1.5.2-1.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.2-1.2">
+                <p id="section-6.1.5.2-1.2.1">Parameter Description: Secret, private or signing key<a href="#section-6.1.5.2-1.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.2-1.3">
+                <p id="section-6.1.5.2-1.3.1">Used with "kty" Value(s): SLH-DSA<a href="#section-6.1.5.2-1.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.2-1.4">
+                <p id="section-6.1.5.2-1.4.1">Parameter Information Class: Private<a href="#section-6.1.5.2-1.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.2-1.5">
+                <p id="section-6.1.5.2-1.5.1">Change Controller: IETF<a href="#section-6.1.5.2-1.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-6.1.5.2-1.6">
+                <p id="section-6.1.5.2-1.6.1">Specification Document(s): RFC XXXX<a href="#section-6.1.5.2-1.6.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </section>
