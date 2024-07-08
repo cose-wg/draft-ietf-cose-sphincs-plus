@@ -128,7 +128,42 @@ This document requests the registration of the following algorithms in {{-IANA.c
 
 # Security Considerations
 
-TODO Security
+The following considerations SHOULD apply to all parmeter sets described
+in this specification, unless otherwise noted.
+
+Care should be taken to ensure "kty" and intended use match, the
+algorithms described in this document share many properties with other
+cryptographic approaches from related families that are used for
+purposes other than digital signatures.
+
+## Validating public keys
+
+All algorithms in that operate on public keys require first validating
+those keys. For the sign, verify and proof schemes, the use of
+KeyValidate is REQUIRED.
+
+## Side channel attacks
+
+Implementations of the signing algorithm SHOULD protect the secret key
+from side-channel attacks. Multiple best practices exist to protect
+against side-channel attacks. Any implementation of the the Sphincs+
+signing algorithms SHOULD utilize the following best practices at a
+minimum:
+
+- Constant timing - the implementation should ensure that constant time
+  is utilized in operations
+- Sequence and memory access persistance - the implemention SHOULD
+  execute the exact same sequence of instructions (at a machine level)
+  with the exact same memory access independent of which polynomial is
+  being operated on.
+- Uniform sampling - care should be given in implementations to preserve
+  the property of uniform sampling in implementation and to prevent
+  information leakage.
+
+## Randomness considerations
+
+It is recommended that the all nonces are from a trusted source of
+randomness.
 
 # IANA Considerations
 
