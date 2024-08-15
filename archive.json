@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-13T01:38:43.031077+00:00",
+  "timestamp": "2024-08-15T01:25:29.724235+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -63,6 +63,22 @@
       "body": "Changes to IANA registries need to follow the process described in https://www.rfc-editor.org/rfc/rfc8126.html\r\n\r\nSee the related PR for ML-DSA here:  https://github.com/cose-wg/draft-ietf-cose-dilithium/pull/1\r\n\r\nTLDR:\r\n\r\n- [ ] Name each registry you are adding entries too\r\n- [ ] Provide a completed registration template\r\n",
       "createdAt": "2024-05-26T20:24:54Z",
       "updatedAt": "2024-05-26T20:24:54Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOLENBks6S6Yga",
+      "title": "FIPS Update ",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/issues/2",
+      "state": "OPEN",
+      "author": "OR13",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Need 2 implementations and to confirm test vectors ",
+      "createdAt": "2024-08-14T02:45:58Z",
+      "updatedAt": "2024-08-14T02:45:58Z",
       "closedAt": null,
       "comments": []
     }
