@@ -51,6 +51,7 @@ author:
 normative:
   IANA.jose: IANA.jose
   IANA.cose: IANA.cose
+  I-D.draft-ietf-cose-dilithium: ML-DSA
 
 informative:
   FIPS-205:
@@ -64,9 +65,7 @@ informative:
 --- abstract
 
 This document describes JOSE and COSE serializations for SLH-DSA, which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme.
-
 This document does not define any new cryptography, only seralizations of existing cryptographic systems described in {{FIPS-205}}.
-
 Note to RFC Editor: This document should not proceed to AUTH48 until NIST completes paramater tuning and selection as a part of the [PQC](https://csrc.nist.gov/projects/post-quantum-cryptography) standardization process.
 
 
@@ -79,7 +78,6 @@ SLH-DSA is derived from Version 3.1 of SPHINCS+, as noted in {{FIPS-205}}.
 SPHINCS+ is one of the post quantum cryptography algorithms selected in {{NIST-PQC-2022}}.
 
 TODO: Add complete examples for `SLH-DSA-SHA2-128s`, `SLH-DSA-SHAKE-128s`, `SLH-DSA-SHA2-128f`... ( all of them? really?)
-
 
 # Terminology
 
@@ -107,24 +105,11 @@ This document requests the registration of the following algorithms in {{-IANA.c
 | SLH-DSA-SHA2-128f  | TBD (requested assignment -53)     | CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
 {: #cose-algorithms align="left" title="COSE algorithms for SLH-DSA"}
 
-# The SLH-DSA Key Type
+# SLH-DSA Keys
 
-Private and Public Keys are produced to enable the sign and verify opertaions for each of the SLH-DSA Algorithms.
+Like ML-DSA keys, SLH-DSA keys use the AKP Key Type.
 
-This document requests the registration of the following key types in {{-IANA.jose}}:
-
-| Name    | kty | Description
-|---
-| SLH-DSA  | SLH-DSA     | JSON Web Key Type for the SLH-DSA Algorithm Family.
-{: #jose-key-type align="left" title="JSON Web Key Type for SLH-DSA"}
-
-This document requests the registration of the following algorithms in {{-IANA.cose}}:
-
-| Name       | kty | Description
-|---
-| SLH-DSA  | TBD (requested assignment 8)     | COSE Key Type for the SLH-DSA Algorithm Family.
-{: #cose-key-type align="left" title="COSE Key Type for SLH-DSA"}
-
+The thumbprints for SLH-DSA keys are also computed according to the process described in {{-ML-DSA}}
 
 # Security Considerations
 
@@ -266,9 +251,9 @@ The following completed registration templates are provided as described in RFC7
 ~~~
 {: #SLH-DSA-SHA2-128s-public-jwk title="Example SLH-DSA-SHA2-128s Public JSON Web Key"}
 
-### Thumbprint URI
+### Thumbprint
 
-TODO
+The thumbprint is computed as described in
 
 ### JSON Web Signature
 
@@ -314,7 +299,7 @@ eyJpc3MiOiJ1cm46d...XVpZDo0NTYifQ\
 
 ### Thumbprint URI
 
-TODO
+TODO {ML-DSA}
 
 ### COSE Sign 1
 
