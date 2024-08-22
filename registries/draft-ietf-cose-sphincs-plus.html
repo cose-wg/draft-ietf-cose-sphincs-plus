@@ -1828,35 +1828,24 @@ eyJpc3MiOiJ1cm46d...XVpZDo0NTYifQ\
           <h4 id="name-cose-sign-1">
 <a href="#appendix-A.2.3" class="section-number selfRef">A.2.3. </a><a href="#name-cose-sign-1" class="section-name selfRef">COSE Sign 1</a>
           </h4>
-<span id="name-example-slh-dsa-sha2-128s-co"></span><div id="SLH-DSA-SHA2-128s-cose-protected-header-diagnostic">
+<span id="name-example-slh-dsa-sha2-128s-co"></span><div id="SLH-DSA-SHA2-128s-cose-sign-1-diagnostic">
 <figure id="figure-7">
             <div class="lang-cbor-diag sourcecode" id="appendix-A.2.3-1.1">
 <pre>
-{        / Protected                   /
-  1: -51 / SLH-DSA-SHA2-128s Algorithm /
-}
-</pre>
-</div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
-<a href="#name-example-slh-dsa-sha2-128s-co" class="selfRef">Example SLH-DSA-SHA2-128s COSE Protected Header</a>
-            </figcaption></figure>
-</div>
-<span id="name-example-slh-dsa-sha2-128s-cos"></span><div id="SLH-DSA-SHA2-128s-cose-sign-1-diagnostic">
-<figure id="figure-8">
-            <div class="lang-cbor-diag sourcecode" id="appendix-A.2.3-2.1">
-<pre>
-18(                                 / COSE Sign 1            /
-    [
-      &lt;&lt;{ 1: -51 }&gt;&gt;,               / Protected              /
-      {},                           / Unprotected            /
-      h'66616b65',                  / Payload                /
-      h'53e855e8...0f263549'        / Signature              /
-    ]
+/ cose-sign1 / 18(
+  [
+    / protected / &lt;&lt;{
+      / algorithm / 1 : -51 / SLH-DSA-SHA2-128s /
+    }&gt;&gt;
+    / unprotected / {},
+    / payload / h'66616b65',
+    / signature / h'53e855e8...0f263549'
+  ]
 )
 </pre>
 </div>
-<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
-<a href="#name-example-slh-dsa-sha2-128s-cos" class="selfRef">Example SLH-DSA-SHA2-128s COSE Sign 1</a>
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<a href="#name-example-slh-dsa-sha2-128s-co" class="selfRef">Example SLH-DSA-SHA2-128s COSE Sign 1</a>
             </figcaption></figure>
 </div>
 </section>

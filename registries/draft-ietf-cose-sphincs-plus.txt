@@ -442,22 +442,18 @@ A.2.2.  Thumbprint URI
 
 A.2.3.  COSE Sign 1
 
-   {        / Protected                   /
-     1: -51 / SLH-DSA-SHA2-128s Algorithm /
-   }
-
-         Figure 7: Example SLH-DSA-SHA2-128s COSE Protected Header
-
-   18(                                 / COSE Sign 1            /
-       [
-         <<{ 1: -51 }>>,               / Protected              /
-         {},                           / Unprotected            /
-         h'66616b65',                  / Payload                /
-         h'53e855e8...0f263549'        / Signature              /
-       ]
+   / cose-sign1 / 18(
+     [
+       / protected / <<{
+         / algorithm / 1 : -51 / SLH-DSA-SHA2-128s /
+       }>>
+       / unprotected / {},
+       / payload / h'66616b65',
+       / signature / h'53e855e8...0f263549'
+     ]
    )
 
-              Figure 8: Example SLH-DSA-SHA2-128s COSE Sign 1
+              Figure 7: Example SLH-DSA-SHA2-128s COSE Sign 1
 
 Acknowledgments
 
