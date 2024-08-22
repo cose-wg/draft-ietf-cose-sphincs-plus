@@ -280,26 +280,26 @@ eyJpc3MiOiJ1cm46d...XVpZDo0NTYifQ\
 
 ~~~~ cbor-diag
 {                                   / COSE Key                    /
-  1: 7,                             / AKP Key Type            /
+  1: 7,                             / AKP Key Type                /
   3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
-  -13: h'7803c0f9...3f6e2c70',      / AKP Private Key         /
-  -14: h'7803c0f9...3bba7abd',      / AKP Public Key          /
+  -1: h'7803c0f9...3f6e2c70',       / AKP Private Key             /
+  -2: h'7803c0f9...3bba7abd',       / AKP Public Key              /
 }
 ~~~~
 {: #SLH-DSA-SHA2-128s-private-cose-key title="Example SLH-DSA-SHA2-128s Private COSE Key"}
 
 ~~~~ cbor-diag
 {                                   / COSE Key                    /
-  1: 7,                             / AKP Key Type            /
+  1: 7,                             / AKP Key Type                /
   3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
-  -13: h'7803c0f9...3f6e2c70'       / AKP Private Key         /
+  -2: h'7803c0f9...3bba7abd',       / AKP Public Key              /
 }
 ~~~~
 {: #SLH-DSA-SHA2-128s-public-cose-key title="Example SLH-DSA-SHA2-128s Public COSE Key"}
 
 ### Thumbprint URI
 
-TODO {ML-DSA}
+TODO
 
 ### COSE Sign 1
 
