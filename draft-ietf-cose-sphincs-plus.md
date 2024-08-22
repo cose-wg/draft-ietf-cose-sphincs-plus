@@ -304,21 +304,15 @@ TODO
 ### COSE Sign 1
 
 ~~~~ cbor-diag
-{        / Protected                   /
-  1: -51 / SLH-DSA-SHA2-128s Algorithm /
-}
-~~~~
-{: #SLH-DSA-SHA2-128s-cose-protected-header-diagnostic title="Example SLH-DSA-SHA2-128s COSE Protected Header"}
-
-
-~~~~ cbor-diag
-18(                                 / COSE Sign 1            /
-    [
-      <<{ 1: -51 }>>,               / Protected              /
-      {},                           / Unprotected            /
-      h'66616b65',                  / Payload                /
-      h'53e855e8...0f263549'        / Signature              /
-    ]
+/ cose-sign1 / 18(
+  [
+    / protected / <<{
+      / algorithm / 1 : -51 / SLH-DSA-SHA2-128s /
+    }>>
+    / unprotected / {},
+    / payload / h'66616b65',
+    / signature / h'53e855e8...0f263549'
+  ]
 )
 ~~~~
 {: #SLH-DSA-SHA2-128s-cose-sign-1-diagnostic title="Example SLH-DSA-SHA2-128s COSE Sign 1"}
