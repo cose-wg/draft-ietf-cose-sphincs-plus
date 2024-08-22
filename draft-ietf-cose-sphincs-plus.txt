@@ -5,14 +5,14 @@
 CBOR Object Signing and Encryption                            M. Prorock
 Internet-Draft                                                  mesur.io
 Intended status: Standards Track                               O. Steele
-Expires: 9 January 2025                                        Transmute
+Expires: 23 February 2025                                      Transmute
                                                              R. Misoczki
                                                                   Google
                                                               M. Osborne
                                                                      IBM
                                                          C. Cloostermans
                                                                      NXP
-                                                             8 July 2024
+                                                          22 August 2024
 
 
                        SLH-DSA for JOSE and COSE
@@ -65,7 +65,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 January 2025.
+   This Internet-Draft will expire on 23 February 2025.
 
 Copyright Notice
 
@@ -434,11 +434,11 @@ Table of Contents
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
-              <http://www.iana.org/assignments/cose>.
+              <https://www.iana.org/assignments/cose>.
 
    [IANA.jose]
               IANA, "JSON Object Signing and Encryption (JOSE)",
-              <http://www.iana.org/assignments/jose>.
+              <https://www.iana.org/assignments/jose>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
