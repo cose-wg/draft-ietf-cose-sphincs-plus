@@ -420,25 +420,25 @@ A.2.  COSE
 A.2.1.  Key Pair
 
    {                                   / COSE Key                    /
-     1: 7,                             / AKP Key Type            /
+     1: 7,                             / AKP Key Type                /
      3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
-     -13: h'7803c0f9...3f6e2c70',      / AKP Private Key         /
-     -14: h'7803c0f9...3bba7abd',      / AKP Public Key          /
+     -1: h'7803c0f9...3f6e2c70',       / AKP Private Key             /
+     -2: h'7803c0f9...3bba7abd',       / AKP Public Key              /
    }
 
             Figure 5: Example SLH-DSA-SHA2-128s Private COSE Key
 
    {                                   / COSE Key                    /
-     1: 7,                             / AKP Key Type            /
+     1: 7,                             / AKP Key Type                /
      3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
-     -13: h'7803c0f9...3f6e2c70'       / AKP Private Key         /
+     -2: h'7803c0f9...3bba7abd',       / AKP Public Key              /
    }
 
             Figure 6: Example SLH-DSA-SHA2-128s Public COSE Key
 
 A.2.2.  Thumbprint URI
 
-   TODO {ML-DSA}
+   TODO
 
 A.2.3.  COSE Sign 1
 
