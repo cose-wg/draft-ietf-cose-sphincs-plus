@@ -303,7 +303,6 @@ TODO
 
 ### COSE Sign 1
 
-
 ~~~~ cbor-diag
 {        / Protected                   /
   1: -51 / SLH-DSA-SHA2-128s Algorithm /
@@ -315,7 +314,7 @@ TODO
 ~~~~ cbor-diag
 18(                                 / COSE Sign 1            /
     [
-      h'a10139d902',                / Protected              /
+      <<{ 1: -51 }>>,               / Protected              /
       {},                           / Unprotected            /
       h'66616b65',                  / Payload                /
       h'53e855e8...0f263549'        / Signature              /
