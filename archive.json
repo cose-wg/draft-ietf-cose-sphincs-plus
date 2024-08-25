@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-22T01:38:32.316626+00:00",
+  "timestamp": "2024-08-25T01:43:59.296516+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -83,5 +83,68 @@
       "comments": []
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 3,
+      "id": "PR_kwDOLENBks55LkfN",
+      "title": "Update files",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/pull/3",
+      "state": "MERGED",
+      "author": "OR13",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-08-22T21:48:34Z",
+      "updatedAt": "2024-08-22T21:50:02Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "baseRefName": "main",
+      "baseRefOid": "cb098ae6e5721e37c0a5e8c5035cb75e4f9f2609",
+      "headRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "headRefName": "update-files",
+      "headRefOid": "d67e2b4cb8d90dfc269ba080b88e5ade7ef55e93",
+      "closedAt": "2024-08-22T21:50:02Z",
+      "mergedAt": "2024-08-22T21:50:02Z",
+      "mergedBy": "OR13",
+      "mergeCommit": {
+        "oid": "e031eed344707144d85d28ff86ec36eea5f2be15"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOLENBks55LoFx",
+      "title": "Fix iana registries",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/pull/4",
+      "state": "OPEN",
+      "author": "OR13",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR adjust the registrations to match ML-DSA and to use the key types defined in ML-DSA",
+      "createdAt": "2024-08-22T22:00:45Z",
+      "updatedAt": "2024-08-22T22:48:16Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "baseRefName": "main",
+      "baseRefOid": "e031eed344707144d85d28ff86ec36eea5f2be15",
+      "headRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "headRefName": "registries",
+      "headRefOid": "564dc75a255c194eac908b5e602fd3de226f1245",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Assumes https://github.com/cose-wg/draft-ietf-cose-dilithium/pull/5",
+          "createdAt": "2024-08-22T22:40:54Z",
+          "updatedAt": "2024-08-22T22:40:54Z"
+        }
+      ],
+      "reviews": []
+    }
+  ]
 }
