@@ -1,0 +1,517 @@
+
+
+
+
+CBOR Object Signing and Encryption                            M. Prorock
+Internet-Draft                                                  mesur.io
+Intended status: Standards Track                               O. Steele
+Expires: 23 April 2025                                         Transmute
+                                                             R. Misoczki
+                                                                  Google
+                                                              M. Osborne
+                                                                     IBM
+                                                         C. Cloostermans
+                                                                     NXP
+                                                         20 October 2024
+
+
+                       SLH-DSA for JOSE and COSE
+                  draft-ietf-cose-sphincs-plus-latest
+
+Abstract
+
+   This document describes JOSE and COSE serializations for SLH-DSA,
+   which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC)
+   based digital signature scheme.  This document does not define any
+   new cryptography, only seralizations of existing cryptographic
+   systems described in [FIPS-205].  Note to RFC Editor: This document
+   should not proceed to AUTH48 until NIST completes paramater tuning
+   and selection as a part of the PQC (https://csrc.nist.gov/projects/
+   post-quantum-cryptography) standardization process.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at https://cose-
+   wg.github.io/draft-ietf-cose-sphincs-plus/draft-ietf-cose-sphincs-
+   plus.html.  Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-ietf-cose-sphincs-plus/.
+
+   Discussion of this document takes place on the CBOR Object Signing
+   and Encryption Working Group mailing list (mailto:cose@ietf.org),
+   which is archived at https://mailarchive.ietf.org/arch/browse/cose/.
+   Subscribe at https://www.ietf.org/mailman/listinfo/cose/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/cose-wg/draft-ietf-cose-sphincs-plus.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 23 April 2025.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Terminology
+   3.  The SLH-DSA Algorithm Family
+   4.  SLH-DSA Keys
+   5.  Security Considerations
+     5.1.  Validating public keys
+     5.2.  Side channel attacks
+     5.3.  Randomness considerations
+   6.  IANA Considerations
+     6.1.  Additions to Existing Registries
+       6.1.1.  New COSE Algorithms
+       6.1.2.  New JOSE Algorithms
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
+   Appendix A.  Examples
+     A.1.  JOSE
+       A.1.1.  Key Pair
+       A.1.2.  Thumbprint
+       A.1.3.  JSON Web Signature
+     A.2.  COSE
+       A.2.1.  Key Pair
+       A.2.2.  Thumbprint URI
+       A.2.3.  COSE Sign 1
+   Acknowledgments
+   Authors' Addresses
+
+1.  Introduction
+
+   This document describes JSON Object Signing and Encryption (JOSE) and
+   CBOR Object Signing and Encryption (COSE) serializations for the
+   Stateless Hash-Based Digital Signature Standard (SLH-DSA), which was
+   derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography
+   (PQC) based digital signature scheme.
+
+   This document does not define any new cryptography, only
+   serializations of existing cryptographic systems described in
+   [FIPS-205].
+
+   This document builds on the Algorithm Key Pair (AKP) type as defined
+   in [I-D.draft-ietf-cose-dilithium].  The AKP type enables flexible
+   representation of keys used across different post-quantum
+   cryptographic algorithms, including SLH-DSA.
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  The SLH-DSA Algorithm Family
+
+   The SLH-DSA Signature Scheme is parameterized to support different
+   security levels.
+
+   This document requests the registration of the following algorithms
+   in [IANA.jose]:
+
+   +====================+====================+====================+
+   | Name               | alg                | Description        |
+   +====================+====================+====================+
+   | SLH-DSA-SHA2-128s  | SLH-DSA-SHA2-128s  | JSON Web Signature |
+   |                    |                    | Algorithm for SLH- |
+   |                    |                    | DSA-SHA2-128s      |
+   +--------------------+--------------------+--------------------+
+   | SLH-DSA-SHAKE-128s | SLH-DSA-SHAKE-128s | JSON Web Signature |
+   |                    |                    | Algorithm for SLH- |
+   |                    |                    | DSA-SHAKE-128s     |
+   +--------------------+--------------------+--------------------+
+   | SLH-DSA-SHA2-128f  | SLH-DSA-SHA2-128f  | JSON Web Signature |
+   |                    |                    | Algorithm for SLH- |
+   |                    |                    | DSA-SHA2-128f      |
+   +--------------------+--------------------+--------------------+
+
+                 Table 1: JOSE algorithms for SLH-DSA
+
+   This document requests the registration of the following algorithms
+   in [IANA.cose]:
+
+   +====================+=================+=====================+
+   | Name               | alg             | Description         |
+   +====================+=================+=====================+
+   | SLH-DSA-SHA2-128s  | TBD (requested  | CBOR Object Signing |
+   |                    | assignment -51) | Algorithm for SLH-  |
+   |                    |                 | DSA-SHA2-128s       |
+   +--------------------+-----------------+---------------------+
+   | SLH-DSA-SHAKE-128s | TBD (requested  | CBOR Object Signing |
+   |                    | assignment -52) | Algorithm for SLH-  |
+   |                    |                 | DSA-SHAKE-128s      |
+   +--------------------+-----------------+---------------------+
+   | SLH-DSA-SHA2-128f  | TBD (requested  | CBOR Object Signing |
+   |                    | assignment -53) | Algorithm for SLH-  |
+   |                    |                 | DSA-SHA2-128f       |
+   +--------------------+-----------------+---------------------+
+
+                Table 2: COSE algorithms for SLH-DSA
+
+4.  SLH-DSA Keys
+
+   Private and Public Keys are produced to enable the sign and verify
+   operations for each of the SLH-DSA Algorithms.  The SLH-DSA Algorithm
+   Family uses the Algorithm Key Pair (AKP) key type, as defined in
+   [I-D.draft-ietf-cose-dilithium].  This ensures compatibility across
+   different cryptographic algorithms that use AKP for key
+   representation.
+
+   The specific algorithms for SLH-DSA, such as SLH-DSA-SHA2-128s, SLH-
+   DSA-SHAKE-128s, and SLH-DSA-SHA2-128f, are defined in this document
+   and are used in the alg value of an AKP key representation to specify
+   the algorithm that corresponds to the key.  Like ML-DSA keys, SLH-DSA
+   keys use the AKP Key Type.
+
+   The thumbprints for SLH-DSA keys are also computed according to the
+   process described in [I-D.draft-ietf-cose-dilithium]
+
+5.  Security Considerations
+
+   The security considerations of [RFC7515], [RFC7517] and [RFC9053]
+   applies to this specification as well.
+
+   A detailed security analysis of SLH-DSA is beyond the scope of this
+   specification, see [FIPS-205] for additional details.
+
+   The following considerations apply to all parameter sets described in
+   this specification.
+
+5.1.  Validating public keys
+
+   All algorithms in that operate on public keys require first
+   validating those keys.  For the sign, verify and proof schemes, the
+   use of KeyValidate is REQUIRED.
+
+5.2.  Side channel attacks
+
+   Implementations of the signing algorithm SHOULD protect the secret
+   key from side-channel attacks.  Multiple best practices exist to
+   protect against side-channel attacks.  Any implementation of the SLH-
+   DSA signing algorithms SHOULD utilize the following best practices at
+   a minimum:
+
+   *  Constant timing - the implementation should ensure that constant
+      time is utilized in operations
+
+   *  Sequence and memory access persistance - the implementation SHOULD
+      execute the exact same sequence of instructions (at a machine
+      level) with the exact same memory access independent of which
+      polynomial is being operated on.
+
+   *  Uniform sampling - care should be given in implementations to
+      preserve the property of uniform sampling in implementation and to
+      prevent information leakage.
+
+5.3.  Randomness considerations
+
+   It is recommended that the all nonces are from a trusted source of
+   randomness.
+
+6.  IANA Considerations
+
+6.1.  Additions to Existing Registries
+
+6.1.1.  New COSE Algorithms
+
+   IANA is requested to add the following entries to the COSE Algorithms
+   Registry.  The following completed registration templates are
+   provided as described in RFC9053 and RFC9054.
+
+6.1.1.1.  SLH-DSA-SHA2-128s
+
+   *  Name: SLH-DSA-SHA2-128s
+
+   *  Value: TBD (requested assignment -51)
+
+   *  Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128s
+
+   *  Capabilities: [kty]
+
+   *  Reference: RFC XXXX
+
+   *  Recommended: Yes
+
+6.1.1.2.  SLH-DSA-SHAKE-128s
+
+   *  Name: SLH-DSA-SHAKE-128s
+
+   *  Value: TBD (requested assignment -52)
+
+   *  Description: CBOR Object Signing Algorithm for SLH-DSA-SHAKE-128s
+
+   *  Capabilities: [kty]
+
+   *  Reference: RFC XXXX
+
+   *  Recommended: Yes
+
+6.1.1.3.  SLH-DSA-SHA2-128f
+
+   *  Name: SLH-DSA-SHA2-128f
+
+   *  Value: TBD (requested assignment -53)
+
+   *  Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
+
+   *  Capabilities: [kty]
+
+   *  Reference: RFC XXXX
+
+   *  Recommended: Yes
+
+6.1.2.  New JOSE Algorithms
+
+   IANA is requested to add the following entries to the JSON Web
+   Signature and Encryption Algorithms Registry.  The following
+   completed registration templates are provided as described in
+   RFC7518.
+
+6.1.2.1.  SLH-DSA-SHA2-128s
+
+   *  Algorithm Name: SLH-DSA-SHA2-128s
+
+   *  Algorithm Description: SLH-DSA-SHA2-128s as described in FIPS 205.
+
+   *  Algorithm Usage Location(s): alg
+
+   *  JOSE Implementation Requirements: Optional
+
+   *  Change Controller: IETF
+
+   *  Value registry: [IANA.jose] Algorithms
+
+   *  Specification Document(s): RFC XXXX
+
+   *  Algorithm Analysis Documents(s): [FIPS-205]
+
+6.1.2.2.  SLH-DSA-SHAKE-128s
+
+   *  Algorithm Name: SLH-DSA-SHAKE-128s
+
+   *  Algorithm Description: SLH-DSA-SHAKE-128s as described in FIPS
+      205.
+
+   *  Algorithm Usage Location(s): alg
+
+   *  JOSE Implementation Requirements: Optional
+
+   *  Change Controller: IETF
+
+   *  Value registry: [IANA.jose] Algorithms
+
+   *  Specification Document(s): RFC XXXX
+
+   *  Algorithm Analysis Documents(s): [FIPS-205]
+
+6.1.2.3.  SLH-DSA-SHA2-128f
+
+   *  Algorithm Name: SLH-DSA-SHA2-128f
+
+   *  Algorithm Description: SLH-DSA-SHA2-128f as described in FIPS 205.
+
+   *  Algorithm Usage Location(s): alg
+
+   *  JOSE Implementation Requirements: Optional
+
+   *  Change Controller: IETF
+
+   *  Value registry: [IANA.jose] Algorithms
+
+   *  Specification Document(s): RFC XXXX
+
+   *  Algorithm Analysis Documents(s): [FIPS-205]
+
+7.  References
+
+7.1.  Normative References
+
+   [I-D.draft-ietf-cose-dilithium]
+              Prorock, M., Steele, O., Misoczki, R., Osborne, M., and C.
+              Cloostermans, "ML-DSA for JOSE and COSE", Work in
+              Progress, Internet-Draft, draft-ietf-cose-dilithium-04, 20
+              October 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-cose-dilithium-04>.
+
+   [IANA.cose]
+              IANA, "CBOR Object Signing and Encryption (COSE)",
+              <https://www.iana.org/assignments/cose>.
+
+   [IANA.jose]
+              IANA, "JSON Object Signing and Encryption (JOSE)",
+              <https://www.iana.org/assignments/jose>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
+              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
+              2015, <https://www.rfc-editor.org/rfc/rfc7515>.
+
+   [RFC7517]  Jones, M., "JSON Web Key (JWK)", RFC 7517,
+              DOI 10.17487/RFC7517, May 2015,
+              <https://www.rfc-editor.org/rfc/rfc7517>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9053]  Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Initial Algorithms", RFC 9053, DOI 10.17487/RFC9053,
+              August 2022, <https://www.rfc-editor.org/rfc/rfc9053>.
+
+7.2.  Informative References
+
+   [FIPS-205] "Stateless Hash-Based Digital Signature Standard", n.d.,
+              <https://doi.org/10.6028/NIST.FIPS.205>.
+
+   [NIST-PQC-2022]
+              "Selected Algorithms 2022", n.d.,
+              <https://csrc.nist.gov/Projects/post-quantum-cryptography/
+              selected-algorithms-2022>.
+
+Appendix A.  Examples
+
+A.1.  JOSE
+
+A.1.1.  Key Pair
+
+   {
+     "kty": "AKP",
+     "alg": "SLH-DSA-SHA2-128s",
+     "pub": "V53SIdVF...uvw2nuCQ",
+     "priv": "V53SIdVF...cDKLbsBY"
+   }
+
+          Figure 1: Example SLH-DSA-SHA2-128s Private JSON Web Key
+
+   {
+     "kty": "AKP",
+     "alg": "SLH-DSA-SHA2-128s",
+     "pub": "V53SIdVF...uvw2nuCQ"
+   }
+
+          Figure 2: Example SLH-DSA-SHA2-128s Public JSON Web Key
+
+A.1.2.  Thumbprint
+
+   The thumbprint is computed as described in
+
+A.1.3.  JSON Web Signature
+
+   {
+     "alg": "SLH-DSA-SHA2-128s"
+   }
+
+        Figure 3: Example SLH-DSA-SHA2-128s Decoded Protected Header
+
+   eyJhbGciOiJ...LCJraWQiOiI0MiJ9\
+   .\
+   eyJpc3MiOiJ1cm46d...XVpZDo0NTYifQ\
+   .\
+   5MSEgQ0dZB4SeLC...AAAAAABIhMUE
+
+       Figure 4: Example SLH-DSA-SHA2-128s Compact JSON Web Signature
+
+A.2.  COSE
+
+A.2.1.  Key Pair
+
+   {                                   / COSE Key                    /
+     1: 7,                             / AKP Key Type                /
+     3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
+     -1: h'7803c0f9...3f6e2c70',       / AKP Private Key             /
+     -2: h'7803c0f9...3bba7abd',       / AKP Public Key              /
+   }
+   ~~~
+   {: #SLH-DSA-SHA2-128s-private-cose-key title="Example SLH-DSA-SHA2-128s Private COSE Key"}
+
+   ~~~~ cbor-diag
+   {                                   / COSE Key                    /
+     1: 7,                             / AKP Key Type                /
+     3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
+     -2: h'7803c0f9...3bba7abd',       / AKP Public Key              /
+   }
+
+            Figure 5: Example SLH-DSA-SHA2-128s Public COSE Key
+
+A.2.2.  Thumbprint URI
+
+   TODO
+
+A.2.3.  COSE Sign 1
+
+   / cose-sign1 / 18(
+     [
+       / protected / <<{
+         / algorithm / 1 : -51 / SLH-DSA-SHA2-128s /
+       }>>
+       / unprotected / {},
+       / payload / h'66616b65',
+       / signature / h'53e855e8...0f263549'
+     ]
+   )
+
+              Figure 6: Example SLH-DSA-SHA2-128s COSE Sign 1
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Authors' Addresses
+
+   Michael Prorock
+   mesur.io
+   Email: mprorock@mesur.io
+
+
+   Orie Steele
+   Transmute
+   Email: orie@transmute.industries
+
+
+   Rafael Misoczki
+   Google
+   Email: rafaelmisoczki@google.com
+
+
+   Michael Osborne
+   IBM
+   Email: osb@zurich.ibm.com
+
+
+   Christine Cloostermans
+   NXP
+   Email: christine.cloostermans@nxp.com
