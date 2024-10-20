@@ -4,7 +4,7 @@ abbrev: "jose-cose-sphincs-plus"
 category: std
 
 docname: draft-ietf-cose-sphincs-plus-latest
-submissiontype: IETF  
+submissiontype: IETF
 number:
 date:
 consensus: true
