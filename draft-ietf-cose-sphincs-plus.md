@@ -73,7 +73,7 @@ Note to RFC Editor: This document should not proceed to AUTH48 until NIST comple
 
 # Introduction
 
-This document describes JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for the Stateless Hash-Based Digital Signature Standard (ML-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme.
+This document describes JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme.
 
 This document does not define any new cryptography, only serializations of existing cryptographic systems described in {{FIPS-205}}.
 
