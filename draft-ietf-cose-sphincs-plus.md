@@ -51,6 +51,7 @@ author:
 normative:
   IANA.jose: IANA.jose
   IANA.cose: IANA.cose
+  I-D.draft-ietf-cose-dilithium: ML-DSA
 
 informative:
   FIPS-205:
@@ -74,11 +75,11 @@ Note to RFC Editor: This document should not proceed to AUTH48 until NIST comple
 
 # Introduction
 
-SLH-DSA is derived from Version 3.1 of SPHINCS+, as noted in {{FIPS-205}}.
+This document describes JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for the Stateless Hash-Based Digital Signature Standard (ML-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme.
 
-SPHINCS+ is one of the post quantum cryptography algorithms selected in {{NIST-PQC-2022}}.
+This document does not define any new cryptography, only serializations of existing cryptographic systems described in {{FIPS-205}}.
 
-TODO: Add complete examples for `SLH-DSA-SHA2-128s`, `SLH-DSA-SHAKE-128s`, `SLH-DSA-SHA2-128f`... ( all of them? really?)
+This document builds on the Algorithm Key Pair (AKP) type as defined in {{-ML-DSA}}. The AKP type enables flexible representation of keys used across different post-quantum cryptographic algorithms, including SLH-DSA.
 
 
 # Terminology
@@ -87,7 +88,7 @@ TODO: Add complete examples for `SLH-DSA-SHA2-128s`, `SLH-DSA-SHAKE-128s`, `SLH-
 
 # The SLH-DSA Algorithm Family
 
-The SLH-DSA Signature Scheme is paramaterized to support different security level.
+The SLH-DSA Signature Scheme is parameterized to support different security levels.
 
 This document requests the registration of the following algorithms in {{-IANA.jose}}:
 
@@ -107,34 +108,20 @@ This document requests the registration of the following algorithms in {{-IANA.c
 | SLH-DSA-SHA2-128f  | TBD (requested assignment -53)     | CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
 {: #cose-algorithms align="left" title="COSE algorithms for SLH-DSA"}
 
-# The SLH-DSA Key Type
+# SLH-DSA Keys
 
-Private and Public Keys are produced to enable the sign and verify opertaions for each of the SLH-DSA Algorithms.
+Private and Public Keys are produced to enable the sign and verify operations for each of the SLH-DSA Algorithms. The SLH-DSA Algorithm Family uses the Algorithm Key Pair (AKP) key type, as defined in {{-ML-DSA}}. This ensures compatibility across different cryptographic algorithms that use AKP for key representation.
 
-This document requests the registration of the following key types in {{-IANA.jose}}:
-
-| Name    | kty | Description
-|---
-| SLH-DSA  | SLH-DSA     | JSON Web Key Type for the SLH-DSA Algorithm Family.
-{: #jose-key-type align="left" title="JSON Web Key Type for SLH-DSA"}
-
-This document requests the registration of the following algorithms in {{-IANA.cose}}:
-
-| Name       | kty | Description
-|---
-| SLH-DSA  | TBD (requested assignment 8)     | COSE Key Type for the SLH-DSA Algorithm Family.
-{: #cose-key-type align="left" title="COSE Key Type for SLH-DSA"}
-
+The specific algorithms for SLH-DSA, such as SLH-DSA-SHA2-128s, SLH-DSA-SHAKE-128s, and SLH-DSA-SHA2-128f, are defined in this document and are used in the alg value of an AKP key representation to specify the algorithm that corresponds to the key.
 
 # Security Considerations
 
-The following considerations SHOULD apply to all parmeter sets described
-in this specification, unless otherwise noted.
+The security considerations of {{-JWS}}, {{-JWK}} and {{-COSE}} applies to this specification as well.
 
-Care should be taken to ensure "kty" and intended use match, the
-algorithms described in this document share many properties with other
-cryptographic approaches from related families that are used for
-purposes other than digital signatures.
+A detailed security analysis of SLH-DSA is beyond the scope of this specification, see {{FIPS-205}} for additional details.
+
+The following considerations SHOULD apply to all parameter sets described
+in this specification, unless otherwise noted.
 
 ## Validating public keys
 
@@ -146,13 +133,13 @@ KeyValidate is REQUIRED.
 
 Implementations of the signing algorithm SHOULD protect the secret key
 from side-channel attacks. Multiple best practices exist to protect
-against side-channel attacks. Any implementation of the the Sphincs+
+against side-channel attacks. Any implementation of the SLH-DSA
 signing algorithms SHOULD utilize the following best practices at a
 minimum:
 
 - Constant timing - the implementation should ensure that constant time
   is utilized in operations
-- Sequence and memory access persistance - the implemention SHOULD
+- Sequence and memory access persistance - the implementation SHOULD
   execute the exact same sequence of instructions (at a machine level)
   with the exact same memory access independent of which polynomial is
   being operated on.
@@ -174,36 +161,30 @@ randomness.
 #### SLH-DSA-SHA2-128s
 
 * Name: SLH-DSA-SHA2-128s
-* Label: TBD (requested assignment -51)
-* Value type: int
-* Value registry: {{-IANA.cose}}
+* Value: TBD (requested assignment -51)
 * Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128s
+* Capabilities: `[kty]`
+* Reference: RFC XXXX
+* Recommended: Yes
+
 
 #### SLH-DSA-SHAKE-128s
 
 * Name: SLH-DSA-SHAKE-128s
-* Label: TBD (requested assignment -52)
-* Value type: int
-* Value registry: {{-IANA.cose}}
+* Value: TBD (requested assignment -52)
 * Description: CBOR Object Signing Algorithm for SLH-DSA-SHAKE-128s
+* Capabilities: `[kty]`
+* Reference: RFC XXXX
+* Recommended: Yes
 
 #### SLH-DSA-SHA2-128f
 
 * Name: SLH-DSA-SHA2-128f
-* Label: TBD (requested assignment -53)
-* Value type: int
-* Value registry: {{-IANA.cose}}
+* Value: TBD (requested assignment -53)
 * Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
-
-### New COSE Key Types
-
-#### SLH-DSA
-
-* Name: SLH-DSA
-* Label: TBD (requested assignment 8)
-* Value type: int
-* Value registry: {{-IANA.cose}}
-* Description: COSE Key Type for the SLH-DSA Algorithm Family
+* Capabilities: `[kty]`
+* Reference: RFC XXXX
+* Recommended: Yes
 
 ### New JOSE Algorithms
 
@@ -212,7 +193,7 @@ IANA is requested to add the following entries to the JSON Web Signature and Enc
 #### SLH-DSA-SHA2-128s
 
 * Algorithm Name: SLH-DSA-SHA2-128s
-* Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128s as described in FIPS 205.
+* Algorithm Description: SLH-DSA-SHA2-128s as described in FIPS 205.
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
@@ -224,7 +205,7 @@ IANA is requested to add the following entries to the JSON Web Signature and Enc
 #### SLH-DSA-SHAKE-128s
 
 * Algorithm Name: SLH-DSA-SHAKE-128s
-* Description: JSON Web Signature Algorithm for SLH-DSA-SHAKE-128s as described in FIPS 205.
+* Algorithm Description: SLH-DSA-SHAKE-128s as described in FIPS 205.
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
@@ -236,7 +217,7 @@ IANA is requested to add the following entries to the JSON Web Signature and Enc
 #### SLH-DSA-SHA2-128f
 
 * Algorithm Name: SLH-DSA-SHA2-128f
-* Description: JSON Web Signature Algorithm for SLH-DSA-SHA2-128f as described in FIPS 205.
+* Algorithm Description: SLH-DSA-SHA2-128f as described in FIPS 205.
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
@@ -245,36 +226,6 @@ IANA is requested to add the following entries to the JSON Web Signature and Enc
 * Algorithm Analysis Documents(s):
   [https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.ipd.pdf)
 
-### New JOSE Key Types
-
-IANA is requested to add the following entries to the JSON Web Key Types Registry. The following completed registration templates are provided as described in RFC7518 RFC7638.
-
-#### SLH-DSA
-
-* "kty" Parameter Value: SLH-DSA
-* Key Type Description: JSON Web Key Type for the SLH-DSA Algorithm Family.
-* JOSE Implementation Requirements: Optional
-* Change Controller: IETF
-* Specification Document(s): RFC XXXX
-
-### New JSON Web Key Parameters
-IANA is requested to add the following entries to the JSON Web Key Parameters Registry. The following completed registration templates are provided as described in RFC7517, and RFC7638.
-
-#### ML-DSA Public Key
-* Parameter Name: pub
-* Parameter Description: Public or verification key
-* Used with "kty" Value(s): SLH-DSA
-* Parameter Information Class: Public
-* Change Controller: IETF
-* Specification Document(s): RFC XXXX
-
-#### ML-DSA Secret Key
-* Parameter Name: priv
-* Parameter Description: Secret, private or signing key
-* Used with "kty" Value(s): SLH-DSA
-* Parameter Information Class: Private
-* Change Controller: IETF
-* Specification Document(s): RFC XXXX
 
 
 --- back
@@ -288,7 +239,7 @@ IANA is requested to add the following entries to the JSON Web Key Parameters Re
 
 ~~~json
 {
-  "kty": "SLH-DSA",
+  "kty": "AKP",
   "alg": "SLH-DSA-SHA2-128s",
   "pub": "V53SIdVF...uvw2nuCQ",
   "priv": "V53SIdVF...cDKLbsBY"
@@ -298,7 +249,7 @@ IANA is requested to add the following entries to the JSON Web Key Parameters Re
 
 ~~~json
 {
-  "kty": "SLH-DSA",
+  "kty": "AKP",
   "alg": "SLH-DSA-SHA2-128s",
   "pub": "V53SIdVF...uvw2nuCQ"
 }
@@ -331,25 +282,16 @@ eyJpc3MiOiJ1cm46d...XVpZDo0NTYifQ\
 ## COSE
 
 ### Key Pair
-
-~~~~ cbor-diag
-{                                   / COSE Key                    /
-  1: 8,                             / SLH-DSA Key Type            /
-  3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
-  -13: h'7803c0f9...3f6e2c70',      / SLH-DSA Private Key         /
-  -14: h'7803c0f9...3bba7abd',      / SLH-DSA Public Key          /
+~~~
+{
+   / kid /   2: h'b8969ab4b37da9f068...6f0583bf5b8d3a8059a',
+   / kty /   1: 7, / AKP /
+   / alg /   3: -51, / SLH-DSA-SHA2-128s Algorithm /
+   / pub  / -1: h'7803c0f9...3f6e2c70',
+   / priv / -2: h'7803c0f9...3bba7abd'
 }
-~~~~
+~~~
 {: #SLH-DSA-SHA2-128s-private-cose-key title="Example SLH-DSA-SHA2-128s Private COSE Key"}
-
-~~~~ cbor-diag
-{                                   / COSE Key                    /
-  1: 8,                             / SLH-DSA Key Type            /
-  3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
-  -13: h'7803c0f9...3f6e2c70'       / SLH-DSA Private Key         /
-}
-~~~~
-{: #SLH-DSA-SHA2-128s-public-cose-key title="Example SLH-DSA-SHA2-128s Public COSE Key"}
 
 ### Thumbprint URI
 
