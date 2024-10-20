@@ -120,8 +120,7 @@ The security considerations of {{-JWS}}, {{-JWK}} and {{-COSE}} applies to this 
 
 A detailed security analysis of SLH-DSA is beyond the scope of this specification, see {{FIPS-205}} for additional details.
 
-The following considerations SHOULD apply to all parameter sets described
-in this specification, unless otherwise noted.
+The following considerations apply to all parameter sets described in this specification.
 
 ## Validating public keys
 
