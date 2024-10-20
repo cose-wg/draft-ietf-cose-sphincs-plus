@@ -51,6 +51,9 @@ author:
 normative:
   IANA.jose: IANA.jose
   IANA.cose: IANA.cose
+  RFC7515: JWS
+  RFC7517: JWK
+  RFC9053: COSE
   I-D.draft-ietf-cose-dilithium: ML-DSA
 
 informative:
