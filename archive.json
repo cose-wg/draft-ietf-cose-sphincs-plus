@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-20T01:55:14.740188+00:00",
+  "timestamp": "2024-10-22T01:48:33.904208+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -117,24 +117,26 @@
       "id": "PR_kwDOLENBks55LoFx",
       "title": "Fix iana registries",
       "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/pull/4",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "OR13",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "This PR adjust the registrations to match ML-DSA and to use the key types defined in ML-DSA",
       "createdAt": "2024-08-22T22:00:45Z",
-      "updatedAt": "2024-08-22T22:48:16Z",
+      "updatedAt": "2024-10-20T19:34:53Z",
       "baseRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
       "baseRefName": "main",
       "baseRefOid": "e031eed344707144d85d28ff86ec36eea5f2be15",
       "headRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
       "headRefName": "registries",
       "headRefOid": "564dc75a255c194eac908b5e602fd3de226f1245",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-10-20T19:34:53Z",
+      "mergedAt": "2024-10-20T19:34:53Z",
+      "mergedBy": "mprorock",
+      "mergeCommit": {
+        "oid": "d850d17ced358742988d864ed191c1db442ebadb"
+      },
       "comments": [
         {
           "author": "OR13",
@@ -144,7 +146,83 @@
           "updatedAt": "2024-08-22T22:40:54Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOLENBks6N5fyM",
+          "commit": {
+            "abbreviatedOid": "564dc75"
+          },
+          "author": "mprorock",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-20T19:34:48Z",
+          "updatedAt": "2024-10-20T19:34:48Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOLENBks5_PSMx",
+      "title": "AKP updates",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/pull/5",
+      "state": "MERGED",
+      "author": "mprorock",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-20T19:38:18Z",
+      "updatedAt": "2024-10-20T21:11:28Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "baseRefName": "main",
+      "baseRefOid": "d850d17ced358742988d864ed191c1db442ebadb",
+      "headRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "headRefName": "feature/akp",
+      "headRefOid": "9ef2696ab99ac727472ce422c3313a8cba68f1c0",
+      "closedAt": "2024-10-20T21:11:28Z",
+      "mergedAt": "2024-10-20T21:11:28Z",
+      "mergedBy": "OR13",
+      "mergeCommit": {
+        "oid": "8fcb14cc5ae0ff9e97e07c8e771eafc91b2c4a27"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOLENBks6N5jRR",
+          "commit": {
+            "abbreviatedOid": "7910ef2"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-20T21:05:53Z",
+          "updatedAt": "2024-10-20T21:05:53Z",
+          "comments": [
+            {
+              "originalPosition": 57,
+              "body": "```suggestion\r\nThe following considerations apply to all parameter sets described in this specification.\r\n```",
+              "createdAt": "2024-10-20T21:05:53Z",
+              "updatedAt": "2024-10-20T21:05:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLENBks6N5jSe",
+          "commit": {
+            "abbreviatedOid": "7910ef2"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-20T21:06:18Z",
+          "updatedAt": "2024-10-20T21:06:18Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
