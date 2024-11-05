@@ -68,9 +68,7 @@ informative:
 --- abstract
 
 This document describes JOSE and COSE serializations for SLH-DSA, which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme.
-This document does not define any new cryptography, only seralizations of existing cryptographic systems described in {{FIPS-205}}.
-Note to RFC Editor: This document should not proceed to AUTH48 until NIST completes paramater tuning and selection as a part of the [PQC](https://csrc.nist.gov/projects/post-quantum-cryptography) standardization process.
-
+This document does not define any new cryptography, only serializations of existing cryptographic systems described in {{FIPS-205}}.
 
 --- middle
 
@@ -325,4 +323,4 @@ TODO
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+We would like to thank Roy Williams, Cedric Fournet, Simo Sorce, Ilari Liusvaara, Neil Madden, Anders Rundgren, David Waite, and Russ Housley for their review feedback.
