@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-03T01:54:14.223282+00:00",
+  "timestamp": "2024-11-05T01:45:56.125609+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -55,15 +55,15 @@
       "id": "I_kwDOLENBks6KKKS0",
       "title": "Update IANA Registration requests",
       "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/issues/1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "OR13",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
-      "body": "Changes to IANA registries need to follow the process described in https://www.rfc-editor.org/rfc/rfc8126.html\r\n\r\nSee the related PR for ML-DSA here:  https://github.com/cose-wg/draft-ietf-cose-dilithium/pull/1\r\n\r\nTLDR:\r\n\r\n- [ ] Name each registry you are adding entries too\r\n- [ ] Provide a completed registration template\r\n",
+      "body": "Changes to IANA registries need to follow the process described in https://www.rfc-editor.org/rfc/rfc8126.html\r\n\r\nSee the related PR for ML-DSA here:  https://github.com/cose-wg/draft-ietf-cose-dilithium/pull/1\r\n\r\nTLDR:\r\n\r\n- [x] Name each registry you are adding entries too\r\n- [x] Provide a completed registration template\r\n",
       "createdAt": "2024-05-26T20:24:54Z",
-      "updatedAt": "2024-05-26T20:24:54Z",
-      "closedAt": null,
+      "updatedAt": "2024-11-04T11:53:16Z",
+      "closedAt": "2024-11-04T11:53:16Z",
       "comments": []
     },
     {
@@ -223,6 +223,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOLENBks6AyhKJ",
+      "title": "chore: correct some misspellings and add acknowledgments",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/pull/6",
+      "state": "OPEN",
+      "author": "mprorock",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-11-04T11:52:56Z",
+      "updatedAt": "2024-11-04T11:52:56Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "baseRefName": "main",
+      "baseRefOid": "530b3caaad756615dac3d9604886ce770fdfb5da",
+      "headRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "headRefName": "feature/typo-corrections-and-acks",
+      "headRefOid": "0c9cc676873ca84b737c1c1e91a8b875f9dfd49d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
