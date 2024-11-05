@@ -5,14 +5,14 @@
 CBOR Object Signing and Encryption                            M. Prorock
 Internet-Draft                                                  mesur.io
 Intended status: Standards Track                               O. Steele
-Expires: 23 April 2025                                         Transmute
+Expires: 9 May 2025                                            Transmute
                                                              R. Misoczki
                                                                   Google
                                                               M. Osborne
                                                                      IBM
                                                          C. Cloostermans
                                                                      NXP
-                                                         20 October 2024
+                                                         5 November 2024
 
 
                        SLH-DSA for JOSE and COSE
@@ -23,11 +23,8 @@ Abstract
    This document describes JOSE and COSE serializations for SLH-DSA,
    which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC)
    based digital signature scheme.  This document does not define any
-   new cryptography, only seralizations of existing cryptographic
-   systems described in [FIPS-205].  Note to RFC Editor: This document
-   should not proceed to AUTH48 until NIST completes paramater tuning
-   and selection as a part of the PQC (https://csrc.nist.gov/projects/
-   post-quantum-cryptography) standardization process.
+   new cryptography, only serializations of existing cryptographic
+   systems described in [FIPS-205].
 
 About This Document
 
@@ -61,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2025.
+   This Internet-Draft will expire on 9 May 2025.
 
 Copyright Notice
 
@@ -488,7 +485,9 @@ A.2.3.  COSE Sign 1
 
 Acknowledgments
 
-   TODO acknowledge.
+   We would like to thank Roy Williams, Cedric Fournet, Simo Sorce,
+   Ilari Liusvaara, Neil Madden, Anders Rundgren, David Waite, and Russ
+   Housley for their review feedback.
 
 Authors' Addresses
 
