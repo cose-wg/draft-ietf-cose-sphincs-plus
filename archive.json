@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-05T01:45:56.125609+00:00",
+  "timestamp": "2024-11-07T01:45:38.458339+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -229,24 +229,26 @@
       "id": "PR_kwDOLENBks6AyhKJ",
       "title": "chore: correct some misspellings and add acknowledgments",
       "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/pull/6",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "mprorock",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-11-04T11:52:56Z",
-      "updatedAt": "2024-11-04T11:52:56Z",
+      "updatedAt": "2024-11-05T17:38:33Z",
       "baseRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
       "baseRefName": "main",
       "baseRefOid": "530b3caaad756615dac3d9604886ce770fdfb5da",
       "headRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
       "headRefName": "feature/typo-corrections-and-acks",
       "headRefOid": "0c9cc676873ca84b737c1c1e91a8b875f9dfd49d",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-11-05T17:38:33Z",
+      "mergedAt": "2024-11-05T17:38:33Z",
+      "mergedBy": "mprorock",
+      "mergeCommit": {
+        "oid": "14dc3c797e54862d6a29b134ead58adc0c0a1e9d"
+      },
       "comments": [],
       "reviews": []
     }
