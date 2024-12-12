@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-10T01:59:00.637718+00:00",
+  "timestamp": "2024-12-12T01:56:53.812878+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -79,6 +79,22 @@
       "body": "Need 2 implementations and to confirm test vectors ",
       "createdAt": "2024-08-14T02:45:58Z",
       "updatedAt": "2024-08-14T02:45:58Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOLENBks6iwPHH",
+      "title": "JOSE SLH-DSA Examples",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/issues/7",
+      "state": "OPEN",
+      "author": "MaksiGrebe",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I'm currently working on my thesis and need a JOSE example for the SLH-DSA algorithms, similar to those provided in https://www.ietf.org/archive/id/draft-ietf-cose-dilithium-04.html. It would be very helpful if you could provide a complete example that I could reference in my thesis. Alternatively, I have included my own examples in the appendix\u2014feel free to use them if needed.\r\n\r\n[slh_dsa_shake_128s_example.json](https://github.com/user-attachments/files/18082508/slh_dsa_shake_128s_example.json)\r\n[slh_dsa_sha2_128s_example.json](https://github.com/user-attachments/files/18082509/slh_dsa_sha2_128s_example.json)\r\n[slh_dsa_sha2_128f_example.json](https://github.com/user-attachments/files/18082510/slh_dsa_sha2_128f_example.json)\r\n",
+      "createdAt": "2024-12-10T16:09:40Z",
+      "updatedAt": "2024-12-10T16:09:40Z",
       "closedAt": null,
       "comments": []
     }
