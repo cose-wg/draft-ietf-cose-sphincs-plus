@@ -1,6 +1,5 @@
 ---
 title: "SLH-DSA for JOSE and COSE"
-abbrev: "jose-cose-sphincs-plus"
 category: std
 
 docname: draft-ietf-cose-sphincs-plus-latest
@@ -17,6 +16,7 @@ keyword:
  - PQC
  - SPHINCS+
  - SLH-DSA
+
 venue:
   group: "CBOR Object Signing and Encryption"
   type: "Working Group"
@@ -32,8 +32,8 @@ author:
     email: "mprorock@mesur.io"
  -
     fullname: "Orie Steele"
-    organization: Transmute
-    email: "orie@transmute.industries"
+    organization: Tradeverifyd
+    email: "orie@or13.io"
  -
     fullname: "Rafael Misoczki"
     organization: Google
@@ -46,39 +46,52 @@ author:
     fullname: "Christine Cloostermans"
     organization: NXP
     email: "christine.cloostermans@nxp.com"
-
+ -
+    fullname: "Hannes Tschofenig"
+    organization: University of Applied Sciences Bonn-Rhein-Sieg
+    abbrev: "H-BRS"
+    country: Germany
+    email: "hannes.tschofenig@gmx.net"
 
 normative:
-  IANA.jose: IANA.jose
-  IANA.cose: IANA.cose
   RFC7515: JWS
   RFC7517: JWK
-  RFC9053: COSE
-  I-D.draft-ietf-cose-dilithium: ML-DSA
-
-informative:
+  RFC7518: JWA
+  RFC9052: COSE
+  RFC9053: COSE-Alg
+  RFC9054: COSE-Header-Parameters
+  I-D.ietf-cose-dilithium: ML-DSA
   FIPS-205:
     title: "Stateless Hash-Based Digital Signature Standard"
     target: https://doi.org/10.6028/NIST.FIPS.205
-  NIST-PQC-2022:
-    title: "Selected Algorithms 2022"
-    target: https://csrc.nist.gov/Projects/post-quantum-cryptography/selected-algorithms-2022
+  IANA.JOSE:
+    author:
+       org: IANA
+    title: JSON Object Signing and Encryption (JOSE)
+    target: https://www.iana.org/assignments/jose
+  IANA.COSE:
+    author:
+       org: IANA
+    title: CBOR Object Signing and Encryption (COSE)
+    target: https://www.iana.org/assignments/cose
 
+informative:
 
 --- abstract
 
 This document describes JOSE and COSE serializations for SLH-DSA, which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme.
-This document does not define any new cryptography, only serializations of existing cryptographic systems described in {{FIPS-205}}.
+
+This document does not define any new cryptography.
 
 --- middle
 
 # Introduction
 
-This document describes JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme.
+This document describes JSON Object Signing and Encryption (JOSE) {{-JWS}} and CBOR Object Signing and Encryption (COSE) {{-COSE}} serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme standardized in {{FIPS-205}}.
 
-This document does not define any new cryptography, only serializations of existing cryptographic systems described in {{FIPS-205}}.
+This document does not define any new cryptography.
 
-This document builds on the Algorithm Key Pair (AKP) type as defined in {{-ML-DSA}}. The AKP type enables flexible representation of keys used across different post-quantum cryptographic algorithms, including SLH-DSA.
+This document builds on the Algorithm Key Pair (AKP) type, as defined in {{-ML-DSA}}. The AKP type enables flexible representation of keys used across different post-quantum cryptographic algorithms, including SLH-DSA.
 
 # Terminology
 
@@ -88,141 +101,129 @@ This document builds on the Algorithm Key Pair (AKP) type as defined in {{-ML-DS
 
 The SLH-DSA Signature Scheme is parameterized to support different security levels.
 
-This document requests the registration of the following algorithms in {{-IANA.jose}}:
+This document requests the registration of the following algorithms in {{IANA.JOSE}}:
 
-| Name       | alg | Description
-|---
-| SLH-DSA-SHA2-128s  | SLH-DSA-SHA2-128s     | JSON Web Signature Algorithm for SLH-DSA-SHA2-128s
-| SLH-DSA-SHAKE-128s  | SLH-DSA-SHAKE-128s     | JSON Web Signature Algorithm for SLH-DSA-SHAKE-128s
-| SLH-DSA-SHA2-128f  | SLH-DSA-SHA2-128f     | JSON Web Signature Algorithm for SLH-DSA-SHA2-128f
-{: #jose-algorithms align="left" title="JOSE algorithms for SLH-DSA"}
+| Name       | alg | Description |
+|-------------|------|-------------|
+| SLH-DSA-SHA2-128s  | SLH-DSA-SHA2-128s     | JSON Web Signature Algorithm for SLH-DSA-SHA2-128s |
+| SLH-DSA-SHAKE-128s | SLH-DSA-SHAKE-128s    | JSON Web Signature Algorithm for SLH-DSA-SHAKE-128s |
+| SLH-DSA-SHA2-128f  | SLH-DSA-SHA2-128f     | JSON Web Signature Algorithm for SLH-DSA-SHA2-128f |
+{: #jose-algorithms align="left" title="JOSE Algorithms for SLH-DSA"}
 
-This document requests the registration of the following algorithms in {{-IANA.cose}}:
+This document requests the registration of the following algorithms in {{IANA.JOSE}}:
 
-| Name       | alg | Description
-|---
-| SLH-DSA-SHA2-128s  | TBD (requested assignment -51)     | CBOR Object Signing Algorithm for SLH-DSA-SHA2-128s
-| SLH-DSA-SHAKE-128s  | TBD (requested assignment -52)     | CBOR Object Signing Algorithm for SLH-DSA-SHAKE-128s
-| SLH-DSA-SHA2-128f  | TBD (requested assignment -53)     | CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
-{: #cose-algorithms align="left" title="COSE algorithms for SLH-DSA"}
+| Name       | alg | Description |
+|-------------|------|-------------|
+| SLH-DSA-SHA2-128s  | TBD1 (-51) | CBOR Object Signing Algorithm for SLH-DSA-SHA2-128s |
+| SLH-DSA-SHAKE-128s | TBD2 (-52) | CBOR Object Signing Algorithm for SLH-DSA-SHAKE-128s |
+| SLH-DSA-SHA2-128f  | TBD3 (-53) | CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f |
+{: #cose-algorithms align="left" title="COSE Algorithms for SLH-DSA"}
 
 # SLH-DSA Keys
 
-Private and Public Keys are produced to enable the sign and verify operations for each of the SLH-DSA Algorithms. The SLH-DSA Algorithm Family uses the Algorithm Key Pair (AKP) key type, as defined in {{-ML-DSA}}. This ensures compatibility across different cryptographic algorithms that use AKP for key representation.
+Private and public keys are produced to enable the sign and verify operations for each of the SLH-DSA algorithms.
 
-The specific algorithms for SLH-DSA, such as SLH-DSA-SHA2-128s, SLH-DSA-SHAKE-128s, and SLH-DSA-SHA2-128f, are defined in this document and are used in the alg value of an AKP key representation to specify the algorithm that corresponds to the key.
-Like ML-DSA keys, SLH-DSA keys use the AKP Key Type.
+The SLH-DSA Algorithm Family uses the Algorithm Key Pair (AKP) key type, as defined in {{-ML-DSA}}. This ensures compatibility across different cryptographic algorithms that use AKP for key representation.
 
-The thumbprints for SLH-DSA keys are also computed according to the process described in {{-ML-DSA}}
+The specific algorithms for SLH-DSA, such as SLH-DSA-SHA2-128s, SLH-DSA-SHAKE-128s, and SLH-DSA-SHA2-128f, are defined in this document and are used in the `alg` value of an AKP key representation to specify the corresponding algorithm.
+
+Thumbprints for SLH-DSA keys are computed according to the process described in {{-ML-DSA}}.
 
 # Security Considerations
 
-The security considerations of {{-JWS}}, {{-JWK}} and {{-COSE}} applies to this specification as well.
+The security considerations of {{-JWS}}, {{-JWK}} and {{-COSE-Alg}} apply to this specification as well.
 
-A detailed security analysis of SLH-DSA is beyond the scope of this specification, see {{FIPS-205}} for additional details.
+A detailed security analysis of SLH-DSA is beyond the scope of this specification; see {{FIPS-205}} for additional details.
 
 The following considerations apply to all parameter sets described in this specification.
 
-## Validating public keys
+## Validating Public Keys
 
-All algorithms in that operate on public keys require first validating
-those keys. For the sign, verify and proof schemes, the use of
-KeyValidate is REQUIRED.
+All algorithms that operate on public keys require validation before use. For sign, verify and proof schemes, the use of `KeyValidate` is REQUIRED.
 
-## Side channel attacks
+## Side-Channel Attacks
 
-Implementations of the signing algorithm SHOULD protect the secret key
-from side-channel attacks. Multiple best practices exist to protect
-against side-channel attacks. Any implementation of the SLH-DSA
-signing algorithms SHOULD utilize the following best practices at a
-minimum:
+Implementations of the signing algorithm SHOULD protect the secret key from side-channel attacks. Any implementation of SLH-DSA signing algorithms SHOULD employ at least the following best practices:
 
-- Constant timing - the implementation should ensure that constant time
-  is utilized in operations
-- Sequence and memory access persistance - the implementation SHOULD
-  execute the exact same sequence of instructions (at a machine level)
-  with the exact same memory access independent of which polynomial is
-  being operated on.
-- Uniform sampling - care should be given in implementations to preserve
-  the property of uniform sampling in implementation and to prevent
-  information leakage.
+- Constant-time operation
+- Consistent instruction sequence and memory access
+- Uniform sampling without information leakage
 
 ## Randomness considerations
 
-It is recommended that the all nonces are from a trusted source of
-randomness.
+All nonces MUST originate from a trusted and cryptographically secure source of randomness.
 
 # IANA Considerations
 
-## Additions to Existing Registries
-
-### New COSE Algorithms
+## New COSE Algorithms
 
 IANA is requested to add the following entries to the COSE Algorithms Registry.
-The following completed registration templates are provided as described in RFC9053 and RFC9054.
 
-#### SLH-DSA-SHA2-128s
+The following registration templates are provided in accordance with the procedures described in {{-COSE-Alg}} and {{-COSE-Header-Parameters}}.
+
+### SLH-DSA-SHA2-128s
 
 * Name: SLH-DSA-SHA2-128s
-* Value: TBD (requested assignment -51)
+* Value: TBD1 (requested assignment -51)
 * Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128s
 * Capabilities: `[kty]`
 * Reference: RFC XXXX
 * Recommended: Yes
 
-#### SLH-DSA-SHAKE-128s
+### SLH-DSA-SHAKE-128s
 
 * Name: SLH-DSA-SHAKE-128s
-* Value: TBD (requested assignment -52)
+* Value: TBD2 (requested assignment -52)
 * Description: CBOR Object Signing Algorithm for SLH-DSA-SHAKE-128s
 * Capabilities: `[kty]`
 * Reference: RFC XXXX
 * Recommended: Yes
 
-#### SLH-DSA-SHA2-128f
+### SLH-DSA-SHA2-128f
 
 * Name: SLH-DSA-SHA2-128f
-* Value: TBD (requested assignment -53)
+* Value: TBD3 (requested assignment -53)
 * Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
 * Capabilities: `[kty]`
 * Reference: RFC XXXX
 * Recommended: Yes
 
-### New JOSE Algorithms
+## New JOSE Algorithms
 
 IANA is requested to add the following entries to the JSON Web Signature and Encryption Algorithms Registry.
-The following completed registration templates are provided as described in RFC7518.
 
-#### SLH-DSA-SHA2-128s
+The following completed registration templates are provided as described in {{-JWA}}.
+
+### SLH-DSA-SHA2-128s
 
 * Algorithm Name: SLH-DSA-SHA2-128s
 * Algorithm Description: SLH-DSA-SHA2-128s as described in FIPS 205.
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
-* Value registry: {{-IANA.jose}} Algorithms
+* Value registry: {{IANA.JOSE}} Algorithms
 * Specification Document(s): RFC XXXX
 * Algorithm Analysis Documents(s): {{FIPS-205}}
 
-#### SLH-DSA-SHAKE-128s
+### SLH-DSA-SHAKE-128s
 
 * Algorithm Name: SLH-DSA-SHAKE-128s
 * Algorithm Description: SLH-DSA-SHAKE-128s as described in FIPS 205.
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
-* Value registry: {{-IANA.jose}} Algorithms
+* Value registry: {{IANA.JOSE}} Algorithms
 * Specification Document(s): RFC XXXX
 * Algorithm Analysis Documents(s): {{FIPS-205}}
 
-#### SLH-DSA-SHA2-128f
+### SLH-DSA-SHA2-128f
 
 * Algorithm Name: SLH-DSA-SHA2-128f
 * Algorithm Description: SLH-DSA-SHA2-128f as described in FIPS 205.
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
-* Value registry: {{-IANA.jose}} Algorithms
+* Value registry: {{IANA.JOSE}} Algorithms
 * Specification Document(s): RFC XXXX
 * Algorithm Analysis Documents(s): {{FIPS-205}}
 
@@ -253,19 +254,7 @@ The following completed registration templates are provided as described in RFC7
 ~~~
 {: #SLH-DSA-SHA2-128s-public-jwk title="Example SLH-DSA-SHA2-128s Public JSON Web Key"}
 
-### Thumbprint
-
-The thumbprint is computed as described in
-
 ### JSON Web Signature
-
-
-~~~json
-{
-  "alg": "SLH-DSA-SHA2-128s"
-}
-~~~
-{: #SLH-DSA-SHA2-128s-jose-protected-header title="Example SLH-DSA-SHA2-128s Decoded Protected Header"}
 
 ~~~
 eyJhbGciOiJ...LCJraWQiOiI0MiJ9\
@@ -281,44 +270,35 @@ eyJpc3MiOiJ1cm46d...XVpZDo0NTYifQ\
 ### Key Pair
 
 ~~~~ cbor-diag
-{                                   / COSE Key                    /
-  1: 7,                             / AKP Key Type                /
-  3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
-  -1: h'7803c0f9...3f6e2c70',       / AKP Private Key             /
-  -2: h'7803c0f9...3bba7abd',       / AKP Public Key              /
+{
+  1: 7,
+  3: -51,
+  -1: h'7803c0f9...3f6e2c70',
+  -2: h'7803c0f9...3bba7abd'
 }
-~~~
+~~~~
 {: #SLH-DSA-SHA2-128s-private-cose-key title="Example SLH-DSA-SHA2-128s Private COSE Key"}
 
 ~~~~ cbor-diag
-{                                   / COSE Key                    /
-  1: 7,                             / AKP Key Type                /
-  3: -51,                           / SLH-DSA-SHA2-128s Algorithm /
-  -2: h'7803c0f9...3bba7abd',       / AKP Public Key              /
+{
+  1: 7,
+  3: -51,
+  -2: h'7803c0f9...3bba7abd'
 }
 ~~~~
 {: #SLH-DSA-SHA2-128s-public-cose-key title="Example SLH-DSA-SHA2-128s Public COSE Key"}
 
-### Thumbprint URI
-
-TODO
-
-### COSE Sign 1
+### COSE_Sign1 Example
 
 ~~~~ cbor-diag
-/ cose-sign1 / 18(
-  [
-    / protected / <<{
-      / algorithm / 1 : -51 / SLH-DSA-SHA2-128s /
-    }>>
-    / unprotected / {},
-    / payload / h'66616b65',
-    / signature / h'53e855e8...0f263549'
-  ]
-)
+18([
+  <<{1: -51}>>,
+  {},
+  h'66616b65',
+  h'53e855e8...0f263549'
+])
 ~~~~
-{: #SLH-DSA-SHA2-128s-cose-sign-1-diagnostic title="Example SLH-DSA-SHA2-128s COSE Sign 1"}
-
+{: #SLH-DSA-SHA2-128s-cose-sign-1-diagnostic title="Example SLH-DSA-SHA2-128s COSE Sign1"}
 
 # Acknowledgments
 {:numbered="false"}
