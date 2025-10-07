@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-30T01:43:18.920791+00:00",
+  "timestamp": "2025-10-07T01:37:33.536797+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -280,6 +280,34 @@
       "mergedBy": "mprorock",
       "mergeCommit": {
         "oid": "14dc3c797e54862d6a29b134ead58adc0c0a1e9d"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOLENBks6sKAQ0",
+      "title": "New draft version",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/pull/9",
+      "state": "MERGED",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-10-05T19:07:04Z",
+      "updatedAt": "2025-10-05T19:14:03Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "baseRefName": "main",
+      "baseRefOid": "14dc3c797e54862d6a29b134ead58adc0c0a1e9d",
+      "headRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "headRefName": "hannestschofenig-patch-1",
+      "headRefOid": "d2ae2a71cf47c088d37836af28d4b61c7e1bb15f",
+      "closedAt": "2025-10-05T19:13:59Z",
+      "mergedAt": "2025-10-05T19:13:59Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "3c25be2aaff8a3ced3156d1ffb8033da4ad90d53"
       },
       "comments": [],
       "reviews": []
