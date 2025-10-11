@@ -66,7 +66,7 @@ normative:
   FIPS-205:
     title: "Stateless Hash-Based Digital Signature Standard"
     target: https://doi.org/10.6028/NIST.FIPS.205
-  
+
 informative:
   IANA.jose: IANA.jose
   IANA.cose: IANA.cose
