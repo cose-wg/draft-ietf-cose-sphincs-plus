@@ -35,6 +35,14 @@ author:
     organization: Tradeverifyd
     email: "orie@or13.io"
  -
+    fullname: "Hannes Tschofenig"
+    organization: University of Applied Sciences Bonn-Rhein-Sieg
+    abbrev: "H-BRS"
+    country: Germany
+    email: "hannes.tschofenig@gmx.net"
+
+contributor:
+ -
     fullname: "Rafael Misoczki"
     organization: Google
     email: "rafaelmisoczki@google.com"
@@ -46,12 +54,6 @@ author:
     fullname: "Christine Cloostermans"
     organization: NXP
     email: "christine.cloostermans@nxp.com"
- -
-    fullname: "Hannes Tschofenig"
-    organization: University of Applied Sciences Bonn-Rhein-Sieg
-    abbrev: "H-BRS"
-    country: Germany
-    email: "hannes.tschofenig@gmx.net"
 
 normative:
   RFC7515: JWS
