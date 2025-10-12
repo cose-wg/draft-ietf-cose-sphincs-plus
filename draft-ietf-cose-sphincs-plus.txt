@@ -5,16 +5,10 @@
 CBOR Object Signing and Encryption                            M. Prorock
 Internet-Draft                                                  mesur.io
 Intended status: Standards Track                               O. Steele
-Expires: 8 April 2026                                       Tradeverifyd
-                                                             R. Misoczki
-                                                                  Google
-                                                              M. Osborne
-                                                                     IBM
-                                                         C. Cloostermans
-                                                                     NXP
+Expires: 15 April 2026                                      Tradeverifyd
                                                            H. Tschofenig
                                                                    H-BRS
-                                                          5 October 2025
+                                                         12 October 2025
 
 
                        SLH-DSA for JOSE and COSE
@@ -60,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 April 2026.
+   This Internet-Draft will expire on 15 April 2026.
 
 Copyright Notice
 
@@ -104,6 +98,7 @@ Table of Contents
        A.2.1.  Key Pair
        A.2.2.  COSE_Sign1 Example
    Acknowledgments
+   Contributors
    Authors' Addresses
 
 1.  Introduction
@@ -466,17 +461,7 @@ Acknowledgments
    Ilari Liusvaara, Neil Madden, Anders Rundgren, David Waite, and Russ
    Housley for their review feedback.
 
-Authors' Addresses
-
-   Michael Prorock
-   mesur.io
-   Email: mprorock@mesur.io
-
-
-   Orie Steele
-   Tradeverifyd
-   Email: orie@or13.io
-
+Contributors
 
    Rafael Misoczki
    Google
@@ -491,6 +476,18 @@ Authors' Addresses
    Christine Cloostermans
    NXP
    Email: christine.cloostermans@nxp.com
+
+
+Authors' Addresses
+
+   Michael Prorock
+   mesur.io
+   Email: mprorock@mesur.io
+
+
+   Orie Steele
+   Tradeverifyd
+   Email: orie@or13.io
 
 
    Hannes Tschofenig

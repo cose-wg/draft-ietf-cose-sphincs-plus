@@ -7,9 +7,6 @@
 <title>SLH-DSA for JOSE and COSE</title>
 <meta content="Michael Prorock" name="author">
 <meta content="Orie Steele" name="author">
-<meta content="Rafael Misoczki" name="author">
-<meta content="Michael Osborne" name="author">
-<meta content="Christine Cloostermans" name="author">
 <meta content="Hannes Tschofenig" name="author">
 <meta content="
        This document describes JOSE and COSE serializations for SLH-DSA, which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme. 
@@ -1058,7 +1055,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Prorock, et al.</td>
-<td class="center">Expires 8 April 2026</td>
+<td class="center">Expires 15 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1071,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cose-sphincs-plus-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-05" class="published">5 October 2025</time>
+<time datetime="2025-10-12" class="published">12 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-08">8 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-15">15 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1086,18 +1083,6 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div class="author">
       <div class="author-name">O. Steele</div>
 <div class="org">Tradeverifyd</div>
-</div>
-<div class="author">
-      <div class="author-name">R. Misoczki</div>
-<div class="org">Google</div>
-</div>
-<div class="author">
-      <div class="author-name">M. Osborne</div>
-<div class="org">IBM</div>
-</div>
-<div class="author">
-      <div class="author-name">C. Cloostermans</div>
-<div class="org">NXP</div>
 </div>
 <div class="author">
       <div class="author-name">H. Tschofenig</div>
@@ -1147,7 +1132,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 15 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1269,7 +1254,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1838,27 +1826,11 @@ eyJpc3MiOiJ1cm46d...XVpZDo0NTYifQ\
 <p id="appendix-B-1">We would like to thank Roy Williams, Cedric Fournet, Simo Sorce, Ilari Liusvaara, Neil Madden, Anders Rundgren, David Waite, and Russ Housley for their review feedback.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="authors-addresses">
+<div id="contributors">
 <section id="appendix-C">
-      <h2 id="name-authors-addresses">
-<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      <h2 id="name-contributors">
+<a href="#name-contributors" class="section-name selfRef">Contributors</a>
       </h2>
-<address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Michael Prorock</span></div>
-<div dir="auto" class="left"><span class="org">mesur.io</span></div>
-<div class="email">
-<span>Email:</span>
-<a href="mailto:mprorock@mesur.io" class="email">mprorock@mesur.io</a>
-</div>
-</address>
-<address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Orie Steele</span></div>
-<div dir="auto" class="left"><span class="org">Tradeverifyd</span></div>
-<div class="email">
-<span>Email:</span>
-<a href="mailto:orie@or13.io" class="email">orie@or13.io</a>
-</div>
-</address>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Rafael Misoczki</span></div>
 <div dir="auto" class="left"><span class="org">Google</span></div>
@@ -1881,6 +1853,29 @@ eyJpc3MiOiJ1cm46d...XVpZDo0NTYifQ\
 <div class="email">
 <span>Email:</span>
 <a href="mailto:christine.cloostermans@nxp.com" class="email">christine.cloostermans@nxp.com</a>
+</div>
+</address>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-D">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Michael Prorock</span></div>
+<div dir="auto" class="left"><span class="org">mesur.io</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:mprorock@mesur.io" class="email">mprorock@mesur.io</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Orie Steele</span></div>
+<div dir="auto" class="left"><span class="org">Tradeverifyd</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:orie@or13.io" class="email">orie@or13.io</a>
 </div>
 </address>
 <address class="vcard">
