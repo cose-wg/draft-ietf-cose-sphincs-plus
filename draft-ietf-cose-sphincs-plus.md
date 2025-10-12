@@ -35,11 +35,11 @@ author:
     organization: Tradeverifyd
     email: "orie@or13.io"
  -
-  fullname: "Hannes Tschofenig"
-  organization: University of Applied Sciences Bonn-Rhein-Sieg
-  abbrev: "H-BRS"
-  country: Germany
-  email: "hannes.tschofenig@gmx.net"
+    fullname: "Hannes Tschofenig"
+    organization: University of Applied Sciences Bonn-Rhein-Sieg
+    abbrev: "H-BRS"
+    country: Germany
+    email: "hannes.tschofenig@gmx.net"
 
 contributor:
  -
