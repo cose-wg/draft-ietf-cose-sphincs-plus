@@ -16,11 +16,11 @@ Expires: 15 April 2026                                      Tradeverifyd
 
 Abstract
 
-   This document describes JOSE and COSE serializations for SLH-DSA,
-   which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC)
-   based digital signature scheme.
-
-   This document does not define any new cryptography.
+   This document specifies JSON Object Signing and Encryption (JOSE) and
+   CBOR Object Signing and Encryption (COSE) serializations for
+   Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-
+   Quantum Cryptography (PQC) digital signature scheme defined in US
+   NIST FIPS 205.
 
 About This Document
 
@@ -89,7 +89,9 @@ Table of Contents
        6.2.1.  SLH-DSA-SHA2-128s
        6.2.2.  SLH-DSA-SHAKE-128s
        6.2.3.  SLH-DSA-SHA2-128f
-   7.  Normative References
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
    Appendix A.  Examples
      A.1.  JOSE
        A.1.1.  Key Pair
@@ -103,14 +105,12 @@ Table of Contents
 
 1.  Introduction
 
-   This document describes JSON Object Signing and Encryption (JOSE)
+   This document specifies JSON Object Signing and Encryption (JOSE)
    [RFC7515] and CBOR Object Signing and Encryption (COSE) [RFC9052]
    serializations for the Stateless Hash-Based Digital Signature
    Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a
    Post-Quantum Cryptography (PQC) based digital signature scheme
    standardized in [FIPS-205].
-
-   This document does not define any new cryptography.
 
    This document builds on the Algorithm Key Pair (AKP) type, as defined
    in [I-D.ietf-cose-dilithium].  The AKP type enables flexible
@@ -130,8 +130,8 @@ Table of Contents
    The SLH-DSA Signature Scheme is parameterized to support different
    security levels.
 
-   This document requests the registration of the following algorithms
-   in [IANA.JOSE]:
+   This document introduces the registration of the following algorithms
+   in [IANA.jose]:
 
    +====================+====================+====================+
    | Name               | alg                | Description        |
@@ -151,8 +151,8 @@ Table of Contents
 
                  Table 1: JOSE Algorithms for SLH-DSA
 
-   This document requests the registration of the following algorithms
-   in [IANA.JOSE]:
+   This document introduces the registration of the following algorithms
+   in [IANA.cose]:
 
    +====================+============+===============================+
    | Name               | alg        | Description                   |
@@ -241,6 +241,8 @@ Table of Contents
 
    *  Capabilities: [kty]
 
+   *  Change Controller: IETF
+
    *  Reference: RFC XXXX
 
    *  Recommended: Yes
@@ -255,6 +257,8 @@ Table of Contents
 
    *  Capabilities: [kty]
 
+   *  Change Controller: IETF
+
    *  Reference: RFC XXXX
 
    *  Recommended: Yes
@@ -268,6 +272,8 @@ Table of Contents
    *  Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
 
    *  Capabilities: [kty]
+
+   *  Change Controller: IETF
 
    *  Reference: RFC XXXX
 
@@ -293,8 +299,6 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Value registry: [IANA.JOSE] Algorithms
-
    *  Specification Document(s): RFC XXXX
 
    *  Algorithm Analysis Documents(s): [FIPS-205]
@@ -312,8 +316,6 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Value registry: [IANA.JOSE] Algorithms
-
    *  Specification Document(s): RFC XXXX
 
    *  Algorithm Analysis Documents(s): [FIPS-205]
@@ -330,13 +332,13 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Value registry: [IANA.JOSE] Algorithms
-
    *  Specification Document(s): RFC XXXX
 
    *  Algorithm Analysis Documents(s): [FIPS-205]
 
-7.  Normative References
+7.  References
+
+7.1.  Normative References
 
    [FIPS-205] "Stateless Hash-Based Digital Signature Standard", n.d.,
               <https://doi.org/10.6028/NIST.FIPS.205>.
@@ -347,14 +349,6 @@ Table of Contents
               dilithium-09, 12 September 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
               dilithium-09>.
-
-   [IANA.COSE]
-              IANA, "CBOR Object Signing and Encryption (COSE)", n.d.,
-              <https://www.iana.org/assignments/cose>.
-
-   [IANA.JOSE]
-              IANA, "JSON Object Signing and Encryption (JOSE)", n.d.,
-              <https://www.iana.org/assignments/jose>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -389,6 +383,16 @@ Table of Contents
    [RFC9054]  Schaad, J., "CBOR Object Signing and Encryption (COSE):
               Hash Algorithms", RFC 9054, DOI 10.17487/RFC9054, August
               2022, <https://www.rfc-editor.org/rfc/rfc9054>.
+
+7.2.  Informative References
+
+   [IANA.cose]
+              IANA, "CBOR Object Signing and Encryption (COSE)",
+              <https://www.iana.org/assignments/cose>.
+
+   [IANA.jose]
+              IANA, "JSON Object Signing and Encryption (JOSE)",
+              <https://www.iana.org/assignments/jose>.
 
 Appendix A.  Examples
 

@@ -9,8 +9,7 @@
 <meta content="Orie Steele" name="author">
 <meta content="Hannes Tschofenig" name="author">
 <meta content="
-       This document describes JOSE and COSE serializations for SLH-DSA, which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme. 
-       This document does not define any new cryptography. 
+       This document specifies JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) digital signature scheme defined in US NIST FIPS 205. 
     " name="description">
 <meta content="xml2rfc 3.30.2" name="generator">
 <meta content="JOSE" name="keyword">
@@ -1094,8 +1093,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">SLH-DSA for JOSE and COSE</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes JOSE and COSE serializations for SLH-DSA, which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">This document does not define any new cryptography.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document specifies JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) digital signature scheme defined in US NIST FIPS 205.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1221,7 +1219,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
@@ -1268,9 +1274,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">This document describes JSON Object Signing and Encryption (JOSE) <span>[<a href="#RFC7515" class="cite xref">RFC7515</a>]</span> and CBOR Object Signing and Encryption (COSE) <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme standardized in <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This document does not define any new cryptography.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">This document builds on the Algorithm Key Pair (AKP) type, as defined in <span>[<a href="#I-D.ietf-cose-dilithium" class="cite xref">I-D.ietf-cose-dilithium</a>]</span>. The AKP type enables flexible representation of keys used across different post-quantum cryptographic algorithms, including SLH-DSA.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-1">This document specifies JSON Object Signing and Encryption (JOSE) <span>[<a href="#RFC7515" class="cite xref">RFC7515</a>]</span> and CBOR Object Signing and Encryption (COSE) <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme standardized in <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">This document builds on the Algorithm Key Pair (AKP) type, as defined in <span>[<a href="#I-D.ietf-cose-dilithium" class="cite xref">I-D.ietf-cose-dilithium</a>]</span>. The AKP type enables flexible representation of keys used across different post-quantum cryptographic algorithms, including SLH-DSA.<a href="#section-1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">
@@ -1290,7 +1295,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-slh-dsa-algorithm-famil" class="section-name selfRef">The SLH-DSA Algorithm Family</a>
       </h2>
 <p id="section-3-1">The SLH-DSA Signature Scheme is parameterized to support different security levels.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">This document requests the registration of the following algorithms in <span>[<a href="#IANA.JOSE" class="cite xref">IANA.JOSE</a>]</span>:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-2">This document introduces the registration of the following algorithms in <span>[<a href="#IANA.jose" class="cite xref">IANA.jose</a>]</span>:<a href="#section-3-2" class="pilcrow">¶</a></p>
 <span id="name-jose-algorithms-for-slh-dsa"></span><div id="jose-algorithms">
 <table class="left" id="table-1">
         <caption>
@@ -1323,7 +1328,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         </tbody>
       </table>
 </div>
-<p id="section-3-4">This document requests the registration of the following algorithms in <span>[<a href="#IANA.JOSE" class="cite xref">IANA.JOSE</a>]</span>:<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-4">This document introduces the registration of the following algorithms in <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>:<a href="#section-3-4" class="pilcrow">¶</a></p>
 <span id="name-cose-algorithms-for-slh-dsa"></span><div id="cose-algorithms">
 <table class="left" id="table-2">
         <caption>
@@ -1445,10 +1450,13 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
               <p id="section-6.1.1-1.4.1">Capabilities: <code>[kty]</code><a href="#section-6.1.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.1.1-1.5">
-              <p id="section-6.1.1-1.5.1">Reference: RFC XXXX<a href="#section-6.1.1-1.5.1" class="pilcrow">¶</a></p>
+              <p id="section-6.1.1-1.5.1">Change Controller: IETF<a href="#section-6.1.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.1.1-1.6">
-              <p id="section-6.1.1-1.6.1">Recommended: Yes<a href="#section-6.1.1-1.6.1" class="pilcrow">¶</a></p>
+              <p id="section-6.1.1-1.6.1">Reference: RFC XXXX<a href="#section-6.1.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-6.1.1-1.7">
+              <p id="section-6.1.1-1.7.1">Recommended: Yes<a href="#section-6.1.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1472,10 +1480,13 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
               <p id="section-6.1.2-1.4.1">Capabilities: <code>[kty]</code><a href="#section-6.1.2-1.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.1.2-1.5">
-              <p id="section-6.1.2-1.5.1">Reference: RFC XXXX<a href="#section-6.1.2-1.5.1" class="pilcrow">¶</a></p>
+              <p id="section-6.1.2-1.5.1">Change Controller: IETF<a href="#section-6.1.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.1.2-1.6">
-              <p id="section-6.1.2-1.6.1">Recommended: Yes<a href="#section-6.1.2-1.6.1" class="pilcrow">¶</a></p>
+              <p id="section-6.1.2-1.6.1">Reference: RFC XXXX<a href="#section-6.1.2-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-6.1.2-1.7">
+              <p id="section-6.1.2-1.7.1">Recommended: Yes<a href="#section-6.1.2-1.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1499,10 +1510,13 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
               <p id="section-6.1.3-1.4.1">Capabilities: <code>[kty]</code><a href="#section-6.1.3-1.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.1.3-1.5">
-              <p id="section-6.1.3-1.5.1">Reference: RFC XXXX<a href="#section-6.1.3-1.5.1" class="pilcrow">¶</a></p>
+              <p id="section-6.1.3-1.5.1">Change Controller: IETF<a href="#section-6.1.3-1.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.1.3-1.6">
-              <p id="section-6.1.3-1.6.1">Recommended: Yes<a href="#section-6.1.3-1.6.1" class="pilcrow">¶</a></p>
+              <p id="section-6.1.3-1.6.1">Reference: RFC XXXX<a href="#section-6.1.3-1.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-6.1.3-1.7">
+              <p id="section-6.1.3-1.7.1">Recommended: Yes<a href="#section-6.1.3-1.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1538,13 +1552,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
               <p id="section-6.2.1-1.5.1">Change Controller: IETF<a href="#section-6.2.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.1-1.6">
-              <p id="section-6.2.1-1.6.1">Value registry: <span>[<a href="#IANA.JOSE" class="cite xref">IANA.JOSE</a>]</span> Algorithms<a href="#section-6.2.1-1.6.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.1-1.6.1">Specification Document(s): RFC XXXX<a href="#section-6.2.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.1-1.7">
-              <p id="section-6.2.1-1.7.1">Specification Document(s): RFC XXXX<a href="#section-6.2.1-1.7.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-6.2.1-1.8">
-              <p id="section-6.2.1-1.8.1">Algorithm Analysis Documents(s): <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span><a href="#section-6.2.1-1.8.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.1-1.7.1">Algorithm Analysis Documents(s): <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span><a href="#section-6.2.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1571,13 +1582,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
               <p id="section-6.2.2-1.5.1">Change Controller: IETF<a href="#section-6.2.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.2-1.6">
-              <p id="section-6.2.2-1.6.1">Value registry: <span>[<a href="#IANA.JOSE" class="cite xref">IANA.JOSE</a>]</span> Algorithms<a href="#section-6.2.2-1.6.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.2-1.6.1">Specification Document(s): RFC XXXX<a href="#section-6.2.2-1.6.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.2-1.7">
-              <p id="section-6.2.2-1.7.1">Specification Document(s): RFC XXXX<a href="#section-6.2.2-1.7.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-6.2.2-1.8">
-              <p id="section-6.2.2-1.8.1">Algorithm Analysis Documents(s): <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span><a href="#section-6.2.2-1.8.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.2-1.7.1">Algorithm Analysis Documents(s): <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span><a href="#section-6.2.2-1.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1604,13 +1612,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
               <p id="section-6.2.3-1.5.1">Change Controller: IETF<a href="#section-6.2.3-1.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.3-1.6">
-              <p id="section-6.2.3-1.6.1">Value registry: <span>[<a href="#IANA.JOSE" class="cite xref">IANA.JOSE</a>]</span> Algorithms<a href="#section-6.2.3-1.6.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.3-1.6.1">Specification Document(s): RFC XXXX<a href="#section-6.2.3-1.6.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.3-1.7">
-              <p id="section-6.2.3-1.7.1">Specification Document(s): RFC XXXX<a href="#section-6.2.3-1.7.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-6.2.3-1.8">
-              <p id="section-6.2.3-1.8.1">Algorithm Analysis Documents(s): <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span><a href="#section-6.2.3-1.8.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.3-1.7.1">Algorithm Analysis Documents(s): <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span><a href="#section-6.2.3-1.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1619,61 +1624,77 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 </div>
 </section>
 </div>
-<div id="sec-normative-references">
+<div id="sec-combined-references">
 <section id="section-7">
-      <h2 id="name-normative-references">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      <h2 id="name-references">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
+<section id="section-7.1">
+        <h3 id="name-normative-references">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
 <dt id="FIPS-205">[FIPS-205]</dt>
-      <dd>
+        <dd>
 <span class="refTitle">"Stateless Hash-Based Digital Signature Standard"</span>, <span>n.d.</span>, <span>&lt;<a href="https://doi.org/10.6028/NIST.FIPS.205">https://doi.org/10.6028/NIST.FIPS.205</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-cose-dilithium">[I-D.ietf-cose-dilithium]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Prorock, M.</span> and <span class="refAuthor">O. Steele</span>, <span class="refTitle">"ML-DSA for JOSE and COSE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-dilithium-09</span>, <time datetime="2025-09-12" class="refDate">12 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-dilithium-09">https://datatracker.ietf.org/doc/html/draft-ietf-cose-dilithium-09</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="IANA.COSE">[IANA.COSE]</dt>
-      <dd>
-<span class="refAuthor">IANA</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE)"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose">https://www.iana.org/assignments/cose</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="IANA.JOSE">[IANA.JOSE]</dt>
-      <dd>
-<span class="refAuthor">IANA</span>, <span class="refTitle">"JSON Object Signing and Encryption (JOSE)"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.iana.org/assignments/jose">https://www.iana.org/assignments/jose</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7515">[RFC7515]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Bradley, J.</span>, and <span class="refAuthor">N. Sakimura</span>, <span class="refTitle">"JSON Web Signature (JWS)"</span>, <span class="seriesInfo">RFC 7515</span>, <span class="seriesInfo">DOI 10.17487/RFC7515</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7515">https://www.rfc-editor.org/rfc/rfc7515</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7517">[RFC7517]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refTitle">"JSON Web Key (JWK)"</span>, <span class="seriesInfo">RFC 7517</span>, <span class="seriesInfo">DOI 10.17487/RFC7517</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7517">https://www.rfc-editor.org/rfc/rfc7517</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7518">[RFC7518]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refTitle">"JSON Web Algorithms (JWA)"</span>, <span class="seriesInfo">RFC 7518</span>, <span class="seriesInfo">DOI 10.17487/RFC7518</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7518">https://www.rfc-editor.org/rfc/rfc7518</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9052">[RFC9052]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Structures and Process"</span>, <span class="seriesInfo">STD 96</span>, <span class="seriesInfo">RFC 9052</span>, <span class="seriesInfo">DOI 10.17487/RFC9052</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9052">https://www.rfc-editor.org/rfc/rfc9052</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9053">[RFC9053]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Initial Algorithms"</span>, <span class="seriesInfo">RFC 9053</span>, <span class="seriesInfo">DOI 10.17487/RFC9053</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9053">https://www.rfc-editor.org/rfc/rfc9053</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9054">[RFC9054]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Hash Algorithms"</span>, <span class="seriesInfo">RFC 9054</span>, <span class="seriesInfo">DOI 10.17487/RFC9054</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9054">https://www.rfc-editor.org/rfc/rfc9054</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-7.2">
+        <h3 id="name-informative-references">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="IANA.cose">[IANA.cose]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE)"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose">https://www.iana.org/assignments/cose</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA.jose">[IANA.jose]</dt>
+      <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"JSON Object Signing and Encryption (JOSE)"</span>, <span>&lt;<a href="https://www.iana.org/assignments/jose">https://www.iana.org/assignments/jose</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
 </section>
 </div>
 <div id="examples">
