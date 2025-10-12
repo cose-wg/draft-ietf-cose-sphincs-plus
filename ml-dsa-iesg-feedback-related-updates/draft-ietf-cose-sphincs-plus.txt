@@ -5,10 +5,10 @@
 CBOR Object Signing and Encryption                            M. Prorock
 Internet-Draft                                                  mesur.io
 Intended status: Standards Track                               O. Steele
-Expires: 14 April 2026                                      Tradeverifyd
+Expires: 15 April 2026                                      Tradeverifyd
                                                            H. Tschofenig
                                                                    H-BRS
-                                                         11 October 2025
+                                                         12 October 2025
 
 
                        SLH-DSA for JOSE and COSE
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 April 2026.
+   This Internet-Draft will expire on 15 April 2026.
 
 Copyright Notice
 
