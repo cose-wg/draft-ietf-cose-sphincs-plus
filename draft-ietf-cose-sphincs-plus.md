@@ -66,32 +66,23 @@ normative:
   FIPS-205:
     title: "Stateless Hash-Based Digital Signature Standard"
     target: https://doi.org/10.6028/NIST.FIPS.205
-  IANA.JOSE:
-    author:
-       org: IANA
-    title: JSON Object Signing and Encryption (JOSE)
-    target: https://www.iana.org/assignments/jose
-  IANA.COSE:
-    author:
-       org: IANA
-    title: CBOR Object Signing and Encryption (COSE)
-    target: https://www.iana.org/assignments/cose
 
 informative:
+  IANA.jose: IANA.jose
+  IANA.cose: IANA.cose
+
+---
 
 --- abstract
 
-This document describes JOSE and COSE serializations for SLH-DSA, which was derived from SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme.
+This document specifies JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) digital signature scheme defined in US NIST FIPS 205.
 
-This document does not define any new cryptography.
 
 --- middle
 
 # Introduction
 
-This document describes JSON Object Signing and Encryption (JOSE) {{-JWS}} and CBOR Object Signing and Encryption (COSE) {{-COSE}} serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme standardized in {{FIPS-205}}.
-
-This document does not define any new cryptography.
+This document specifies JSON Object Signing and Encryption (JOSE) {{-JWS}} and CBOR Object Signing and Encryption (COSE) {{-COSE}} serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme standardized in {{FIPS-205}}.
 
 This document builds on the Algorithm Key Pair (AKP) type, as defined in {{-ML-DSA}}. The AKP type enables flexible representation of keys used across different post-quantum cryptographic algorithms, including SLH-DSA.
 
@@ -103,7 +94,7 @@ This document builds on the Algorithm Key Pair (AKP) type, as defined in {{-ML-D
 
 The SLH-DSA Signature Scheme is parameterized to support different security levels.
 
-This document requests the registration of the following algorithms in {{IANA.JOSE}}:
+This document introduces the registration of the following algorithms in {{-IANA.jose}}:
 
 | Name       | alg | Description |
 |-------------|------|-------------|
@@ -112,7 +103,7 @@ This document requests the registration of the following algorithms in {{IANA.JO
 | SLH-DSA-SHA2-128f  | SLH-DSA-SHA2-128f     | JSON Web Signature Algorithm for SLH-DSA-SHA2-128f |
 {: #jose-algorithms align="left" title="JOSE Algorithms for SLH-DSA"}
 
-This document requests the registration of the following algorithms in {{IANA.JOSE}}:
+This document introduces the registration of the following algorithms in {{-IANA.cose}}:
 
 | Name       | alg | Description |
 |-------------|------|-------------|
@@ -169,6 +160,7 @@ The following registration templates are provided in accordance with the procedu
 * Value: TBD1 (requested assignment -51)
 * Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128s
 * Capabilities: `[kty]`
+* Change Controller: IETF
 * Reference: RFC XXXX
 * Recommended: Yes
 
@@ -178,6 +170,7 @@ The following registration templates are provided in accordance with the procedu
 * Value: TBD2 (requested assignment -52)
 * Description: CBOR Object Signing Algorithm for SLH-DSA-SHAKE-128s
 * Capabilities: `[kty]`
+* Change Controller: IETF
 * Reference: RFC XXXX
 * Recommended: Yes
 
@@ -187,6 +180,7 @@ The following registration templates are provided in accordance with the procedu
 * Value: TBD3 (requested assignment -53)
 * Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
 * Capabilities: `[kty]`
+* Change Controller: IETF
 * Reference: RFC XXXX
 * Recommended: Yes
 
@@ -203,7 +197,6 @@ The following completed registration templates are provided as described in {{-J
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
-* Value registry: {{IANA.JOSE}} Algorithms
 * Specification Document(s): RFC XXXX
 * Algorithm Analysis Documents(s): {{FIPS-205}}
 
@@ -214,7 +207,6 @@ The following completed registration templates are provided as described in {{-J
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
-* Value registry: {{IANA.JOSE}} Algorithms
 * Specification Document(s): RFC XXXX
 * Algorithm Analysis Documents(s): {{FIPS-205}}
 
@@ -225,7 +217,6 @@ The following completed registration templates are provided as described in {{-J
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
-* Value registry: {{IANA.JOSE}} Algorithms
 * Specification Document(s): RFC XXXX
 * Algorithm Analysis Documents(s): {{FIPS-205}}
 
