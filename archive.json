@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-07T01:37:33.536797+00:00",
+  "timestamp": "2025-10-12T01:41:49.586283+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -311,6 +311,46 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOLENBks6tP9IP",
+      "title": "Touchups after ML-DSA IESG Evaluation",
+      "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/pull/10",
+      "state": "OPEN",
+      "author": "OR13",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This PR makes some of the adjustments that were requested by the IESG on ML-DSA, with the assumption they will be repeated for this document otherwise.",
+      "createdAt": "2025-10-11T14:17:20Z",
+      "updatedAt": "2025-10-11T14:21:21Z",
+      "baseRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "baseRefName": "main",
+      "baseRefOid": "3c25be2aaff8a3ced3156d1ffb8033da4ad90d53",
+      "headRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
+      "headRefName": "ml-dsa-iesg-feedback-related-updates",
+      "headRefOid": "b7db7b5bf15e4c1777c226bc87a5b0c80128000e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOLENBks7GUdJm",
+          "commit": {
+            "abbreviatedOid": "b7db7b5"
+          },
+          "author": "selfissued",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-11T14:21:21Z",
+          "updatedAt": "2025-10-11T14:21:21Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
