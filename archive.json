@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-10-12T01:41:49.586283+00:00",
+  "timestamp": "2025-10-14T01:38:44.885710+00:00",
   "repo": "cose-wg/draft-ietf-cose-sphincs-plus",
   "labels": [
     {
@@ -317,24 +317,26 @@
       "id": "PR_kwDOLENBks6tP9IP",
       "title": "Touchups after ML-DSA IESG Evaluation",
       "url": "https://github.com/cose-wg/draft-ietf-cose-sphincs-plus/pull/10",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "OR13",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This PR makes some of the adjustments that were requested by the IESG on ML-DSA, with the assumption they will be repeated for this document otherwise.",
       "createdAt": "2025-10-11T14:17:20Z",
-      "updatedAt": "2025-10-11T14:21:21Z",
+      "updatedAt": "2025-10-12T13:55:43Z",
       "baseRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
       "baseRefName": "main",
-      "baseRefOid": "3c25be2aaff8a3ced3156d1ffb8033da4ad90d53",
+      "baseRefOid": "b413f7c784ba41503e45703b38eb9f353416e230",
       "headRepository": "cose-wg/draft-ietf-cose-sphincs-plus",
       "headRefName": "ml-dsa-iesg-feedback-related-updates",
-      "headRefOid": "b7db7b5bf15e4c1777c226bc87a5b0c80128000e",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "f526dee33fe3eb7b2d65ff29bb5ef08011abf6bc",
+      "closedAt": "2025-10-12T12:12:25Z",
+      "mergedAt": "2025-10-12T12:12:25Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "8b2383ef140a445fd843cb245ca72b39dada200a"
+      },
       "comments": [],
       "reviews": [
         {
@@ -348,6 +350,19 @@
           "body": "",
           "createdAt": "2025-10-11T14:21:21Z",
           "updatedAt": "2025-10-11T14:21:21Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOLENBks7GYl0W",
+          "commit": {
+            "abbreviatedOid": "f526dee"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Thanks for the changes!",
+          "createdAt": "2025-10-12T12:11:57Z",
+          "updatedAt": "2025-10-12T12:11:57Z",
           "comments": []
         }
       ]
