@@ -274,18 +274,7 @@ h'4d9884c45556898d0da29c5af418386d9abcdb84426e64ab44e5bcb3126c77de
   f3eb7b23659086bd1d5196f8201898c189ae9fd5567be8941f135e54b261ca9d'
 }
 ~~~~
-{: #SLH-DSA-SHA2-128s-private-cose-key title="Example SLH-DSA-SHA2-128s Private COSE Key"}
-
-~~~~ cbor-diag
-{
-  / kty AKP                / 1: 7,
-  / alg SLH-DSA-SHA2-128s  / 3: -51,
-  / kid                    / 2: h'736c682d6473612d313238732d6b6964',
-  / public key             / -1:
-h'f3eb7b23659086bd1d5196f8201898c189ae9fd5567be8941f135e54b261ca9d'
-}
-~~~~
-{: #SLH-DSA-SHA2-128s-public-cose-key title="Example SLH-DSA-SHA2-128s Public COSE Key"}
+{: #SLH-DSA-SHA2-128s-private-cose-key title="Example SLH-DSA-SHA2-128s COSE Key"}
 
 ### COSE Sign1
 
