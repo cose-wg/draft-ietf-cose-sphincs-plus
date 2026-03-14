@@ -1055,7 +1055,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Prorock, et al.</td>
-<td class="center">Expires 12 September 2026</td>
+<td class="center">Expires 15 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-cose-sphincs-plus-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-11" class="published">11 March 2026</time>
+<time datetime="2026-03-14" class="published">14 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-12">12 September 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-15">15 September 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1131,7 +1131,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 15 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1176,13 +1176,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-validating-public-keys" class="internal xref">Validating Public Keys</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-pre-hash-and-hashing-consid" class="internal xref">Pre-Hash and Hashing Considerations</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-side-channel-attacks" class="internal xref">Side-Channel Attacks</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-validating-public-keys" class="internal xref">Validating Public Keys</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-randomness-considerations" class="internal xref">Randomness considerations</a></p>
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-side-channel-attacks" class="internal xref">Side-Channel Attacks</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-randomness-considerations" class="internal xref">Randomness considerations</a></p>
 </li>
             </ul>
 </li>
@@ -1383,39 +1386,75 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-5-1">The security considerations of <span>[<a href="#RFC7515" class="cite xref">RFC7515</a>]</span>, <span>[<a href="#RFC7517" class="cite xref">RFC7517</a>]</span> and <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> apply to this specification as well.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">A detailed security analysis of SLH-DSA is beyond the scope of this specification; see <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span> for additional details.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">The following considerations apply to all parameter sets described in this specification.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<div id="validating-public-keys">
+<div id="pre-hash-and-hashing-considerations">
 <section id="section-5.1">
-        <h3 id="name-validating-public-keys">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-validating-public-keys" class="section-name selfRef">Validating Public Keys</a>
+        <h3 id="name-pre-hash-and-hashing-consid">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-pre-hash-and-hashing-consid" class="section-name selfRef">Pre-Hash and Hashing Considerations</a>
         </h3>
-<p id="section-5.1-1">All algorithms that operate on public keys require validation before use. For sign, verify and proof schemes, the use of <code>KeyValidate</code> is <span class="bcp14">REQUIRED</span>.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">SLH-DSA, as specified in <span>[<a href="#FIPS-205" class="cite xref">FIPS-205</a>]</span>, supports both pure and pre-hash modes.
+This document specifies only the pure mode of SLH-DSA for use with JOSE and
+COSE.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">This document does not define or register separate <code>HashSLH-DSA</code> algorithm
+identifiers for JOSE or COSE. Doing so would require distinct algorithm
+registrations and would introduce additional implementation and interoperability
+complexity. The algorithm identifiers defined in this document therefore refer
+only to the pure SLH-DSA variants.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">For many COSE use cases, this restriction is acceptable because the
+application can already structure the signed content in a way that limits the
+amount of data processed directly by the signature algorithm. In particular,
+applications that need to sign large payloads, detached content, or remotely
+held content may use the COSE Hash Envelope mechanism
+<span>[<a href="#I-D.ietf-cose-hash-envelope" class="cite xref">I-D.ietf-cose-hash-envelope</a>]</span>.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-4">Hash Envelope can provide operational properties similar to those sought from a
+pre-hash signature mode, such as reduced data transfer to a signer, reduced
+buffering requirements, and simplified remote-signing workflows. However, Hash
+Envelope is not cryptographically identical to a standardized pre-hash variant
+of SLH-DSA. In Hash Envelope, a digest is carried and signed at the COSE layer,
+whereas in a pre-hash signature algorithm the hashing step is part of the
+algorithm definition itself.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1-5">Applications that use Hash Envelope together with SLH-DSA need to ensure that
+the digest is recomputed over the original content and compared with the signed
+digest before treating the signature as valid for that content. Profiles that
+rely on this construction <span class="bcp14">SHOULD</span> specify the permitted hash algorithms and the
+verification procedure explicitly.<a href="#section-5.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.1-6">If future deployment experience shows clear demand for algorithm-level pre-hash
+semantics in JOSE or COSE, separate registrations for HashSLH-DSA could be
+defined in a future specification.<a href="#section-5.1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="validating-public-keys">
+<section id="section-5.2">
+        <h3 id="name-validating-public-keys">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-validating-public-keys" class="section-name selfRef">Validating Public Keys</a>
+        </h3>
+<p id="section-5.2-1">All algorithms that operate on public keys require validation before use. For sign, verify and proof schemes, the use of <code>KeyValidate</code> is <span class="bcp14">REQUIRED</span>.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="side-channel-attacks">
-<section id="section-5.2">
+<section id="section-5.3">
         <h3 id="name-side-channel-attacks">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-side-channel-attacks" class="section-name selfRef">Side-Channel Attacks</a>
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-side-channel-attacks" class="section-name selfRef">Side-Channel Attacks</a>
         </h3>
-<p id="section-5.2-1">Implementations of the signing algorithm <span class="bcp14">SHOULD</span> protect the secret key from side-channel attacks. Any implementation of SLH-DSA signing algorithms <span class="bcp14">SHOULD</span> employ at least the following best practices:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-1">Implementations of the signing algorithm <span class="bcp14">SHOULD</span> protect the secret key from side-channel attacks. Any implementation of SLH-DSA signing algorithms <span class="bcp14">SHOULD</span> employ at least the following best practices:<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.2-2.1">
-            <p id="section-5.2-2.1.1">Constant-time operation<a href="#section-5.2-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5.3-2.1">
+            <p id="section-5.3-2.1.1">Constant-time operation<a href="#section-5.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-2.2">
-            <p id="section-5.2-2.2.1">Consistent instruction sequence and memory access<a href="#section-5.2-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-5.3-2.2">
+            <p id="section-5.3-2.2.1">Consistent instruction sequence and memory access<a href="#section-5.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-2.3">
-            <p id="section-5.2-2.3.1">Uniform sampling without information leakage<a href="#section-5.2-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-5.3-2.3">
+            <p id="section-5.3-2.3.1">Uniform sampling without information leakage<a href="#section-5.3-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
 </div>
 <div id="randomness-considerations">
-<section id="section-5.3">
+<section id="section-5.4">
         <h3 id="name-randomness-considerations">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-randomness-considerations" class="section-name selfRef">Randomness considerations</a>
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-randomness-considerations" class="section-name selfRef">Randomness considerations</a>
         </h3>
-<p id="section-5.3-1">All nonces <span class="bcp14">MUST</span> originate from a trusted and cryptographically secure source of randomness.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.4-1">All nonces <span class="bcp14">MUST</span> originate from a trusted and cryptographically secure source of randomness.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1685,6 +1724,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.ietf-cose-hash-envelope">[I-D.ietf-cose-hash-envelope]</dt>
+        <dd>
+<span class="refAuthor">Steele, O.</span>, <span class="refAuthor">Lasker, S.</span>, and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"COSE Hash Envelope"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-hash-envelope-10</span>, <time datetime="2025-11-15" class="refDate">15 November 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-hash-envelope-10">https://datatracker.ietf.org/doc/html/draft-ietf-cose-hash-envelope-10</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="IANA.cose">[IANA.cose]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE)"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose">https://www.iana.org/assignments/cose</a>&gt;</span>. </dd>
