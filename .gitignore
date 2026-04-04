@@ -3,7 +3,9 @@
 *.redxml
 *.swp
 *.txt
+!testvectors/**/*.txt
 *.upload
+/examples/examples
 *~
 .tags
 /*-[0-9][0-9].xml
