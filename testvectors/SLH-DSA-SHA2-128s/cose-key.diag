@@ -1,0 +1,10 @@
+{
+  / kty AKP                / 1: 7,
+  / alg SLH-DSA-SHA2-128s  / 3: -51,
+  / kid                    / 2: h'736c682d6473612d736861322d313238732d6b6964',
+  / public key             / -1:
+h'f786c70be9c77827794d9f38b4d2cca32f061ff771e4299347cd65255adee2c6',
+  / private key            / -2:
+h'e15da326fa902e425b73de5cabd2852e8ebedcd5f425745d4e4a10cfab2d51c6
+  f786c70be9c77827794d9f38b4d2cca32f061ff771e4299347cd65255adee2c6',
+}

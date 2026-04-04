@@ -1,0 +1,7 @@
+{
+  "alg": "SLH-DSA-SHAKE-128s",
+  "kid": "slh-dsa-shake-128s-kid",
+  "kty": "AKP",
+  "priv": "RQ0uoVAh2CNcETQB9xzPnWnwlTvbDNkXikUWqjw0ImNAhAEYA-8zgkIriT_Pf3cCgqoLLXl_KfA7edP4JXarIA",
+  "pub": "QIQBGAPvM4JCK4k_z393AoKqCy15fynwO3nT-CV2qyA"
+}
