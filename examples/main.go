@@ -4,16 +4,24 @@
 // go-slh-dsa implementations before generating test vectors for the
 // draft-ietf-cose-sphincs-plus specification.
 //
+// Reproducibility: Key generation uses a deterministic PRNG seeded from the
+// constant vectorSeed (AES-CTR with SHA-256 derived key). Signing uses CIRCL's
+// SignDeterministic. Running this program with the same seed and the same
+// library versions will always produce identical test vectors.
+//
 // Test vectors are written to ../testvectors/ in formats suitable for
 // inclusion via kramdown-rfc {::include} directives.
 package main
 
 import (
-	"crypto/rand"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -23,12 +31,40 @@ import (
 	tob "github.com/trailofbits/go-slh-dsa/slh_dsa"
 )
 
+// vectorSeed is the fixed seed used to derive deterministic key material.
+// Changing this value will produce different test vectors.
+const vectorSeed = "draft-ietf-cose-sphincs-plus test vectors v1"
+
+// deterministicRand returns a deterministic io.Reader for the given algorithm
+// name. Each algorithm gets its own independent byte stream derived from
+// SHA-256(vectorSeed + ":" + algName), used as an AES-CTR key with a zero IV.
+// This ensures test vector generation is fully reproducible.
+func deterministicRand(algName string) io.Reader {
+	seed := sha256.Sum256([]byte(vectorSeed + ":" + algName))
+	block, err := aes.NewCipher(seed[:])
+	if err != nil {
+		fatalf("aes.NewCipher: %v", err)
+	}
+	stream := cipher.NewCTR(block, make([]byte, aes.BlockSize))
+	return &cipher.StreamReader{S: stream, R: zeroReader{}}
+}
+
+type zeroReader struct{}
+
+func (zeroReader) Read(b []byte) (int, error) {
+	for i := range b {
+		b[i] = 0
+	}
+	return len(b), nil
+}
+
 func main() {
 	outDir := filepath.Join("..", "testvectors")
 	if err := os.MkdirAll(outDir, 0o755); err != nil {
 		fatalf("mkdir testvectors: %v", err)
 	}
 
+	fmt.Printf("Seed: %q\n", vectorSeed)
 	genSHA2_128s(outDir)
 	genSHAKE_128s(outDir)
 	genSHA2_128f(outDir)
@@ -43,7 +79,7 @@ func genSHA2_128s(outDir string) {
 	dir := filepath.Join(outDir, name)
 	os.MkdirAll(dir, 0o755)
 
-	circlPub, circlPriv, err := slhdsa.GenerateKey(rand.Reader, slhdsa.SHA2_128s)
+	circlPub, circlPriv, err := slhdsa.GenerateKey(deterministicRand(name), slhdsa.SHA2_128s)
 	if err != nil {
 		fatalf("GenerateKey: %v", err)
 	}
@@ -69,7 +105,7 @@ func genSHAKE_128s(outDir string) {
 	dir := filepath.Join(outDir, name)
 	os.MkdirAll(dir, 0o755)
 
-	circlPub, circlPriv, err := slhdsa.GenerateKey(rand.Reader, slhdsa.SHAKE_128s)
+	circlPub, circlPriv, err := slhdsa.GenerateKey(deterministicRand(name), slhdsa.SHAKE_128s)
 	if err != nil {
 		fatalf("GenerateKey: %v", err)
 	}
@@ -94,7 +130,7 @@ func genSHA2_128f(outDir string) {
 	dir := filepath.Join(outDir, name)
 	os.MkdirAll(dir, 0o755)
 
-	circlPub, circlPriv, err := slhdsa.GenerateKey(rand.Reader, slhdsa.SHA2_128f)
+	circlPub, circlPriv, err := slhdsa.GenerateKey(deterministicRand(name), slhdsa.SHA2_128f)
 	if err != nil {
 		fatalf("GenerateKey: %v", err)
 	}

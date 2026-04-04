@@ -2,6 +2,6 @@
   "alg": "SLH-DSA-SHA2-128f",
   "kid": "slh-dsa-sha2-128f-kid",
   "kty": "AKP",
-  "priv": "_usrZ6djBUA1fILMRNd_fO4l-qxjHweBJSQdwOD1qdilmCCbnFakNaN9PN9ZWsg-xaUen-4pfiU7rCJuRyEM9A",
-  "pub": "pZggm5xWpDWjfTzfWVrIPsWlHp_uKX4lO6wibkchDPQ"
+  "priv": "xK3wSzOMhAAx-UW_cj4VeaItS8oe8T_VPHle5tzytYZyOhoZQi9-eEYxrhQIvYSiA95g19KKRovltEe0RNdjYA",
+  "pub": "cjoaGUIvfnhGMa4UCL2EogPeYNfSikaL5bRHtETXY2A"
 }

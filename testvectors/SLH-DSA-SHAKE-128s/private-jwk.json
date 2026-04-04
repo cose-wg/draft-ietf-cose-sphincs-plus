@@ -2,6 +2,6 @@
   "alg": "SLH-DSA-SHAKE-128s",
   "kid": "slh-dsa-shake-128s-kid",
   "kty": "AKP",
-  "priv": "RQ0uoVAh2CNcETQB9xzPnWnwlTvbDNkXikUWqjw0ImNAhAEYA-8zgkIriT_Pf3cCgqoLLXl_KfA7edP4JXarIA",
-  "pub": "QIQBGAPvM4JCK4k_z393AoKqCy15fynwO3nT-CV2qyA"
+  "priv": "Kz9ljgHX1ryVS2nE7Z_KtfIagmK5Oep1CrBYQcgK75DzFnbI9OqaLaMaevKzl1WJDr3mOmUB9fFg94rq3Lckug",
+  "pub": "8xZ2yPTqmi2jGnrys5dViQ695jplAfXxYPeK6ty3JLo"
 }
