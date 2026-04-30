@@ -1,0 +1,12 @@
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHA2-128s/private-jwk.json
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHA2-128s/public-jwk.json
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHAKE-128s/private-jwk.json
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHAKE-128s/public-jwk.json
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHA2-128f/private-jwk.json
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHA2-128f/public-jwk.json
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHA2-128s/cose-key.diag
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHA2-128s/cose-sign1.diag
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHAKE-128s/cose-key.diag
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHAKE-128s/cose-sign1.diag
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHA2-128f/cose-key.diag
+draft-ietf-cose-sphincs-plus.xml: testvectors/SLH-DSA-SHA2-128f/cose-sign1.diag

@@ -1,0 +1,7 @@
+{
+  "alg": "SLH-DSA-SHA2-128s",
+  "kid": "slh-dsa-sha2-128s-kid",
+  "kty": "AKP",
+  "priv": "P1d2M4reQEEt09DkH_hmBUPH5mb12TZkfdp6rs2oXjmDHSYmLJWnKQZRp2I6JmQaXPjlAQXhaDtlSspnzER1ag",
+  "pub": "gx0mJiyVpykGUadiOiZkGlz45QEF4Wg7ZUrKZ8xEdWo"
+}
