@@ -5,10 +5,10 @@
 CBOR Object Signing and Encryption                            M. Prorock
 Internet-Draft                                                  mesur.io
 Intended status: Standards Track                               O. Steele
-Expires: 7 November 2026                                    Tradeverifyd
+Expires: 16 November 2026                                   Tradeverifyd
                                                            H. Tschofenig
                                                                 UniBw M.
-                                                              6 May 2026
+                                                             15 May 2026
 
 
                        SLH-DSA for JOSE and COSE
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 November 2026.
+   This Internet-Draft will expire on 16 November 2026.
 
 Copyright Notice
 
@@ -165,7 +165,7 @@ Table of Contents
    security categories (1, 3, 5), two hash function families (SHA2 and
    SHAKE), and two size/speed tradeoffs (small s and fast f).  This
    document registers only the two NIST Category 1, "small" parameter
-   sets — one for each hash function family.  Limiting the initial
+   sets - one for each hash function family.  Limiting the initial
    registration to a small, symmetric set is intended to maximize
    interoperability among early implementations and to keep the JOSE and
    COSE registries focused.
