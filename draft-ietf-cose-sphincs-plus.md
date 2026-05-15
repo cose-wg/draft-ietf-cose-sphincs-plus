@@ -117,7 +117,7 @@ This document introduces the registration of the following algorithms in {{-IANA
 {{FIPS-205}} defines twelve parameter sets in total, across three NIST
 security categories (1, 3, 5), two hash function families (SHA2 and SHAKE),
 and two size/speed tradeoffs (small `s` and fast `f`). This document
-registers only the two NIST Category 1, "small" parameter sets — one for
+registers only the two NIST Category 1, "small" parameter sets - one for
 each hash function family. Limiting the initial registration to a small,
 symmetric set is intended to maximize interoperability among early
 implementations and to keep the JOSE and COSE registries focused.
