@@ -74,6 +74,7 @@ informative:
   IANA.jose: IANA.jose
   IANA.cose: IANA.cose
   I-D.ietf-cose-hash-envelope:
+  RFC9909:
 
 ---
 
@@ -126,6 +127,17 @@ The specific algorithms for SLH-DSA, such as SLH-DSA-SHA2-128s, SLH-DSA-SHAKE-12
 
 Thumbprints for SLH-DSA keys are computed according to the process described in {{-ML-DSA}}.
 
+# Signing and Verification
+
+Signatures are produced and verified using the procedures defined in {{FIPS-205}}.
+The SLH-DSA signing function takes a context string `ctx` as input.
+For the algorithms registered in this document, the `ctx` parameter MUST be the empty string.
+Implementations that produce or accept a non-empty `ctx` value will not interoperate.
+
+Signatures are encoded as the byte strings produced by the signature generation algorithms in {{FIPS-205}}.
+When producing JSON Web Signatures, the signature byte strings are base64url encoded.
+When producing COSE signatures, no encoding is needed; see {{Section 4 of RFC9052}} for more details on how COSE signatures are created.
+
 # Security Considerations
 
 The security considerations of {{-JWS}}, {{-JWK}} and {{-COSE-Alg}} apply to this specification as well.
@@ -136,40 +148,47 @@ The following considerations apply to all parameter sets described in this speci
 
 ## Pre-Hash and Hashing Considerations
 
-SLH-DSA, as specified in {{FIPS-205}}, supports both pure and pre-hash modes.
-This document specifies only the pure mode of SLH-DSA for use with JOSE and
-COSE.
+{{FIPS-205}} defines two variants of the signature scheme: SLH-DSA, which
+takes the message directly as input, and HashSLH-DSA, which applies an
+external pre-hash to the message before invocation.
+This document specifies only SLH-DSA for use with JOSE and COSE.
+HashSLH-DSA is out of scope.
+
+A key identified by an SLH-DSA algorithm identifier defined in this document
+MUST NOT be used to generate or verify a HashSLH-DSA signature, and vice
+versa. The same constraint is described for X.509 deployments in
+{{RFC9909}}.
 
 This document does not define or register separate `HashSLH-DSA` algorithm
 identifiers for JOSE or COSE. Doing so would require distinct algorithm
-registrations and would introduce additional implementation and interoperability
-complexity. The algorithm identifiers defined in this document therefore refer
-only to the pure SLH-DSA variants.
+registrations and would introduce additional implementation and
+interoperability complexity.
 
-For many COSE use cases, this restriction is acceptable because the
-application can already structure the signed content in a way that limits the
-amount of data processed directly by the signature algorithm. In particular,
-applications that need to sign large payloads, detached content, or remotely
-held content may use the COSE Hash Envelope mechanism
+For many JOSE and COSE use cases, this restriction is acceptable because the
+application can already structure the signed content in a way that limits
+the amount of data processed directly by the signature algorithm. In
+particular, applications that need to sign large payloads, detached
+content, or remotely held content may use the COSE Hash Envelope mechanism
 {{I-D.ietf-cose-hash-envelope}}.
 
-Hash Envelope can provide operational properties similar to those sought from a
-pre-hash signature mode, such as reduced data transfer to a signer, reduced
-buffering requirements, and simplified remote-signing workflows. However, Hash
-Envelope is not cryptographically identical to a standardized pre-hash variant
-of SLH-DSA. In Hash Envelope, a digest is carried and signed at the COSE layer,
-whereas in a pre-hash signature algorithm the hashing step is part of the
-algorithm definition itself.
+Hash Envelope can provide operational properties similar to those sought
+from a pre-hash signature mode, such as reduced data transfer to a signer,
+reduced buffering requirements, and simplified remote-signing workflows.
+However, Hash Envelope is not cryptographically equivalent to HashSLH-DSA.
+HashSLH-DSA binds the identity of the pre-hash function into the signature
+through a domain separator inside the signing algorithm; Hash Envelope
+carries the digest and the digest algorithm at the COSE layer, outside the
+signature's domain separator.
 
-Applications that use Hash Envelope together with SLH-DSA need to ensure that
-the digest is recomputed over the original content and compared with the signed
-digest before treating the signature as valid for that content. Profiles that
-rely on this construction SHOULD specify the permitted hash algorithms and the
-verification procedure explicitly.
+Applications that use Hash Envelope together with SLH-DSA need to ensure
+that the digest is recomputed over the original content and compared with
+the signed digest before treating the signature as valid for that content.
+Profiles that rely on this construction SHOULD specify the permitted hash
+algorithms and the verification procedure explicitly.
 
-If future deployment experience shows clear demand for algorithm-level pre-hash
-semantics in JOSE or COSE, separate registrations for HashSLH-DSA could be
-defined in a future specification.
+If future deployment experience shows clear demand for algorithm-level
+pre-hash semantics in JOSE or COSE, separate registrations for HashSLH-DSA
+could be defined in a future specification.
 
 ## Validating Public Keys
 
@@ -182,6 +201,23 @@ Implementations of the signing algorithm SHOULD protect the secret key from side
 - Constant-time operation
 - Consistent instruction sequence and memory access
 - Uniform sampling without information leakage
+
+## Deterministic and Randomized Signing
+
+{{FIPS-205}} permits both deterministic and randomized (hedged) signing.
+The choice of mode is implementation-defined; signatures produced under
+either mode are verifiable with the same public key, and verifiers cannot
+and need not distinguish them.
+
+Deterministic signing is simpler and removes a runtime dependency on a
+random number generator at signing time. Randomized signing offers
+improved resistance to fault and side-channel attacks that target the
+signing operation, at the cost of requiring a high-quality random source
+on every invocation.
+
+Implementations that select randomized signing MUST source the per-signature
+randomness from a trusted and cryptographically secure source as described
+in Section 9.2 of {{FIPS-205}}.
 
 ## Randomness considerations
 
