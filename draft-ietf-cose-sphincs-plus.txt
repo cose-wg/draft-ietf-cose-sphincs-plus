@@ -5,10 +5,10 @@
 CBOR Object Signing and Encryption                            M. Prorock
 Internet-Draft                                                  mesur.io
 Intended status: Standards Track                               O. Steele
-Expires: 1 November 2026                                    Tradeverifyd
+Expires: 16 November 2026                                   Tradeverifyd
                                                            H. Tschofenig
                                                                 UniBw M.
-                                                           30 April 2026
+                                                             15 May 2026
 
 
                        SLH-DSA for JOSE and COSE
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 November 2026.
+   This Internet-Draft will expire on 16 November 2026.
 
 Copyright Notice
 
@@ -76,23 +76,25 @@ Table of Contents
    2.  Terminology
    3.  The SLH-DSA Algorithm Family
    4.  SLH-DSA Keys
-   5.  Security Considerations
-     5.1.  Pre-Hash and Hashing Considerations
-     5.2.  Validating Public Keys
-     5.3.  Side-Channel Attacks
-     5.4.  Randomness considerations
-   6.  IANA Considerations
-     6.1.  New COSE Algorithms
-       6.1.1.  SLH-DSA-SHA2-128s
-       6.1.2.  SLH-DSA-SHAKE-128s
-       6.1.3.  SLH-DSA-SHA2-128f
-     6.2.  New JOSE Algorithms
-       6.2.1.  SLH-DSA-SHA2-128s
-       6.2.2.  SLH-DSA-SHAKE-128s
-       6.2.3.  SLH-DSA-SHA2-128f
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+   5.  Signing and Verification
+   6.  Security Considerations
+     6.1.  Pre-Hash and Hashing Considerations
+     6.2.  Validating Public Keys
+     6.3.  Side-Channel Attacks
+     6.4.  Deterministic and Randomized Signing
+     6.5.  Randomness considerations
+   7.  IANA Considerations
+     7.1.  New COSE Algorithms
+       7.1.1.  SLH-DSA-SHA2-128s
+       7.1.2.  SLH-DSA-SHAKE-128s
+       7.1.3.  SLH-DSA-SHA2-128f
+     7.2.  New JOSE Algorithms
+       7.2.1.  SLH-DSA-SHA2-128s
+       7.2.2.  SLH-DSA-SHAKE-128s
+       7.2.3.  SLH-DSA-SHA2-128f
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Appendix A.  Examples
      A.1.  JOSE
        A.1.1.  SLH-DSA-SHA2-128s
@@ -190,7 +192,21 @@ Table of Contents
    Thumbprints for SLH-DSA keys are computed according to the process
    described in [I-D.ietf-cose-dilithium].
 
-5.  Security Considerations
+5.  Signing and Verification
+
+   Signatures are produced and verified using the procedures defined in
+   [FIPS-205].  The SLH-DSA signing function takes a context string ctx
+   as input.  For the algorithms registered in this document, the ctx
+   parameter MUST be the empty string.  Implementations that produce or
+   accept a non-empty ctx value will not interoperate.
+
+   Signatures are encoded as the byte strings produced by the signature
+   generation algorithms in [FIPS-205].  When producing JSON Web
+   Signatures, the signature byte strings are base64url encoded.  When
+   producing COSE signatures, no encoding is needed; see Section 4 of
+   [RFC9052] for more details on how COSE signatures are created.
+
+6.  Security Considerations
 
    The security considerations of [RFC7515], [RFC7517] and [RFC9053]
    apply to this specification as well.
@@ -201,34 +217,40 @@ Table of Contents
    The following considerations apply to all parameter sets described in
    this specification.
 
-5.1.  Pre-Hash and Hashing Considerations
+6.1.  Pre-Hash and Hashing Considerations
 
-   SLH-DSA, as specified in [FIPS-205], supports both pure and pre-hash
-   modes.  This document specifies only the pure mode of SLH-DSA for use
-   with JOSE and COSE.
+   [FIPS-205] defines two variants of the signature scheme: SLH-DSA,
+   which takes the message directly as input, and HashSLH-DSA, which
+   applies an external pre-hash to the message before invocation.  This
+   document specifies only SLH-DSA for use with JOSE and COSE.  HashSLH-
+   DSA is out of scope.
+
+   A key identified by an SLH-DSA algorithm identifier defined in this
+   document MUST NOT be used to generate or verify a HashSLH-DSA
+   signature, and vice versa.  The same constraint is described for
+   X.509 deployments in [RFC9909].
 
    This document does not define or register separate HashSLH-DSA
    algorithm identifiers for JOSE or COSE.  Doing so would require
    distinct algorithm registrations and would introduce additional
-   implementation and interoperability complexity.  The algorithm
-   identifiers defined in this document therefore refer only to the pure
-   SLH-DSA variants.
+   implementation and interoperability complexity.
 
-   For many COSE use cases, this restriction is acceptable because the
-   application can already structure the signed content in a way that
-   limits the amount of data processed directly by the signature
-   algorithm.  In particular, applications that need to sign large
-   payloads, detached content, or remotely held content may use the COSE
-   Hash Envelope mechanism [I-D.ietf-cose-hash-envelope].
+   For many JOSE and COSE use cases, this restriction is acceptable
+   because the application can already structure the signed content in a
+   way that limits the amount of data processed directly by the
+   signature algorithm.  In particular, applications that need to sign
+   large payloads, detached content, or remotely held content may use
+   the COSE Hash Envelope mechanism [I-D.ietf-cose-hash-envelope].
 
    Hash Envelope can provide operational properties similar to those
    sought from a pre-hash signature mode, such as reduced data transfer
    to a signer, reduced buffering requirements, and simplified remote-
    signing workflows.  However, Hash Envelope is not cryptographically
-   identical to a standardized pre-hash variant of SLH-DSA.  In Hash
-   Envelope, a digest is carried and signed at the COSE layer, whereas
-   in a pre-hash signature algorithm the hashing step is part of the
-   algorithm definition itself.
+   equivalent to HashSLH-DSA.  HashSLH-DSA binds the identity of the
+   pre-hash function into the signature through a domain separator
+   inside the signing algorithm; Hash Envelope carries the digest and
+   the digest algorithm at the COSE layer, outside the signature's
+   domain separator.
 
    Applications that use Hash Envelope together with SLH-DSA need to
    ensure that the digest is recomputed over the original content and
@@ -241,13 +263,13 @@ Table of Contents
    level pre-hash semantics in JOSE or COSE, separate registrations for
    HashSLH-DSA could be defined in a future specification.
 
-5.2.  Validating Public Keys
+6.2.  Validating Public Keys
 
    All algorithms that operate on public keys require validation before
    use.  For sign, verify and proof schemes, the use of KeyValidate is
    REQUIRED.
 
-5.3.  Side-Channel Attacks
+6.3.  Side-Channel Attacks
 
    Implementations of the signing algorithm SHOULD protect the secret
    key from side-channel attacks.  Any implementation of SLH-DSA signing
@@ -259,14 +281,31 @@ Table of Contents
 
    *  Uniform sampling without information leakage
 
-5.4.  Randomness considerations
+6.4.  Deterministic and Randomized Signing
+
+   [FIPS-205] permits both deterministic and randomized (hedged)
+   signing.  The choice of mode is implementation-defined; signatures
+   produced under either mode are verifiable with the same public key,
+   and verifiers cannot and need not distinguish them.
+
+   Deterministic signing is simpler and removes a runtime dependency on
+   a random number generator at signing time.  Randomized signing offers
+   improved resistance to fault and side-channel attacks that target the
+   signing operation, at the cost of requiring a high-quality random
+   source on every invocation.
+
+   Implementations that select randomized signing MUST source the per-
+   signature randomness from a trusted and cryptographically secure
+   source as described in Section 9.2 of [FIPS-205].
+
+6.5.  Randomness considerations
 
    All nonces MUST originate from a trusted and cryptographically secure
    source of randomness.
 
-6.  IANA Considerations
+7.  IANA Considerations
 
-6.1.  New COSE Algorithms
+7.1.  New COSE Algorithms
 
    IANA is requested to add the following entries to the COSE Algorithms
    Registry.
@@ -274,7 +313,7 @@ Table of Contents
    The following registration templates are provided in accordance with
    the procedures described in [RFC9053] and [RFC9054].
 
-6.1.1.  SLH-DSA-SHA2-128s
+7.1.1.  SLH-DSA-SHA2-128s
 
    *  Name: SLH-DSA-SHA2-128s
 
@@ -290,7 +329,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-6.1.2.  SLH-DSA-SHAKE-128s
+7.1.2.  SLH-DSA-SHAKE-128s
 
    *  Name: SLH-DSA-SHAKE-128s
 
@@ -306,7 +345,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-6.1.3.  SLH-DSA-SHA2-128f
+7.1.3.  SLH-DSA-SHA2-128f
 
    *  Name: SLH-DSA-SHA2-128f
 
@@ -322,7 +361,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-6.2.  New JOSE Algorithms
+7.2.  New JOSE Algorithms
 
    IANA is requested to add the following entries to the JSON Web
    Signature and Encryption Algorithms Registry.
@@ -330,7 +369,7 @@ Table of Contents
    The following completed registration templates are provided as
    described in [RFC7518].
 
-6.2.1.  SLH-DSA-SHA2-128s
+7.2.1.  SLH-DSA-SHA2-128s
 
    *  Algorithm Name: SLH-DSA-SHA2-128s
 
@@ -346,7 +385,7 @@ Table of Contents
 
    *  Algorithm Analysis Documents(s): [FIPS-205]
 
-6.2.2.  SLH-DSA-SHAKE-128s
+7.2.2.  SLH-DSA-SHAKE-128s
 
    *  Algorithm Name: SLH-DSA-SHAKE-128s
 
@@ -363,7 +402,7 @@ Table of Contents
 
    *  Algorithm Analysis Documents(s): [FIPS-205]
 
-6.2.3.  SLH-DSA-SHA2-128f
+7.2.3.  SLH-DSA-SHA2-128f
 
    *  Algorithm Name: SLH-DSA-SHA2-128f
 
@@ -379,9 +418,9 @@ Table of Contents
 
    *  Algorithm Analysis Documents(s): [FIPS-205]
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [FIPS-205] "Stateless Hash-Based Digital Signature Standard", n.d.,
               <https://doi.org/10.6028/NIST.FIPS.205>.
@@ -427,7 +466,7 @@ Table of Contents
               Hash Algorithms", RFC 9054, DOI 10.17487/RFC9054, August
               2022, <https://www.rfc-editor.org/rfc/rfc9054>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [I-D.ietf-cose-hash-envelope]
               Steele, O., Lasker, S., and H. Birkholz, "COSE Hash
@@ -443,6 +482,13 @@ Table of Contents
    [IANA.jose]
               IANA, "JSON Object Signing and Encryption (JOSE)",
               <https://www.iana.org/assignments/jose>.
+
+   [RFC9909]  Bashiri, K., Fluhrer, S., Gazdag, S., Van Geest, D., and
+              S. Kousidis, "Internet X.509 Public Key Infrastructure --
+              Algorithm Identifiers for the Stateless Hash-Based Digital
+              Signature Algorithm (SLH-DSA)", RFC 9909,
+              DOI 10.17487/RFC9909, December 2025,
+              <https://www.rfc-editor.org/rfc/rfc9909>.
 
 Appendix A.  Examples
 
