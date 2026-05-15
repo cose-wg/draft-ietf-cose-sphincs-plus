@@ -105,7 +105,6 @@ This document introduces the registration of the following algorithms in {{-IANA
 |-------------|------|-------------|
 | SLH-DSA-SHA2-128s  | SLH-DSA-SHA2-128s     | JSON Web Signature Algorithm for SLH-DSA-SHA2-128s |
 | SLH-DSA-SHAKE-128s | SLH-DSA-SHAKE-128s    | JSON Web Signature Algorithm for SLH-DSA-SHAKE-128s |
-| SLH-DSA-SHA2-128f  | SLH-DSA-SHA2-128f     | JSON Web Signature Algorithm for SLH-DSA-SHA2-128f |
 {: #jose-algorithms align="left" title="JOSE Algorithms for SLH-DSA"}
 
 This document introduces the registration of the following algorithms in {{-IANA.cose}}:
@@ -114,8 +113,19 @@ This document introduces the registration of the following algorithms in {{-IANA
 |-------------|------|-------------|
 | SLH-DSA-SHA2-128s  | TBD1 (-51) | CBOR Object Signing Algorithm for SLH-DSA-SHA2-128s |
 | SLH-DSA-SHAKE-128s | TBD2 (-52) | CBOR Object Signing Algorithm for SLH-DSA-SHAKE-128s |
-| SLH-DSA-SHA2-128f  | TBD3 (-53) | CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f |
 {: #cose-algorithms align="left" title="COSE Algorithms for SLH-DSA"}
+
+{{FIPS-205}} defines twelve parameter sets in total, across three NIST
+security categories (1, 3, 5), two hash function families (SHA2 and SHAKE),
+and two size/speed tradeoffs (small `s` and fast `f`). This document
+registers only the two NIST Category 1, "small" parameter sets - one for
+each hash function family. Limiting the initial registration to a small,
+symmetric set is intended to maximize interoperability among early
+implementations and to keep the JOSE and COSE registries focused.
+
+Future documents may register additional SLH-DSA parameter sets — including
+higher security categories or the "fast" variants — as deployment
+experience identifies the need.
 
 # SLH-DSA Keys
 
@@ -123,7 +133,7 @@ Private and public keys are produced to enable the sign and verify operations fo
 
 The SLH-DSA Algorithm Family uses the Algorithm Key Pair (AKP) key type, as defined in {{-ML-DSA}}. This ensures compatibility across different cryptographic algorithms that use AKP for key representation.
 
-The specific algorithms for SLH-DSA, such as SLH-DSA-SHA2-128s, SLH-DSA-SHAKE-128s, and SLH-DSA-SHA2-128f, are defined in this document and are used in the `alg` value of an AKP key representation to specify the corresponding algorithm.
+The specific algorithms for SLH-DSA, namely SLH-DSA-SHA2-128s and SLH-DSA-SHAKE-128s, are defined in this document and are used in the `alg` value of an AKP key representation to specify the corresponding algorithm.
 
 Thumbprints for SLH-DSA keys are computed according to the process described in {{-ML-DSA}}.
 
@@ -251,16 +261,6 @@ The following registration templates are provided in accordance with the procedu
 * Reference: RFC XXXX
 * Recommended: Yes
 
-### SLH-DSA-SHA2-128f
-
-* Name: SLH-DSA-SHA2-128f
-* Value: TBD3 (requested assignment -53)
-* Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
-* Capabilities: `[kty]`
-* Change Controller: IETF
-* Reference: RFC XXXX
-* Recommended: Yes
-
 ## New JOSE Algorithms
 
 IANA is requested to add the following entries to the JSON Web Signature and Encryption Algorithms Registry.
@@ -281,16 +281,6 @@ The following completed registration templates are provided as described in {{-J
 
 * Algorithm Name: SLH-DSA-SHAKE-128s
 * Algorithm Description: SLH-DSA-SHAKE-128s as described in FIPS 205.
-* Algorithm Usage Location(s): alg
-* JOSE Implementation Requirements: Optional
-* Change Controller: IETF
-* Specification Document(s): RFC XXXX
-* Algorithm Analysis Documents(s): {{FIPS-205}}
-
-### SLH-DSA-SHA2-128f
-
-* Algorithm Name: SLH-DSA-SHA2-128f
-* Algorithm Description: SLH-DSA-SHA2-128f as described in FIPS 205.
 * Algorithm Usage Location(s): alg
 * JOSE Implementation Requirements: Optional
 * Change Controller: IETF
@@ -331,18 +321,6 @@ Source code is available in the `examples/` directory.
 ~~~
 {: #SLH-DSA-SHAKE-128s-public-jwk title="Example SLH-DSA-SHAKE-128s Public JSON Web Key"}
 
-### SLH-DSA-SHA2-128f
-
-~~~json
-{::include testvectors/SLH-DSA-SHA2-128f/private-jwk.json}
-~~~
-{: #SLH-DSA-SHA2-128f-private-jwk title="Example SLH-DSA-SHA2-128f Private JSON Web Key"}
-
-~~~json
-{::include testvectors/SLH-DSA-SHA2-128f/public-jwk.json}
-~~~
-{: #SLH-DSA-SHA2-128f-public-jwk title="Example SLH-DSA-SHA2-128f Public JSON Web Key"}
-
 ## COSE
 
 ### SLH-DSA-SHA2-128s
@@ -368,18 +346,6 @@ Source code is available in the `examples/` directory.
 {::include testvectors/SLH-DSA-SHAKE-128s/cose-sign1.diag}
 ~~~~
 {: #SLH-DSA-SHAKE-128s-cose-sign1 title="Example SLH-DSA-SHAKE-128s COSE Sign1"}
-
-### SLH-DSA-SHA2-128f
-
-~~~~ cbor-diag
-{::include testvectors/SLH-DSA-SHA2-128f/cose-key.diag}
-~~~~
-{: #SLH-DSA-SHA2-128f-private-cose-key title="Example SLH-DSA-SHA2-128f COSE Key"}
-
-~~~~ cbor-diag
-{::include testvectors/SLH-DSA-SHA2-128f/cose-sign1.diag}
-~~~~
-{: #SLH-DSA-SHA2-128f-cose-sign1 title="Example SLH-DSA-SHA2-128f COSE Sign1"}
 
 # Acknowledgments
 {:numbered="false"}
