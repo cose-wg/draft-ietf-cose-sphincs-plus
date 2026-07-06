@@ -65,7 +65,7 @@ normative:
   RFC9052: COSE
   RFC9053: COSE-Alg
   RFC9054: COSE-Header-Parameters
-  I-D.ietf-cose-dilithium: ML-DSA
+  RFC9964: ML-DSA
   FIPS-205:
     title: "Stateless Hash-Based Digital Signature Standard"
     target: https://doi.org/10.6028/NIST.FIPS.205
@@ -74,6 +74,7 @@ informative:
   IANA.jose: IANA.jose
   IANA.cose: IANA.cose
   I-D.ietf-cose-hash-envelope:
+  RFC9814:
   RFC9909:
 
 ---
@@ -87,7 +88,7 @@ This document specifies JSON Object Signing and Encryption (JOSE) and CBOR Objec
 
 # Introduction
 
-This document specifies JSON Object Signing and Encryption (JOSE) {{-JWS}} and CBOR Object Signing and Encryption (COSE) {{-COSE}} serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a Post-Quantum Cryptography (PQC) based digital signature scheme standardized in {{FIPS-205}}.
+This document specifies JSON Object Signing and Encryption (JOSE) {{-JWS}} and CBOR Object Signing and Encryption (COSE) {{-COSE}} serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) based digital signature scheme standardized in {{FIPS-205}}.
 
 This document builds on the Algorithm Key Pair (AKP) type, as defined in {{-ML-DSA}}. The AKP type enables flexible representation of keys used across different post-quantum cryptographic algorithms, including SLH-DSA.
 
@@ -97,7 +98,7 @@ This document builds on the Algorithm Key Pair (AKP) type, as defined in {{-ML-D
 
 # The SLH-DSA Algorithm Family
 
-The SLH-DSA Signature Scheme is parameterized to support different security levels.
+This document registers two SLH-DSA parameter sets at NIST security category 1.
 
 This document introduces the registration of the following algorithms in {{-IANA.jose}}:
 
@@ -123,6 +124,19 @@ each hash function family. Limiting the initial registration to a small,
 symmetric set is intended to maximize interoperability among early
 implementations and to keep the JOSE and COSE registries focused.
 
+SLH-DSA is expected to be most relevant for deployments that specifically
+need a stateless hash-based digital signature scheme, or that want algorithmic
+diversity as a fallback to other post-quantum signature schemes. Firmware
+signing in embedded systems is often cited as a primary use case for this
+algorithm. Registration of these algorithms does not imply that every
+general-purpose JOSE or COSE implementation is expected to support them.
+
+The algorithms registered in this document identify pure SLH-DSA, as
+specified by `slh_sign` in Section 10.2.1 of {{FIPS-205}} and `slh_verify`
+in Section 10.3 of {{FIPS-205}}, instantiated with the parameter set of the
+same name from Table 2 of {{FIPS-205}}. The algorithms registered in this
+document MUST NOT be used with `hash_slh_sign` or `hash_slh_verify`.
+
 Future documents may register additional SLH-DSA parameter sets — including
 higher security categories or the "fast" variants — as deployment
 experience identifies the need.
@@ -131,9 +145,28 @@ experience identifies the need.
 
 Private and public keys are produced to enable the sign and verify operations for each of the SLH-DSA algorithms.
 
-The SLH-DSA Algorithm Family uses the Algorithm Key Pair (AKP) key type, as defined in {{-ML-DSA}}. This ensures compatibility across different cryptographic algorithms that use AKP for key representation.
+The SLH-DSA Algorithm Family uses the Algorithm Key Pair (AKP) key type, as defined in {{-ML-DSA}}. Reusing AKP gives SLH-DSA keys the same JOSE and COSE parameter names, serialization rules, and thumbprint processing used by other algorithms that use AKP.
 
 The specific algorithms for SLH-DSA, namely SLH-DSA-SHA2-128s and SLH-DSA-SHAKE-128s, are defined in this document and are used in the `alg` value of an AKP key representation to specify the corresponding algorithm.
+
+{{FIPS-205}} represents an SLH-DSA public key as `PK = (PK.seed, PK.root)`,
+where each component is `n` bytes. An SLH-DSA private key is represented as
+`SK = (SK.seed, SK.prf, PK.seed, PK.root)`, where each component is `n`
+bytes. The value of `n` for each parameter set is defined in Table 2 of
+{{FIPS-205}}.
+
+For SLH-DSA AKP keys, the `pub` parameter MUST contain the SLH-DSA public
+key `PK.seed || PK.root`. The `priv` parameter, when present, MUST contain
+the SLH-DSA private key `SK.seed || SK.prf || PK.seed || PK.root` and MUST
+NOT be present in public keys.
+
+For the two algorithms registered in this document, `n` is 16 bytes.
+Therefore, `pub` MUST be 32 bytes and `priv`, when present, MUST be 64
+bytes.
+
+The compact size of SLH-DSA public keys can be useful when JWKs are used to
+convey verification keys, including by protocols that use JWKs independently
+of JWS signatures.
 
 Thumbprints for SLH-DSA keys are computed according to the process described in {{-ML-DSA}}.
 
@@ -147,6 +180,9 @@ Implementations that produce or accept a non-empty `ctx` value will not interope
 Signatures are encoded as the byte strings produced by the signature generation algorithms in {{FIPS-205}}.
 When producing JSON Web Signatures, the signature byte strings are base64url encoded.
 When producing COSE signatures, no encoding is needed; see {{Section 4 of RFC9052}} for more details on how COSE signatures are created.
+For the algorithms registered in this document, the signature byte string is
+7856 bytes, as specified in Table 2 of {{FIPS-205}}. The corresponding
+base64url-encoded JWS signature value is 10475 characters.
 
 # Security Considerations
 
@@ -177,9 +213,12 @@ interoperability complexity.
 For many JOSE and COSE use cases, this restriction is acceptable because the
 application can already structure the signed content in a way that limits
 the amount of data processed directly by the signature algorithm. In
-particular, applications that need to sign large payloads, detached
+particular, COSE applications that need to sign large payloads, detached
 content, or remotely held content may use the COSE Hash Envelope mechanism
-{{I-D.ietf-cose-hash-envelope}}.
+{{I-D.ietf-cose-hash-envelope}}. JOSE applications with similar operational
+requirements can use a detached JWS payload, or can define an
+application-specific signed payload that carries the digest value, the
+digest algorithm, and the rules for recomputing and comparing the digest.
 
 Hash Envelope can provide operational properties similar to those sought
 from a pre-hash signature mode, such as reduced data transfer to a signer,
@@ -190,11 +229,12 @@ through a domain separator inside the signing algorithm; Hash Envelope
 carries the digest and the digest algorithm at the COSE layer, outside the
 signature's domain separator.
 
-Applications that use Hash Envelope together with SLH-DSA need to ensure
-that the digest is recomputed over the original content and compared with
-the signed digest before treating the signature as valid for that content.
-Profiles that rely on this construction SHOULD specify the permitted hash
-algorithms and the verification procedure explicitly.
+Applications that use Hash Envelope, or an application-specific JOSE digest
+payload, together with SLH-DSA need to ensure that the digest is recomputed
+over the original content and compared with the signed digest before
+treating the signature as valid for that content. Profiles that rely on
+this construction SHOULD specify the permitted hash algorithms and the
+verification procedure explicitly.
 
 If future deployment experience shows clear demand for algorithm-level
 pre-hash semantics in JOSE or COSE, separate registrations for HashSLH-DSA
@@ -202,7 +242,19 @@ could be defined in a future specification.
 
 ## Validating Public Keys
 
-All algorithms that operate on public keys require validation before use. For sign, verify and proof schemes, the use of `KeyValidate` is REQUIRED.
+Before using an SLH-DSA AKP key, implementations MUST validate all
+algorithm-related key parameters. For the algorithms registered in this
+document, the `alg` parameter MUST identify one of the SLH-DSA algorithms
+registered in this document and the `pub` parameter MUST be present and MUST
+have the length specified in {{slh-dsa-keys}}.
+
+These checks correspond to the public-key validation requirement in Section
+3.1 of {{FIPS-205}}, which requires implementations to verify that the
+public key is `2n` bytes in length. If assurance of private-key possession
+is obtained via regeneration, the private key checks in Section 3.1 of
+{{FIPS-205}} also apply: the private key is checked to be `4n` bytes in
+length, `PK.root` is recomputed from `SK.seed` and `PK.seed`, and the
+recomputed value is compared with the value in the private key.
 
 ## Side-Channel Attacks
 
@@ -229,9 +281,10 @@ Implementations that select randomized signing MUST source the per-signature
 randomness from a trusted and cryptographically secure source as described
 in Section 9.2 of {{FIPS-205}}.
 
-## Randomness considerations
+## Randomness Considerations
 
-All nonces MUST originate from a trusted and cryptographically secure source of randomness.
+All random values used by SLH-DSA key generation or randomized signing MUST
+originate from a trusted and cryptographically secure source of randomness.
 
 # IANA Considerations
 
@@ -289,6 +342,40 @@ The following completed registration templates are provided as described in {{-J
 
 --- back
 
+# Relationship to SLH-DSA in CMS
+
+{{RFC9814}} specifies conventions for using SLH-DSA with the Cryptographic
+Message Syntax (CMS). This document follows the same FIPS 205 definition of
+SLH-DSA key material and signatures, but applies it to JOSE and COSE.
+
+Both specifications use the FIPS 205 public key value `PK.seed || PK.root`
+and private key value `SK.seed || SK.prf || PK.seed || PK.root`. In
+{{RFC9814}}, these values appear as the SLH-DSA public and private key
+contents associated with ASN.1 public-key and private-key containers. In this
+document, the same values are carried in AKP `pub` and `priv` key parameters.
+
+The main differences are protocol and registry choices:
+
+* {{RFC9814}} assigns object identifiers for all twelve FIPS 205 SLH-DSA
+  parameter sets. This document registers only `SLH-DSA-SHA2-128s` and
+  `SLH-DSA-SHAKE-128s` for JOSE and COSE.
+
+* {{RFC9814}} identifies SLH-DSA algorithms with ASN.1 AlgorithmIdentifier
+  object identifiers whose parameters are absent. This document identifies
+  them with JOSE algorithm names and COSE algorithm values, and with the
+  `alg` parameter in AKP keys.
+
+* {{RFC9814}} defines CMS `SignedData` conventions, including how SLH-DSA is
+  used when CMS signed attributes are present. This document does not define
+  an equivalent signed-attributes construction. Applications that need to
+  avoid signing large content directly can use JOSE or COSE mechanisms such
+  as detached JWS payloads, COSE Hash Envelope, or application-specific
+  signed digest payloads as discussed in {{pre-hash-and-hashing-considerations}}.
+
+* Both specifications use pure SLH-DSA with an empty context string for the
+  algorithms they define, and neither defines HashSLH-DSA algorithm
+  identifiers for its target protocol.
+
 # Examples
 
 These examples were generated using Cloudflare CIRCL and
@@ -300,24 +387,24 @@ Source code is available in the `examples/` directory.
 ### SLH-DSA-SHA2-128s
 
 ~~~json
-{::include testvectors/SLH-DSA-SHA2-128s/private-jwk.json}
+{::include-fold testvectors/SLH-DSA-SHA2-128s/private-jwk.json}
 ~~~
 {: #SLH-DSA-SHA2-128s-private-jwk title="Example SLH-DSA-SHA2-128s Private JSON Web Key"}
 
 ~~~json
-{::include testvectors/SLH-DSA-SHA2-128s/public-jwk.json}
+{::include-fold testvectors/SLH-DSA-SHA2-128s/public-jwk.json}
 ~~~
 {: #SLH-DSA-SHA2-128s-public-jwk title="Example SLH-DSA-SHA2-128s Public JSON Web Key"}
 
 ### SLH-DSA-SHAKE-128s
 
 ~~~json
-{::include testvectors/SLH-DSA-SHAKE-128s/private-jwk.json}
+{::include-fold testvectors/SLH-DSA-SHAKE-128s/private-jwk.json}
 ~~~
 {: #SLH-DSA-SHAKE-128s-private-jwk title="Example SLH-DSA-SHAKE-128s Private JSON Web Key"}
 
 ~~~json
-{::include testvectors/SLH-DSA-SHAKE-128s/public-jwk.json}
+{::include-fold testvectors/SLH-DSA-SHAKE-128s/public-jwk.json}
 ~~~
 {: #SLH-DSA-SHAKE-128s-public-jwk title="Example SLH-DSA-SHAKE-128s Public JSON Web Key"}
 
@@ -326,7 +413,7 @@ Source code is available in the `examples/` directory.
 ### SLH-DSA-SHA2-128s
 
 ~~~~ cbor-diag
-{::include testvectors/SLH-DSA-SHA2-128s/cose-key.diag}
+{::include-fold testvectors/SLH-DSA-SHA2-128s/cose-key.diag}
 ~~~~
 {: #SLH-DSA-SHA2-128s-private-cose-key title="Example SLH-DSA-SHA2-128s COSE Key"}
 
@@ -338,7 +425,7 @@ Source code is available in the `examples/` directory.
 ### SLH-DSA-SHAKE-128s
 
 ~~~~ cbor-diag
-{::include testvectors/SLH-DSA-SHAKE-128s/cose-key.diag}
+{::include-fold testvectors/SLH-DSA-SHAKE-128s/cose-key.diag}
 ~~~~
 {: #SLH-DSA-SHAKE-128s-private-cose-key title="Example SLH-DSA-SHAKE-128s COSE Key"}
 
@@ -350,4 +437,4 @@ Source code is available in the `examples/` directory.
 # Acknowledgments
 {:numbered="false"}
 
-We would like to thank Roy Williams, Cedric Fournet, Simo Sorce, Ilari Liusvaara, Neil Madden, Anders Rundgren, David Waite, and Russ Housley for their review feedback.
+We would like to thank Roy Williams, Cedric Fournet, Simo Sorce, Ilari Liusvaara, Neil Madden, Anders Rundgren, David Waite, Russ Housley, Brian Sipos, Lucas Prabel, Filip Skokan, and Kris Kwiatkowski for their review feedback.
