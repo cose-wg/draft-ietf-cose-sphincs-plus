@@ -5,10 +5,10 @@
 CBOR Object Signing and Encryption                            M. Prorock
 Internet-Draft                                                  mesur.io
 Intended status: Standards Track                               O. Steele
-Expires: 6 October 2026                                     Tradeverifyd
+Expires: 7 January 2027                                     Tradeverifyd
                                                            H. Tschofenig
                                                                 UniBw M.
-                                                            4 April 2026
+                                                             6 July 2026
 
 
                        SLH-DSA for JOSE and COSE
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 October 2026.
+   This Internet-Draft will expire on 7 January 2027.
 
 Copyright Notice
 
@@ -76,32 +76,31 @@ Table of Contents
    2.  Terminology
    3.  The SLH-DSA Algorithm Family
    4.  SLH-DSA Keys
-   5.  Security Considerations
-     5.1.  Pre-Hash and Hashing Considerations
-     5.2.  Validating Public Keys
-     5.3.  Side-Channel Attacks
-     5.4.  Randomness considerations
-   6.  IANA Considerations
-     6.1.  New COSE Algorithms
-       6.1.1.  SLH-DSA-SHA2-128s
-       6.1.2.  SLH-DSA-SHAKE-128s
-       6.1.3.  SLH-DSA-SHA2-128f
-     6.2.  New JOSE Algorithms
-       6.2.1.  SLH-DSA-SHA2-128s
-       6.2.2.  SLH-DSA-SHAKE-128s
-       6.2.3.  SLH-DSA-SHA2-128f
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
-   Appendix A.  Examples
-     A.1.  JOSE
-       A.1.1.  SLH-DSA-SHA2-128s
-       A.1.2.  SLH-DSA-SHAKE-128s
-       A.1.3.  SLH-DSA-SHA2-128f
-     A.2.  COSE
-       A.2.1.  SLH-DSA-SHA2-128s
-       A.2.2.  SLH-DSA-SHAKE-128s
-       A.2.3.  SLH-DSA-SHA2-128f
+   5.  Signing and Verification
+   6.  Security Considerations
+     6.1.  Pre-Hash and Hashing Considerations
+     6.2.  Validating Public Keys
+     6.3.  Side-Channel Attacks
+     6.4.  Deterministic and Randomized Signing
+     6.5.  Randomness Considerations
+   7.  IANA Considerations
+     7.1.  New COSE Algorithms
+       7.1.1.  SLH-DSA-SHA2-128s
+       7.1.2.  SLH-DSA-SHAKE-128s
+     7.2.  New JOSE Algorithms
+       7.2.1.  SLH-DSA-SHA2-128s
+       7.2.2.  SLH-DSA-SHAKE-128s
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
+   Appendix A.  Relationship to SLH-DSA in CMS
+   Appendix B.  Examples
+     B.1.  JOSE
+       B.1.1.  SLH-DSA-SHA2-128s
+       B.1.2.  SLH-DSA-SHAKE-128s
+     B.2.  COSE
+       B.2.1.  SLH-DSA-SHA2-128s
+       B.2.2.  SLH-DSA-SHAKE-128s
    Acknowledgments
    Contributors
    Authors' Addresses
@@ -111,14 +110,13 @@ Table of Contents
    This document specifies JSON Object Signing and Encryption (JOSE)
    [RFC7515] and CBOR Object Signing and Encryption (COSE) [RFC9052]
    serializations for the Stateless Hash-Based Digital Signature
-   Standard (SLH-DSA), which was derived from Version 3.1 of SPHINCS+, a
-   Post-Quantum Cryptography (PQC) based digital signature scheme
-   standardized in [FIPS-205].
+   Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) based digital
+   signature scheme standardized in [FIPS-205].
 
    This document builds on the Algorithm Key Pair (AKP) type, as defined
-   in [I-D.ietf-cose-dilithium].  The AKP type enables flexible
-   representation of keys used across different post-quantum
-   cryptographic algorithms, including SLH-DSA.
+   in [RFC9964].  The AKP type enables flexible representation of keys
+   used across different post-quantum cryptographic algorithms,
+   including SLH-DSA.
 
 2.  Terminology
 
@@ -130,8 +128,8 @@ Table of Contents
 
 3.  The SLH-DSA Algorithm Family
 
-   The SLH-DSA Signature Scheme is parameterized to support different
-   security levels.
+   This document registers two SLH-DSA parameter sets at NIST security
+   category 1.
 
    This document introduces the registration of the following algorithms
    in [IANA.jose]:
@@ -146,10 +144,6 @@ Table of Contents
    | SLH-DSA-SHAKE-128s | SLH-DSA-SHAKE-128s | JSON Web Signature |
    |                    |                    | Algorithm for SLH- |
    |                    |                    | DSA-SHAKE-128s     |
-   +--------------------+--------------------+--------------------+
-   | SLH-DSA-SHA2-128f  | SLH-DSA-SHA2-128f  | JSON Web Signature |
-   |                    |                    | Algorithm for SLH- |
-   |                    |                    | DSA-SHA2-128f      |
    +--------------------+--------------------+--------------------+
 
                  Table 1: JOSE Algorithms for SLH-DSA
@@ -166,11 +160,36 @@ Table of Contents
    | SLH-DSA-SHAKE-128s | TBD2 (-52) | CBOR Object Signing Algorithm |
    |                    |            | for SLH-DSA-SHAKE-128s        |
    +--------------------+------------+-------------------------------+
-   | SLH-DSA-SHA2-128f  | TBD3 (-53) | CBOR Object Signing Algorithm |
-   |                    |            | for SLH-DSA-SHA2-128f         |
-   +--------------------+------------+-------------------------------+
 
                    Table 2: COSE Algorithms for SLH-DSA
+
+   [FIPS-205] defines twelve parameter sets in total, across three NIST
+   security categories (1, 3, 5), two hash function families (SHA2 and
+   SHAKE), and two size/speed tradeoffs (small s and fast f).  This
+   document registers only the two NIST Category 1, "small" parameter
+   sets - one for each hash function family.  Limiting the initial
+   registration to a small, symmetric set is intended to maximize
+   interoperability among early implementations and to keep the JOSE and
+   COSE registries focused.
+
+   SLH-DSA is expected to be most relevant for deployments that
+   specifically need a stateless hash-based digital signature scheme, or
+   that want algorithmic diversity as a fallback to other post-quantum
+   signature schemes.  Firmware signing in embedded systems is often
+   cited as a primary use case for this algorithm.  Registration of
+   these algorithms does not imply that every general-purpose JOSE or
+   COSE implementation is expected to support them.
+
+   The algorithms registered in this document identify pure SLH-DSA, as
+   specified by slh_sign in Section 10.2.1 of [FIPS-205] and slh_verify
+   in Section 10.3 of [FIPS-205], instantiated with the parameter set of
+   the same name from Table 2 of [FIPS-205].  The algorithms registered
+   in this document MUST NOT be used with hash_slh_sign or
+   hash_slh_verify.
+
+   Future documents may register additional SLH-DSA parameter sets —
+   including higher security categories or the "fast" variants — as
+   deployment experience identifies the need.
 
 4.  SLH-DSA Keys
 
@@ -178,19 +197,56 @@ Table of Contents
    operations for each of the SLH-DSA algorithms.
 
    The SLH-DSA Algorithm Family uses the Algorithm Key Pair (AKP) key
-   type, as defined in [I-D.ietf-cose-dilithium].  This ensures
-   compatibility across different cryptographic algorithms that use AKP
-   for key representation.
+   type, as defined in [RFC9964].  Reusing AKP gives SLH-DSA keys the
+   same JOSE and COSE parameter names, serialization rules, and
+   thumbprint processing used by other algorithms that use AKP.
 
-   The specific algorithms for SLH-DSA, such as SLH-DSA-SHA2-128s, SLH-
-   DSA-SHAKE-128s, and SLH-DSA-SHA2-128f, are defined in this document
-   and are used in the alg value of an AKP key representation to specify
-   the corresponding algorithm.
+   The specific algorithms for SLH-DSA, namely SLH-DSA-SHA2-128s and
+   SLH-DSA-SHAKE-128s, are defined in this document and are used in the
+   alg value of an AKP key representation to specify the corresponding
+   algorithm.
+
+   [FIPS-205] represents an SLH-DSA public key as PK = (PK.seed,
+   PK.root), where each component is n bytes.  An SLH-DSA private key is
+   represented as SK = (SK.seed, SK.prf, PK.seed, PK.root), where each
+   component is n bytes.  The value of n for each parameter set is
+   defined in Table 2 of [FIPS-205].
+
+   For SLH-DSA AKP keys, the pub parameter MUST contain the SLH-DSA
+   public key PK.seed || PK.root.  The priv parameter, when present,
+   MUST contain the SLH-DSA private key SK.seed || SK.prf || PK.seed ||
+   PK.root and MUST NOT be present in public keys.
+
+   For the two algorithms registered in this document, n is 16 bytes.
+   Therefore, pub MUST be 32 bytes and priv, when present, MUST be 64
+   bytes.
+
+   The compact size of SLH-DSA public keys can be useful when JWKs are
+   used to convey verification keys, including by protocols that use
+   JWKs independently of JWS signatures.
 
    Thumbprints for SLH-DSA keys are computed according to the process
-   described in [I-D.ietf-cose-dilithium].
+   described in [RFC9964].
 
-5.  Security Considerations
+5.  Signing and Verification
+
+   Signatures are produced and verified using the procedures defined in
+   [FIPS-205].  The SLH-DSA signing function takes a context string ctx
+   as input.  For the algorithms registered in this document, the ctx
+   parameter MUST be the empty string.  Implementations that produce or
+   accept a non-empty ctx value will not interoperate.
+
+   Signatures are encoded as the byte strings produced by the signature
+   generation algorithms in [FIPS-205].  When producing JSON Web
+   Signatures, the signature byte strings are base64url encoded.  When
+   producing COSE signatures, no encoding is needed; see Section 4 of
+   [RFC9052] for more details on how COSE signatures are created.  For
+   the algorithms registered in this document, the signature byte string
+   is 7856 bytes, as specified in Table 2 of [FIPS-205].  The
+   corresponding base64url-encoded JWS signature value is 10475
+   characters.
+
+6.  Security Considerations
 
    The security considerations of [RFC7515], [RFC7517] and [RFC9053]
    apply to this specification as well.
@@ -201,53 +257,74 @@ Table of Contents
    The following considerations apply to all parameter sets described in
    this specification.
 
-5.1.  Pre-Hash and Hashing Considerations
+6.1.  Pre-Hash and Hashing Considerations
 
-   SLH-DSA, as specified in [FIPS-205], supports both pure and pre-hash
-   modes.  This document specifies only the pure mode of SLH-DSA for use
-   with JOSE and COSE.
+   [FIPS-205] defines two variants of the signature scheme: SLH-DSA,
+   which takes the message directly as input, and HashSLH-DSA, which
+   applies an external pre-hash to the message before invocation.  This
+   document specifies only SLH-DSA for use with JOSE and COSE.  HashSLH-
+   DSA is out of scope.
+
+   A key identified by an SLH-DSA algorithm identifier defined in this
+   document MUST NOT be used to generate or verify a HashSLH-DSA
+   signature, and vice versa.  The same constraint is described for
+   X.509 deployments in [RFC9909].
 
    This document does not define or register separate HashSLH-DSA
    algorithm identifiers for JOSE or COSE.  Doing so would require
    distinct algorithm registrations and would introduce additional
-   implementation and interoperability complexity.  The algorithm
-   identifiers defined in this document therefore refer only to the pure
-   SLH-DSA variants.
+   implementation and interoperability complexity.
 
-   For many COSE use cases, this restriction is acceptable because the
-   application can already structure the signed content in a way that
-   limits the amount of data processed directly by the signature
-   algorithm.  In particular, applications that need to sign large
-   payloads, detached content, or remotely held content may use the COSE
-   Hash Envelope mechanism [I-D.ietf-cose-hash-envelope].
+   For many JOSE and COSE use cases, this restriction is acceptable
+   because the application can already structure the signed content in a
+   way that limits the amount of data processed directly by the
+   signature algorithm.  In particular, COSE applications that need to
+   sign large payloads, detached content, or remotely held content may
+   use the COSE Hash Envelope mechanism [I-D.ietf-cose-hash-envelope].
+   JOSE applications with similar operational requirements can use a
+   detached JWS payload, or can define an application-specific signed
+   payload that carries the digest value, the digest algorithm, and the
+   rules for recomputing and comparing the digest.
 
    Hash Envelope can provide operational properties similar to those
    sought from a pre-hash signature mode, such as reduced data transfer
    to a signer, reduced buffering requirements, and simplified remote-
    signing workflows.  However, Hash Envelope is not cryptographically
-   identical to a standardized pre-hash variant of SLH-DSA.  In Hash
-   Envelope, a digest is carried and signed at the COSE layer, whereas
-   in a pre-hash signature algorithm the hashing step is part of the
-   algorithm definition itself.
+   equivalent to HashSLH-DSA.  HashSLH-DSA binds the identity of the
+   pre-hash function into the signature through a domain separator
+   inside the signing algorithm; Hash Envelope carries the digest and
+   the digest algorithm at the COSE layer, outside the signature's
+   domain separator.
 
-   Applications that use Hash Envelope together with SLH-DSA need to
-   ensure that the digest is recomputed over the original content and
-   compared with the signed digest before treating the signature as
-   valid for that content.  Profiles that rely on this construction
-   SHOULD specify the permitted hash algorithms and the verification
-   procedure explicitly.
+   Applications that use Hash Envelope, or an application-specific JOSE
+   digest payload, together with SLH-DSA need to ensure that the digest
+   is recomputed over the original content and compared with the signed
+   digest before treating the signature as valid for that content.
+   Profiles that rely on this construction SHOULD specify the permitted
+   hash algorithms and the verification procedure explicitly.
 
    If future deployment experience shows clear demand for algorithm-
    level pre-hash semantics in JOSE or COSE, separate registrations for
    HashSLH-DSA could be defined in a future specification.
 
-5.2.  Validating Public Keys
+6.2.  Validating Public Keys
 
-   All algorithms that operate on public keys require validation before
-   use.  For sign, verify and proof schemes, the use of KeyValidate is
-   REQUIRED.
+   Before using an SLH-DSA AKP key, implementations MUST validate all
+   algorithm-related key parameters.  For the algorithms registered in
+   this document, the alg parameter MUST identify one of the SLH-DSA
+   algorithms registered in this document and the pub parameter MUST be
+   present and MUST have the length specified in Section 4.
 
-5.3.  Side-Channel Attacks
+   These checks correspond to the public-key validation requirement in
+   Section 3.1 of [FIPS-205], which requires implementations to verify
+   that the public key is 2n bytes in length.  If assurance of private-
+   key possession is obtained via regeneration, the private key checks
+   in Section 3.1 of [FIPS-205] also apply: the private key is checked
+   to be 4n bytes in length, PK.root is recomputed from SK.seed and
+   PK.seed, and the recomputed value is compared with the value in the
+   private key.
+
+6.3.  Side-Channel Attacks
 
    Implementations of the signing algorithm SHOULD protect the secret
    key from side-channel attacks.  Any implementation of SLH-DSA signing
@@ -259,14 +336,32 @@ Table of Contents
 
    *  Uniform sampling without information leakage
 
-5.4.  Randomness considerations
+6.4.  Deterministic and Randomized Signing
 
-   All nonces MUST originate from a trusted and cryptographically secure
+   [FIPS-205] permits both deterministic and randomized (hedged)
+   signing.  The choice of mode is implementation-defined; signatures
+   produced under either mode are verifiable with the same public key,
+   and verifiers cannot and need not distinguish them.
+
+   Deterministic signing is simpler and removes a runtime dependency on
+   a random number generator at signing time.  Randomized signing offers
+   improved resistance to fault and side-channel attacks that target the
+   signing operation, at the cost of requiring a high-quality random
+   source on every invocation.
+
+   Implementations that select randomized signing MUST source the per-
+   signature randomness from a trusted and cryptographically secure
+   source as described in Section 9.2 of [FIPS-205].
+
+6.5.  Randomness Considerations
+
+   All random values used by SLH-DSA key generation or randomized
+   signing MUST originate from a trusted and cryptographically secure
    source of randomness.
 
-6.  IANA Considerations
+7.  IANA Considerations
 
-6.1.  New COSE Algorithms
+7.1.  New COSE Algorithms
 
    IANA is requested to add the following entries to the COSE Algorithms
    Registry.
@@ -274,7 +369,7 @@ Table of Contents
    The following registration templates are provided in accordance with
    the procedures described in [RFC9053] and [RFC9054].
 
-6.1.1.  SLH-DSA-SHA2-128s
+7.1.1.  SLH-DSA-SHA2-128s
 
    *  Name: SLH-DSA-SHA2-128s
 
@@ -290,7 +385,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-6.1.2.  SLH-DSA-SHAKE-128s
+7.1.2.  SLH-DSA-SHAKE-128s
 
    *  Name: SLH-DSA-SHAKE-128s
 
@@ -306,23 +401,7 @@ Table of Contents
 
    *  Recommended: Yes
 
-6.1.3.  SLH-DSA-SHA2-128f
-
-   *  Name: SLH-DSA-SHA2-128f
-
-   *  Value: TBD3 (requested assignment -53)
-
-   *  Description: CBOR Object Signing Algorithm for SLH-DSA-SHA2-128f
-
-   *  Capabilities: [kty]
-
-   *  Change Controller: IETF
-
-   *  Reference: RFC XXXX
-
-   *  Recommended: Yes
-
-6.2.  New JOSE Algorithms
+7.2.  New JOSE Algorithms
 
    IANA is requested to add the following entries to the JSON Web
    Signature and Encryption Algorithms Registry.
@@ -330,7 +409,7 @@ Table of Contents
    The following completed registration templates are provided as
    described in [RFC7518].
 
-6.2.1.  SLH-DSA-SHA2-128s
+7.2.1.  SLH-DSA-SHA2-128s
 
    *  Algorithm Name: SLH-DSA-SHA2-128s
 
@@ -346,7 +425,7 @@ Table of Contents
 
    *  Algorithm Analysis Documents(s): [FIPS-205]
 
-6.2.2.  SLH-DSA-SHAKE-128s
+7.2.2.  SLH-DSA-SHAKE-128s
 
    *  Algorithm Name: SLH-DSA-SHAKE-128s
 
@@ -363,35 +442,12 @@ Table of Contents
 
    *  Algorithm Analysis Documents(s): [FIPS-205]
 
-6.2.3.  SLH-DSA-SHA2-128f
+8.  References
 
-   *  Algorithm Name: SLH-DSA-SHA2-128f
-
-   *  Algorithm Description: SLH-DSA-SHA2-128f as described in FIPS 205.
-
-   *  Algorithm Usage Location(s): alg
-
-   *  JOSE Implementation Requirements: Optional
-
-   *  Change Controller: IETF
-
-   *  Specification Document(s): RFC XXXX
-
-   *  Algorithm Analysis Documents(s): [FIPS-205]
-
-7.  References
-
-7.1.  Normative References
+8.1.  Normative References
 
    [FIPS-205] "Stateless Hash-Based Digital Signature Standard", n.d.,
               <https://doi.org/10.6028/NIST.FIPS.205>.
-
-   [I-D.ietf-cose-dilithium]
-              Prorock, M. and O. Steele, "ML-DSA for JOSE and COSE",
-              Work in Progress, Internet-Draft, draft-ietf-cose-
-              dilithium-11, 15 November 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              dilithium-11>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -427,7 +483,12 @@ Table of Contents
               Hash Algorithms", RFC 9054, DOI 10.17487/RFC9054, August
               2022, <https://www.rfc-editor.org/rfc/rfc9054>.
 
-7.2.  Informative References
+   [RFC9964]  Prorock, M. and O. Steele, "ML-DSA for JSON Object Signing
+              and Encryption (JOSE) and CBOR Object Signing and
+              Encryption (COSE)", RFC 9964, DOI 10.17487/RFC9964, May
+              2026, <https://www.rfc-editor.org/rfc/rfc9964>.
+
+8.2.  Informative References
 
    [I-D.ietf-cose-hash-envelope]
               Steele, O., Lasker, S., and H. Birkholz, "COSE Hash
@@ -444,21 +505,75 @@ Table of Contents
               IANA, "JSON Object Signing and Encryption (JOSE)",
               <https://www.iana.org/assignments/jose>.
 
-Appendix A.  Examples
+   [RFC9814]  Housley, R., Fluhrer, S., Kampanakis, P., and B.
+              Westerbaan, "Use of the SLH-DSA Signature Algorithm in the
+              Cryptographic Message Syntax (CMS)", RFC 9814,
+              DOI 10.17487/RFC9814, July 2025,
+              <https://www.rfc-editor.org/rfc/rfc9814>.
+
+   [RFC9909]  Bashiri, K., Fluhrer, S., Gazdag, S., Van Geest, D., and
+              S. Kousidis, "Internet X.509 Public Key Infrastructure --
+              Algorithm Identifiers for the Stateless Hash-Based Digital
+              Signature Algorithm (SLH-DSA)", RFC 9909,
+              DOI 10.17487/RFC9909, December 2025,
+              <https://www.rfc-editor.org/rfc/rfc9909>.
+
+Appendix A.  Relationship to SLH-DSA in CMS
+
+   [RFC9814] specifies conventions for using SLH-DSA with the
+   Cryptographic Message Syntax (CMS).  This document follows the same
+   FIPS 205 definition of SLH-DSA key material and signatures, but
+   applies it to JOSE and COSE.
+
+   Both specifications use the FIPS 205 public key value PK.seed ||
+   PK.root and private key value SK.seed || SK.prf || PK.seed ||
+   PK.root.  In [RFC9814], these values appear as the SLH-DSA public and
+   private key contents associated with ASN.1 public-key and private-key
+   containers.  In this document, the same values are carried in AKP pub
+   and priv key parameters.
+
+   The main differences are protocol and registry choices:
+
+   *  [RFC9814] assigns object identifiers for all twelve FIPS 205 SLH-
+      DSA parameter sets.  This document registers only SLH-DSA-
+      SHA2-128s and SLH-DSA-SHAKE-128s for JOSE and COSE.
+
+   *  [RFC9814] identifies SLH-DSA algorithms with ASN.1
+      AlgorithmIdentifier object identifiers whose parameters are
+      absent.  This document identifies them with JOSE algorithm names
+      and COSE algorithm values, and with the alg parameter in AKP keys.
+
+   *  [RFC9814] defines CMS SignedData conventions, including how SLH-
+      DSA is used when CMS signed attributes are present.  This document
+      does not define an equivalent signed-attributes construction.
+      Applications that need to avoid signing large content directly can
+      use JOSE or COSE mechanisms such as detached JWS payloads, COSE
+      Hash Envelope, or application-specific signed digest payloads as
+      discussed in Section 6.1.
+
+   *  Both specifications use pure SLH-DSA with an empty context string
+      for the algorithms they define, and neither defines HashSLH-DSA
+      algorithm identifiers for its target protocol.
+
+Appendix B.  Examples
 
    These examples were generated using Cloudflare CIRCL and cross-
    validated against the Trail of Bits go-slh-dsa implementation.
    Source code is available in the examples/ directory.
 
-A.1.  JOSE
+B.1.  JOSE
 
-A.1.1.  SLH-DSA-SHA2-128s
+B.1.1.  SLH-DSA-SHA2-128s
+
+   =============== NOTE: '\' line wrapping per RFC 8792 ================
 
    {
      "alg": "SLH-DSA-SHA2-128s",
      "kid": "slh-dsa-sha2-128s-kid",
      "kty": "AKP",
-     "priv": "P1d2M4reQEEt09DkH_hmBUPH5mb12TZkfdp6rs2oXjmDHSYmLJWnKQZRp2I6JmQaXPjlAQXhaDtlSspnzER1ag",
+     "priv": "\
+   P1d2M4reQEEt09DkH_hmBUPH5mb12TZkfdp6rs2oXjmDHSYmLJWnKQZRp2I6JmQaXPjl\
+                                                    AQXhaDtlSspnzER1ag",
      "pub": "gx0mJiyVpykGUadiOiZkGlz45QEF4Wg7ZUrKZ8xEdWo"
    }
 
@@ -473,13 +588,17 @@ A.1.1.  SLH-DSA-SHA2-128s
 
           Figure 2: Example SLH-DSA-SHA2-128s Public JSON Web Key
 
-A.1.2.  SLH-DSA-SHAKE-128s
+B.1.2.  SLH-DSA-SHAKE-128s
+
+   =============== NOTE: '\' line wrapping per RFC 8792 ================
 
    {
      "alg": "SLH-DSA-SHAKE-128s",
      "kid": "slh-dsa-shake-128s-kid",
      "kty": "AKP",
-     "priv": "Kz9ljgHX1ryVS2nE7Z_KtfIagmK5Oep1CrBYQcgK75DzFnbI9OqaLaMaevKzl1WJDr3mOmUB9fFg94rq3Lckug",
+     "priv": "\
+   Kz9ljgHX1ryVS2nE7Z_KtfIagmK5Oep1CrBYQcgK75DzFnbI9OqaLaMaevKzl1WJDr3m\
+                                                    OmUB9fFg94rq3Lckug",
      "pub": "8xZ2yPTqmi2jGnrys5dViQ695jplAfXxYPeK6ty3JLo"
    }
 
@@ -494,35 +613,17 @@ A.1.2.  SLH-DSA-SHAKE-128s
 
           Figure 4: Example SLH-DSA-SHAKE-128s Public JSON Web Key
 
-A.1.3.  SLH-DSA-SHA2-128f
+B.2.  COSE
 
-   {
-     "alg": "SLH-DSA-SHA2-128f",
-     "kid": "slh-dsa-sha2-128f-kid",
-     "kty": "AKP",
-     "priv": "xK3wSzOMhAAx-UW_cj4VeaItS8oe8T_VPHle5tzytYZyOhoZQi9-eEYxrhQIvYSiA95g19KKRovltEe0RNdjYA",
-     "pub": "cjoaGUIvfnhGMa4UCL2EogPeYNfSikaL5bRHtETXY2A"
-   }
+B.2.1.  SLH-DSA-SHA2-128s
 
-          Figure 5: Example SLH-DSA-SHA2-128f Private JSON Web Key
-
-   {
-     "alg": "SLH-DSA-SHA2-128f",
-     "kid": "slh-dsa-sha2-128f-kid",
-     "kty": "AKP",
-     "pub": "cjoaGUIvfnhGMa4UCL2EogPeYNfSikaL5bRHtETXY2A"
-   }
-
-          Figure 6: Example SLH-DSA-SHA2-128f Public JSON Web Key
-
-A.2.  COSE
-
-A.2.1.  SLH-DSA-SHA2-128s
+   =============== NOTE: '\' line wrapping per RFC 8792 ================
 
    {
      / kty AKP                / 1: 7,
      / alg SLH-DSA-SHA2-128s  / 3: -51,
-     / kid                    / 2: h'736c682d6473612d736861322d313238732d6b6964',
+     / kid                    / 2: h'\
+                            736c682d6473612d736861322d313238732d6b6964',
      / public key             / -1:
    h'831d26262c95a7290651a7623a26641a5cf8e50105e1683b654aca67cc44756a',
      / private key            / -2:
@@ -530,7 +631,7 @@ A.2.1.  SLH-DSA-SHA2-128s
      831d26262c95a7290651a7623a26641a5cf8e50105e1683b654aca67cc44756a',
    }
 
-                Figure 7: Example SLH-DSA-SHA2-128s COSE Key
+                Figure 5: Example SLH-DSA-SHA2-128s COSE Key
 
    18([
      <<{
@@ -787,14 +888,17 @@ A.2.1.  SLH-DSA-SHA2-128s
      7883a014f086d574cfc160b8c8067244',
    ])
 
-               Figure 8: Example SLH-DSA-SHA2-128s COSE Sign1
+               Figure 6: Example SLH-DSA-SHA2-128s COSE Sign1
 
-A.2.2.  SLH-DSA-SHAKE-128s
+B.2.2.  SLH-DSA-SHAKE-128s
+
+   =============== NOTE: '\' line wrapping per RFC 8792 ================
 
    {
      / kty AKP                / 1: 7,
      / alg SLH-DSA-SHAKE-128s / 3: -52,
-     / kid                    / 2: h'736c682d6473612d7368616b652d313238732d6b6964',
+     / kid                    / 2: h'\
+                          736c682d6473612d7368616b652d313238732d6b6964',
      / public key             / -1:
    h'f31676c8f4ea9a2da31a7af2b39755890ebde63a6501f5f160f78aeadcb724ba',
      / private key            / -2:
@@ -802,7 +906,7 @@ A.2.2.  SLH-DSA-SHAKE-128s
      f31676c8f4ea9a2da31a7af2b39755890ebde63a6501f5f160f78aeadcb724ba',
    }
 
-               Figure 9: Example SLH-DSA-SHAKE-128s COSE Key
+               Figure 7: Example SLH-DSA-SHAKE-128s COSE Key
 
    18([
      <<{
@@ -1059,573 +1163,14 @@ A.2.2.  SLH-DSA-SHAKE-128s
      ce7c6addbac48bf339e0fb4882bbc775',
    ])
 
-              Figure 10: Example SLH-DSA-SHAKE-128s COSE Sign1
-
-A.2.3.  SLH-DSA-SHA2-128f
-
-   {
-     / kty AKP                / 1: 7,
-     / alg SLH-DSA-SHA2-128f  / 3: -53,
-     / kid                    / 2: h'736c682d6473612d736861322d313238662d6b6964',
-     / public key             / -1:
-   h'723a1a19422f7e784631ae1408bd84a203de60d7d28a468be5b447b444d76360',
-     / private key            / -2:
-   h'c4adf04b338c840031f945bf723e1579a22d4bca1ef13fd53c795ee6dcf2b586
-     723a1a19422f7e784631ae1408bd84a203de60d7d28a468be5b447b444d76360',
-   }
-
-               Figure 11: Example SLH-DSA-SHA2-128f COSE Key
-
-   18([
-     <<{
-       / alg SLH-DSA-SHA2-128f / 1: -53,
-     }>>,
-     / unprotected / {},
-     / payload / h'66616b65',
-     / signature /
-   h'0b05f183774f75aa1c1c3f2fcb82271a52e12eeefc8bfbaa78195ade57d71a4a
-     85064eb22cdc20e7785e22c32941b5e0a86dc16b14f656a52ed68d3a2aaae017
-     ce18c16b1bdf4194cecd9830b18735000bbe9a0cc2d1c10654cd73782840b414
-     dec9689dd0cd52b7459532d459e60617b4b82512454ad25f8af87e33e6ede4d4
-     0215dfd4a16e5b26e00236e8f46b5d6e876475efdfec0182dca6da17503a3829
-     89f59f650f995add144b93e811dee02168ab27f8caa24cb3346d1324463f3afe
-     ce1f817364798ebe8d2f398c7a1d6a3955952b9c7c6096daca4b184642760cef
-     92ef355c64968fde941d3fadc02d803933ca33f4f95c5372992ca7b7e72c1146
-     53af53209476b55cebe75ecc07ec8a7bf1d6a21eb57c204eb2d3736df065a31e
-     2c4ad933b1ddf0aca1c83b8754bfa522bba00880b9dec123a899c8d4a9ad7f17
-     89a6159066be45dd60424e7ba1576bf6ba3e08eb9f097a689cd7db6369d16a2d
-     0288da9476427a0a97774d87d621191d677e32fda6c15c67fbcdbd9611e2bef0
-     82fe882d890434cadbbdb58f623196c395d3fcfd1209e72450131f550274e9bd
-     17a86dc8189b6653ce85d9729de57c865c56b377a5c8b6a35dd1f845ff1552c2
-     24b4ee98f4fd6fc751c82907f713336121e2a0590ecc80b3009dfb3889c747a5
-     f1046ba7002a4c6ddfdb8ad4bd6901d1e2376a7638ef627b743d3eb51bced023
-     5d777e7e2d4f1e306ed93868eb194f5fb48ff839df2b0dee7a44a1add28c5ebe
-     88b39f7d69fcd345d50865caae6ed75988f94b7ed0fd0fb80ab49887650ca3fa
-     c63db526b67ace8ed26a9d5d4e318078750f276f67e9e3d72d7f8e4d56d837bd
-     a9af65a2725baa7235a9dbf838d37be43845bd7795850da1ab72300201478c20
-     cc72dd875c012205e14b920a7ea9df15444c73a287f9e0db37d574f1b5ffb278
-     cae22d92549cf5f25110ffb1f4e3d5d2604b6288c1026d1c0acaf91fd647bd28
-     277f16172f3f1a26a9591a00d1291374b0eed8f7d6017a9e0dcdf9c09450e061
-     606449316f7d0551c407518ef6bb829fd210137d2416b410d89df08d6e4af15b
-     a5abea624e9b9db41e83e62d917299a017b0403453abdd32660c88c5c4700879
-     cd77bbe1fa4c57983d4d52d26a05afd48207c62891a9947a75897914a9a0f557
-     fff51dd19ad2b25457c411f788d70d641dbd9c34672aca95782dab595d38e339
-     8bbc5769870ea7d3a8863dbb442ccf3de6cb239ea61b6ab8ea69bc529e332480
-     56f1bb6700a15594ab24edec035b99556272cab8c079c4ab87a24f0b8b84d2f5
-     8d569c7234d80b5af78debe3868f7fe182b40f2d8fcda9b5a1b0d0f14e76fa65
-     2accd4c567fd16512d52b0d6b8bdfe4048ddce9e5759e3b7e065c93bcaf8cf5b
-     456fc82f667d7a1e935259e04ff7011c9f3543c9ae377e0b99bfc50691da469e
-     cb12a99f9e85ff40479a24719809ad497adbd83325b076af80c3d11baff7623b
-     9d184f29cb1483992be1d7560d86c9f63fb40b425181ebc846d49cd7be5fd483
-     832ccfeec45d34bc2e1265c82d6f614555a92be778f57852427e74b6e5f11091
-     2066116b9588a1336c5a3829fb90d3159c22f1d3ff85ffcdb464c831ac1526ad
-     5f37c4904bd3aad8e0b22f5f95a5aa45e35d3db9eb67f755dc3a2ccb13e017dc
-     8e3f09392ebfaf3ff5b47c0c84de7903951e24941b21aa53c2381e79341a0008
-     0d0e7097fae14e25745d8cfe258bfa4566b269c5399a678ae69fecacba16662a
-     9ecdb8520adb2a6a9e645e9f1fdea8bc480d40838f55aa088a6c9d2a21391a90
-     7b9112ad721c21c21236c2292fb8f085f10005891f2567d1755fe6c32a57da87
-     95ad49cdb9820d2fe421fdd9e9a0e1026db69b7e127bba380cc4385f5caee946
-     aa8625ac177c98562853a96cf344ddf87dbdd32f2ebb77c5c30dc024114870a6
-     aa950f168b21295f82afa0748a723f9bea78bb16894cdfb24400dfe64c80b469
-     49710eafbf2b1b4b02b6bdaf03639861c5ca03ad26ba23e743d4189f5868a3fc
-     e497f7e29246cdc51f1e7e661fc620a0cbc5e5ff53780dd35eb7f4a62b183c29
-     1b6ad4a88c4ac951d238576a2b3155243d0a26adf138af8a74534307389a4387
-     2a0d066394db0d2adceeee1ae59ff3ed2a859dc64a579d7671ba2826d75adfb9
-     4d14180840e0b203a2b873bb9233e2e3bc05e83a082428c9ae1773fba8caa110
-     6dd5b42eb1c45171b71b8e0aa0d37061918cc6b5ffe35f0de84fb72219c8e819
-     8b0873006979d830c1503efa415bf44dcf650cf819ca2adb1be0de33acdf8218
-     7ab335d876f86ddc7cf0feaa64e7584407020011e8d9bf9aa6681d81a88545af
-     44b5bc3283fb69765df526ce142f1fbc82cfcd7dfa021e1df14fe21c5c843757
-     7011818f3ccf0e25e58072afedd79daf1ed74a5357a7c5d72b4362c7ad6fb3d7
-     ae574ca88c19f2fbef047155167e8abb3696e5af9512298ae94916a221e87a2e
-     0dbdc95854717420f3d27650997fe59008b353892f5bbabbf41604539ddee22d
-     efee6169fd48be3745dd98ad1a10f1a77d09280e62d1bf376a9de0dac110daf6
-     18a4b0b3374f219ce9762569664405f39954ea4b100041bdf8eb5439408c9b15
-     30a29aa48f4504ead71e6563f68cc6c88a962b14e99b4761ab2eb1d56cba6994
-     e8499faea9353ca0be2ede2bd2d1f129b3a5b3dd83fadbdc7c8edb0526ed721d
-     36061706f94cf44628a5e3b745c8f0ae7f23560f860c3c7663a7ee67a0c9a464
-     c856a22a44ad49995df7cb1b08acf29ba15406b86fc9ba5ac5e667c971418d6b
-     dcb5385b65751fd33ad057b45940273354c80b66a20704d3b9ef466104596a12
-     fdfd455f80c533c63e8c272280529390df81ec1e6294ec0dea67f8eb32f7f1ac
-     01a540019a252e4c7c09d5cff2a0c75f8e0c909df5c0b39c714442db2719ce41
-     c712e8a06f79d97dc5b3b6004fec38f07f25e01e8964c237c66e20c8b2e272ac
-     d136b182c426dbf704df88190387a5a21ea5818b1e154dfed18a8337dc2780ab
-     9e1e060c50433fe04955314cff1e1a56563c154fc8a6053b91f627a7784ca2e6
-     402c02218c91d8dcfe5bec2c1f4e94f332bfeb86e38029190ae6d2396b37ae51
-     834af6b08d5e620a87076a8fbaa6867ba64d01636ad8fdd209887eaf8ea7317c
-     eb0aed78415d2eedd7868d1f6c75a7aedeae87d7bf99b20e3bdb1b13401fd7eb
-     f74f5456708834dba0c7ddc64e0daa496b8e6b12638cb9330a9fb47ea55379a5
-     9792dd2ceab1a9d7c7dc7143d9410a67656049eeabc72890def8e82919d1e72d
-     1f628f7150ba69459a48af274b331ac15c731e7dff73aa53a7257fd31e3bb355
-     17082f36154b3fb10964ee6d66678b311a28e81ad20c2d258f07c5e3e89bcea0
-     782bbbd1e9385f54754d7674b33722743f19f6e4f59e8efea32675df190aa25f
-     8359e6bc3373490afe4f7a029b1eda94005976e2ce827b1b9fbd20f13658bff3
-     9aa28fa53ccd3cc4a9bb35aadd73f884a0ab6518961dbacb1aba6e31e315a38e
-     b1a6bfdc910cb6f722edd7cdcab4df020dea5f49df64ad05e319c89d035bdc7c
-     ea635e6d9ab9731c5b9516a966552568e6b3305a6c5ce4d29c74bf1d6cd63b5e
-     bd623f9969107e6ca9886cee0b8ac8cb73ca0d0c8268a947c7332e636802d8ad
-     1fff7d17ad45dbeea8e5961c1e34c803c9a8c46ca48f7fccd0fc09448645a0b6
-     490d6ac39971fadd18abdc38eb74b7ce07b81b801188ade3ba0e77946fb9c8bb
-     f77cacb958fed79f4ff643dbda5372229bbbe387ebcbc6d10b92c581351ed9c4
-     7275f0a88c2f2a982b302f30949d530026b7552b55405ba11266c677897f0129
-     baf71793dfe26fff94d9e707e12c153a1cf8fbb154c23d5af743861326af13e1
-     c0f0a6951ee75684e65423ba71c38748214155310d2e95b4b96f1cbaf3037fdf
-     98ca614dd86bef36a79a5bd9e4cda2e782b2ebbbbe027e895e839d63095ed165
-     d4a5668462634cd0e4bbbabcea94c3ebb930ff953d57ee8833f5ae378030d6bb
-     ea2975aa94ce34485215fe5f7cbd6f0e4a19e9b646dd2a62fcd778795d517a1c
-     9f67ab0e1ee5a1a684e7eaa7164e5d05ec711101c4a0008df0edfcd7ca2e9935
-     01d1a009adcaf31d7ee874d6397915c972b71de6cd5fc07f0eedef4de29ff753
-     c24fb41d610a321e70eb31dec5ef2a5841cb8645b4e0dcda8316389b99d704f0
-     9f1470a62381a6b9f511afc9442894b29dd8da9b8e0f828bfc3c994e94d50cb9
-     9d38b61f94680b0f86fbb325d305ef2d510914b694eae540acff9fe25479704d
-     0901135b156b2ea34ab3690e1e6b98ca853b148bd1ebacac3068bea483ecd21a
-     c6b4ba6c60e34bc6b7f386df6749a2b6af77d33426308c03868f3276bb3cd695
-     f8f65325cb84dc488d250de86febe07d69db3521e4e6114efbc49075dd090996
-     721590174d814af89517fd02f3be6a0d6e97370170078a3eaf58748ec9e486bb
-     d42ddcee376f6e3feb5f2f1b90c7896b638414300de2936a3bf28929bbb5d4c5
-     a292ec29c9d7b4556a5f3685afed2b26a8999efa2b63dae5ef6806755557e660
-     f38c4e9601e3d4121fb0c5421641344ab60bd8ae3eaae2c147b8becb5e7889a9
-     755618f3f2e778fe45061d7ab0b3f16bfb686dfb443759599e344f52ae0848be
-     714397083453a1ca362a85ff7348b59ec90cdfe96a7ef4fb05405eef840e58a1
-     5e6d4a1bd6fc1f83df0783b4cea63b13961d257d755e1beade1f9df779667b2a
-     fd2abe6f967d7a0b03ce33616d61ca99118c331076af82c62dde8a792bf17b18
-     b321a58271978f3bbb3d92d73aa33d405ade678aeb1c8cb15818da94fc6e96e4
-     72f8c55498752e4d55b7483efd6338cf08e2e618a62dd4f6e3f710da997c1533
-     5aae43ddb939d1bb99945fb1f3ac9c5a2d2e498646ec4cb44d7c53dbd56fc64c
-     62671798b948df0de1bd26a873e0d389a861a38aacb372450b9e6f2997d983e9
-     5c6a508adc0af538dc6e438b419b3dae07cb79cf83a9aa7c5be9c4d502c9f9c9
-     8739624980896eb48d89650ff171d3c4e38ac24133a484e00b27b9daf8496cfb
-     736f9833054c9e2ef7e6dde65bc998ee4789ac16ade8e3a92a69129243e84618
-     dce759950c6de8c1a07aa1338f8f227723cf3e5b4b393e6ed4f154ddd9bf7998
-     ec9a2703c8b1fd20e80eae0171f3a233034f39d1facf526de5bfee0ffada3829
-     396be4665bd7018ee6ed029e5ca0391289f5895c48f696f8b372deca6a5c65b0
-     57853fa708a7e5809083cf2a3aa6b027dca886cb247dd9bf4e3e136d859ff322
-     88404dc4300d61c46596ab00b7ced26b163eadf0bd0c8e579faa2715c2fb45e9
-     73165e05a644c003b2b46aa9f34969c9797d2d1732518032a651e29450646d3d
-     c4a1161c7d1c529a7846a3ddae90b6fd2fb64afcc5589d94124b034a210de2a5
-     f9c33e193c6745d4051d5c69cd0ab3622ea0143fa4db53b6e24c894be5ab2bff
-     9dee6fd62f1d0bf65a1f95d9dfac5d0a22cb8357ab322825c8f20f82160ab2d7
-     fa77892780d3ccd582403d31600326859a06ba37f9a197bfe5086580e205d29f
-     30b7c8409fcb57d23bc23d160ac17ac55141dee16decef4e887a51d986d6b524
-     a6af33c0ea984e9acee78a1ea0ab9db9bb241f60ea6446ae87046e9742576c76
-     e8c81bed5909580f926f79ba3bec03fe1fb98160e9ca27c0d05861a7fd048c29
-     da7216f669f33115c67849b7ea3e6bffc479312a1f6f7648849ec9ef4fc9e0ef
-     d655e4284e49cf6b9ac1c4fbc5040ae24a6fca67c7229ba164c460e34af01085
-     da9ad80469e31066493bfdde3439725dc18baf626559768c74e444a98364de95
-     2ad6ee860398185d074ac091ea6979877d9b0f1234cdcd28fd344ec3602005bb
-     d8c35acf9ae0156867b019fd83b0a9d83d75eb4343383a50d033c935a404e6f7
-     0aeaea1b5708779ebbd313bb9fbf0b1d542b161e680d68f79f2671f26e867105
-     d505e80f4ce83d66c51693a56db5f648727ae60b94f89ab6404b9fa5b22109ee
-     df3b6963b5127b93b424cdebeb130f8447c06cca281df5e8386f2b1384997743
-     d5568d35dc8b3c6bed5d573fa9acacb719c1628ae517800e747eacb3aa77edd4
-     7a5186a440e31921d55d9cc7e23bb1683890094bec74f2efddca576b6cdf27af
-     7b443b9ba0b28721a48059f17cebc96feda65f5eddeee3484d886c2863b40d85
-     199f69719f6118f72b6e2ab5977606d830a0b97f2bcccf371198bba07646ae2e
-     a08a4dac259e81f3a0a6a7f0c2eac54fbe3549a84c8dd22170373f2fc2fc1ed4
-     9eaeacbbb1d02425fd3662209d3d250c4b92bcb2d47e5082fab071d82569bd95
-     97959f1373a9cddf405208baed59f155ffa27d70521842bb99bdfd87481e9480
-     5e431fed2f95c628b7a4c480706b24ceb9fab8819f8bd2c5d9e149b7c0cdff30
-     589c64620e684b0d6fdedd96a3fecd35a6da747e52eba92a525196ed40b2e5a5
-     4e34408da5cdd7f9cb7a6ef5de9b1c8bcedf75465d13033f4023b2ba4df2e7f7
-     f674e7c829a631424e578ac9f5e92e219d23e75ca6161a66e2c8ebb67c62ba3a
-     cc168c8cab1b3992d51c75001c068815ba23495d7da3f61d6d2b1f8197f1152c
-     a0b951e4259d038607b3c2ec68929cf247d65d72b0408484e311b9457a557b21
-     9c33b55ed228b7d9e8e15135eb5ff217f2638063ab158d80dcc507abc2fd9d29
-     ce2cdf31fab414f33c6179dd9d266131f61dab61c934210a236e0cb4c4877d86
-     f4d377c22f842def6be6eeea306ac4fe322e7948df743c29725cfa835d4926de
-     fafe1827ec70fcda47ff31536993a2aa506303a2112a6d44ae1aa2dae3c1a3ed
-     524eff8a28566750a5552137f60bf5d61423194aa794da83e5b9aba2c72f3a52
-     14e4f520c1d276ea1e603a84117ee27677eccff2689f611e23796d812968fec9
-     e49bb6bca47438c00c39fe7bcdf395ae4cfb8d6fe55457343cd56d3130ea4d9a
-     6d33d9ebce8e47471dcd088dd6c69063e11790a9badea1a96d94ac45a1be550d
-     43aa47ec4fce1e834da4e9c15c2dfe4fe1156569c31ba594c9d2587eacc39845
-     0731424daf4207c39f05903c3ca515fe32002f3fec52945f90ee6216badf6fe3
-     8d8b22f0c4551fab07ee23aa69fd10843067c20bebeef7b75790a2e2aedeee11
-     adf8f3b67fe609705f03efbf157ae540e0808d227adcf35dacc6965bc489450a
-     3e184740000463ad7567b1ec521ee863f31072d4211eb98186e9c1374e40d06e
-     112866d8fd15ac162f1f11432550c674e0eef52813451b5846fd4d84646966b1
-     fb9f69e42bac25da1c4e8f5e96302dc57f21293c9bf8aae9f1f7293c78c15183
-     f106d1a741957784b4d584e0d288e519b27d9b9a1c6c2f3b7571408461c5d048
-     67c3dd2078dc06fa24a25c373739e16d1845908efca88d23dfc79b0e6f76db75
-     29d7b44edf00062543d9aa6354853add699ac1f6db2f455f698f0041dde19dc4
-     7d482ed35b24b68c8c88e6e4c57699c618beb4fc9f2318ec6b129e993b1bc14f
-     e6ae3b9240560c4f33d2ddbf1ab0d8ca79d5b4b5922d08de3d89e4e0f7c691ce
-     44a08ecf36db736ee5d150dd27d383b27b06689991c8d5dd62dc4c3777de7d0b
-     fe316fb2c77f3c9f6c5e2eb686ed4e428f567dd0efd7041c3e14a661d39fb89b
-     9f25a1f0662bab5b10520fdfbcb328fa22401957769db2df467c1dacd5e09a06
-     0df9f6e967fe20e46a289ad5c9705828648bb7cf0fdd79342aa5a8e4e0059b26
-     008d019cba58c6c7dbc76cf051791efb11bdb3046dddf0d94ae14c7fcd0945ec
-     c2f97f69f6c2ac5c3e48a2867183b6926d169a0c295757511c65c3da6010b200
-     0a84a941fbb9d89331ec9aae5fea2c10fb46f2695fc3a3893bb2b1a4c3698322
-     32ab6f1cd906c289729949a206d710e85ba904f41112ad5e365e1882bdff34fe
-     cca3757104dd232ac3de1b4410ec6dd129a5e40aa0eb7f3f680a5241e11e0de5
-     288614504a26f4b37c74a88c866f88d5cac373a5d2c31a82202a984420243efc
-     a2ed6c40958a3c437e996a72704fd08f1c3583aa7d2c8b4fda6abb96f05abaa3
-     c8fe03bc915268b7c1ce4f47eb3ff4ad569185460bc4810c2e7179b60c7823e6
-     79229dc5f8cb4d034711a3131d76e3340bc8aceffa08e86d88c430ba87cb05aa
-     a4de8929810b7f4fab9f1fad9d3f75f73b54f323489bd6e890d26bb00da6ff1b
-     0c3212a4ebdeee5bf632dedfb5d25297b68ec7433d2494b96b588f1483cd0b87
-     7d9623bab96271f73aae73d919ebb4516d4ab1b842508b7f177245f103bf058f
-     8410102a6ecbcdd136106243a74faa051253ae5037079fd7de87e7f5d5e1882c
-     24880854e02f2db380c73280f2e12f41347a05bda8c511a0a523ef7230dd2d59
-     eeb2946a8f3ea9b3426659c1e7bc2d28ad08b5c4667a0d2858a0d119bd2ff235
-     2ef6090a4f99b8699e4e71a3c86ff521235f5c3b71ef1232474022fba02bea68
-     0acaf0fa1a80f707e936e4ca5817e95e3ead04b1d8833ea586b9482468703ac0
-     7dc3420bccbc9be521260d9e626d5ed8c49ad5b8ea1e783e903e2ca3f6cdbbc0
-     cf713703485d8598ed57f1fcf7d21bd431b40430d182f6ab5c1ae18a9849fbac
-     d61865035d0d118b1935c48f84b673ee05a38f4fe2831877698a85093d816bec
-     00f37a33c5a34a79b644eed66cb73bd2d1b612f2652d75865762f95819d9cdf7
-     318289ef6892ed1e49db42af95b2ad89473c004902cb48e39d7bc7860dd89e72
-     05de4d4ec8d834dd40aa31d53c503f74eca019a854b544b7064d44d4a5900bf3
-     9fd453360d826e0f1254564fd144f21bf6b60d2cec1f15b5602f4261bb4cfa0d
-     a53fb85c620d80978c4c6f26358c6363114cc2e44d1b64db2035556487d11bd8
-     95988e5c37ba7fa45683a86b096fc800561b0dbf261afd7c46ae689d9ce4dcb7
-     c138bf44259c16836dd0ee188f97fad99b2f046c6164a550479153eefa83c82a
-     5deba58fcb899f9e4a53a0087ef7de9a869e8d2573d95caf5bca1e2cd15356ba
-     2ee0a6d0a5b9e7de63afdfb3749643d19d997a5bbf412fc12ec6996c21280e31
-     cdbbe9651880e56454a2e76c66719fc272a012c411af80c0c5bde03dc100270e
-     f0f7fac57d07035443d09b8209b6684778f88459d2a99223ad8ff15554686bee
-     aa55467541a9f8f610a6bf1291a7740d6cf778afbd80ba11c3c997b94448cff9
-     ede46a83e92cfd5348f9c43f44c5f051e469834143c59b47fb5c450294690209
-     66fef7e60532c11daaf180e0ac8663877df937eb76d47d9bc328efc1016bfece
-     6e5d1ed9e06120f2ed82d334155e89e3aff57788d28802b984993d8f58a318ad
-     6395542710a559f813c4189d6c4199343e807c587bff1e5f8029a11b93c64f77
-     4d8cdb02b3213852a6859c4c344abafaea824a07e78eaf483a0f98e56f882cd0
-     ed8c672acf0c65da43b628e62daee25c54a35fd3d6f049025eec16b24ab7412b
-     fc6cc766f92c8c4edee25ad269821e347f0d15d5d6291da169280b9d3233719d
-     26189eedd0459458e531158854e4a0f7ec98f9ed1f24c2d7da0d62e984d6bd36
-     0e5d88b8d1e3a060d7bd463f9f5c4cc69c8eeebd3988bfa646949e7135d29ac2
-     b576706504ed926ab00d110b498c28b4a306ff5a2087ec02e3e2637685a5c450
-     6356c15ed9c3d53cd935b2e8de43e97afa2e4ec5925a43b7da5c184cb552d99f
-     bd550c9cec798bcfc060ba0c07704717a4ebed3301a0e5f4fef73daf4a7b3b69
-     23357e4d50272da48037a75b55e57034aac3e446a27151b2eecd0d889387ca4c
-     c0bb41f23a994c21162c1c459911fd5d372da368dfaf5b3f20da4947b1c31813
-     a60b474f57dc38188433515bfdda3435ca221431bf5c3b8ccf4dc2925c6b6443
-     e7f38299b288281292a45b380d9e0474e50edbaab7f7686e9e3c9595dab97c6e
-     cb48a81fe2a6029c50a219822e705bd7f64eeda1974989d74de79c3d4f07ac67
-     f4c15bcfcc75fb8861b394936a6ef86229ddf3985cc1af0edc022c1e96874913
-     a3af9b53ee6b6cb4f887b08b52cb1c684113c47b25573cfbd26718e1f313ed64
-     9f649e81537d98c21c0a857eacc344d7c660c1e13dead8dbeb2937089bf3a987
-     56d72612e1063278a7c997c69f58336c40f82fd5aff04918f3e6467495d1c0ff
-     03434ed93a04e5e14b7c5dea777f8aed5b2f55b23f29bfc6f23057f2f0b4aa72
-     af7423c2de559b151cb2790ac34b71c94eb16f40de3b5a351284a27707511e1d
-     6fbc1ecc8ba42d95cf8b8edc84f5b092689ff81c36f9afbd37662b3408aa9510
-     69a599c2ab50031efe30eec22da5f8f1ef43a713d22e75915b2e924f129bebd2
-     cf75dde8e81c0f399e124b000bbc342ec1d47baf58e76b1823fd1a81046ee407
-     ba88ee916d4a87bfd68c44f5ef6056b641a8feb44397a6273659570ae4c8dd85
-     8e3f3d2b7c3c97af42d15ddcc40cd9bbfc5d41e2a9ee77005a51efa609527c12
-     c142abcfa70907811b858aad13f645fdb750c3d3b5457e69e0f17692e8fdc199
-     4daeaa1b83340a799d32626fecd5d4b9929513fda204524f61c4011a40b05dae
-     c75c82d25d1b4036ddffb48f6e0db192e8c95427a5472fba5bc7fd86fc6208c2
-     1dd4aace7674137e7b9ef362da3b8afd53ed86258d639e59e486a49a4f405572
-     9211b4f26667536619358159a15ab8f80bd44dbb21a8240c1246a365b5d9d46f
-     b67aecec7dfa2a3ac8dc0fd39ac9e18dfef0ae06cb9288612852760e7c26bcc0
-     ea50cd4d50500151f0b7caf18ecab4c5b98c1d221bcc2851be564844e287af59
-     7006e98d89631183e970e6b6dda3cc2a80f7eb2028fa1f57cb3a722da372dd2f
-     f90ac98352c7de7cb269e3e1713fd9455d8bca410c6f1c7b5aba8952d7ccd96c
-     6ea1bfdc70038d4b645ffcb8f3703ca1ee7628396e6b90712e961ae4c0d7b43e
-     c1a2cac42b86d867b23effbf3820307579c7a9f772f721d20095e397e9eea977
-     97d5781cee11b6cedbab434b0e626f0d74a2b0db8669c0fa7737cbe8fd039165
-     e3e4385feda1f606ef8b9cd3767ee9663bfa11e7254dae5c23551d0be71ecc5d
-     588a95b7520adb0632614c33648ca6d4431bf83dcf00593a6bb0a6d6565b4035
-     4c3d0bfd9e75c6d3d7042198d80976fe0de23458099cbbf2d527ec0841036d11
-     48a20e32082cfb1356a78904c4e1bc88eeb9cff6216f5a356b29776261ed2a8d
-     e512e77b2468e6ed97cb0f194ae0f3def8f88f4714ebfcd7efca9d2f61fcc6d8
-     63cffa2120e1d66069777f3c21bdbbd6bd6352cb706dd634b58646a1305189ec
-     14a27c609bfc212b69a5cd065a826f4dbe1f4e79497bd34e76a01c3d5acc63e1
-     8223265811eea4119b02cac0ba6cbd52ea01389787a342d0357c65f83db164ba
-     33067b53f892d1ac068572eae29388056c8de6da212cd6ed4c97fca632bacbe6
-     5392cbe244d24e7e926999cdc2f6ce149a1081a20a6020d70d0fd0aea1cb11a5
-     7c812166da08f70470fce2677af2a460043656a2c91f80e2f5054410bd0664f5
-     b17a9e39c0063168aa41d10b9ff05aa6fa0d61ee83d94f7423f61a1c34a0b0c7
-     7b10a88546ffc20474efe27e72334ddbccb9a80048c400601249729567ad3983
-     053c66fe6de44d456f003797413232ce29da048f7dae27b98ef6e70f0a7ab9eb
-     fbc4c1784054d0e6a1705a405fe5accc666308c471e4091a5be0c82fa8824423
-     71bb1c55a729bb4e647606cc43344945923039360e7f6227b09d07cb6b29f8ac
-     08613bbb820a83a0fbc7e001bad527faa097a24e116ca411ca39a8f6535b46bd
-     4328feff30566d2cb4a4bf0154aa663236368c69eb36765cabf5f0914f8a638e
-     74ee1b5652fe541b567cc8e1c08bc6830e2274b7b4a809c32bb6d4aa940b35ca
-     789dd29de9f18aad7d34c4a9bdeffe541cdf0bf86b1ae7765086c76fa8b3b310
-     50be91acd0d842f0dcb55f1d61d2304cadef179dcd993ea43898b7b958f3d2e2
-     2b6025f8927bd685fa43f9b95f1a22e5d78966938feb0db8e1d03c3d27e91936
-     040a979bf2eb1e310f06cb3aa4017b87e8bf9a894050b24d1719ebf65ad3be5e
-     ceb9684bab87986c8f525a49fa84de0eae671f73bc7c352dde9cd807b5e83f8e
-     cc4a3033343eae25df4959139a743226f9ff4d16aed76d9ad3cd1a18bfcf3c5f
-     6fa7376d5d16ed2f7579d178a32777352b6187a33f0e7fd672008205390a2f6c
-     841a1cf5487203d50b6bd818b01bb4b861da08d344fafc47c81bab3a7087b10d
-     bb4c7516fc3869f0fd3c6806d2596247c6b69351033df683921e1d3e45ba2220
-     294a9c0ac6d61099b5527329fffe63629c96ca3b09908767d3e9ef4ab798275e
-     fd419c0f5a755dc86808e95a8c5fb4fabe32b411e90b66d956204aa34b025e84
-     88b114ccd06d8f81f71530384d47089a0d9a63e50a1c7f2e04ab2f485d7287e9
-     0b7f94e87755e3c08d5bd9142cc8a3c385f65bdf88f6ac48c4ffe1ad39b7b6f9
-     0e0a3f7cb52a716a2633bad0c4722f4e8213135937889fd063acf95f5a88d853
-     3d54a1d90c8a59667be979839db856d89aa9b2d9e0861cc146cb4001140823bd
-     a20db87604ca70ed6167280cc07f873ab01dd344c01a797dc07c45c7cc28dba3
-     b1977756420180dd90560872819807428566ef44da0fd66dbcf19415162e0a3d
-     60639cd6c4c6eb1b09b674b62334cf25f08d9c25434c99bd572a1f18b0b9d56f
-     473a1c6e7193dab5987b505b3d4dd0471ceff13df6bc7139f982a7080c1a0d89
-     b45f534b415618a92b6d6ba1665ff2ad36e4d55b30457ffe5733699b07eca699
-     2f4a8d4bd10051a244de01ed84055563409a94ff1ceee17cad7a5336d78d33c2
-     758379b4dc78372dcece8eed0a04d92c1930aabc6858c6c50f5220dd99985f33
-     fa06b5bc27d85a04ffb50e5ff4eaf2abffdfab81a599174c850cb88d0b9d52c5
-     4effe20b6e69677fa916e5d9b923d85e99b2fbe72a1ce9ba25a82cceb625dddb
-     91c943fad0a38740283776ef67ad2eb92bbae3637d353e3e8411134ce29c1055
-     96fd9f5f8bda954735bffe30e1f9456bc8966c5ccd352a3b2192b0605f5e66dd
-     d6b962d1434e27b44c8a27e54488190da0bbcdf953ea8f23fc3d2078e56c3d23
-     7d881aacb706661dc48ec18be7212b10e4de1a2ccd61e6b7a3db50361663da4d
-     cd445f8c04524a403bde8a46d2526acbd0f8abfd850185ee62cfe0bafa022479
-     07609b9843be2c8f12cde297211343be85f3df9b7ab1ff6219757700bec24174
-     6f27edf8c38241b1c247bc7337d5c5ed2610f26589d56cc076cc262c0fa59381
-     6e3a86cba26eb465b5328938a57d45925e11b31d127ad600321518e64abd2379
-     90c992151ae532894b23c3d84ec082645e95fb2836df580a32fd798eaf8851c8
-     45511ccd648b9866f369525efbefea41bb32767d3b0b19f4c347103e586aeb79
-     8fafe19bc1255edd4cd825669d098a10791c2554f1c64ba7aaf34fb077239883
-     9d277f413fa7e5d4286010da2309e7a381b3c647ea9e162bdac70090e69e8113
-     2b7248f91ed514b26fc79ed08c39f39019a47918de949ca43998929d66c6ad63
-     b059fbef48dd24dc1bc9401c3897183edeebbf23b581113b3ab45bd66a91e481
-     70eaca04f07956d4edd55f8b790834b1ae9f8cf3afdfef6aea7943c09ff8b53c
-     d607ad647f62413ae92b8b8935643283748639642642358679b5c08df04a8720
-     d25933cb2b1e0d4ab18920f4f6c240dfb22d4578a93994bf94be03bce05cf8a4
-     1fac1cb55212fdfac9fbd128cf9a066bbcdc5c410867975a77c3dbcfbe57cd2b
-     fd902324314b27523b356fc6fdfddfddd5831c19399e2163486befb35fe60ad2
-     a92fb65d5d2978654dbac3b72f4df906e1eea048b34f98f0f67ca26d9ced5460
-     cd52fd6494614a22929b8d3534696f1ec425cc513cfba02106dc56c17bac2403
-     7f97fbdf21145933165e95413a5290c7aa3a2abcd5458598d44ec4094087388b
-     9cb2d4ba2b9c24a81ee39886c9c1a762fcf187679bd823d2eb6835725b89ec24
-     ffa113ec45c4755ac12d2e592885c290c18ec74a0b0be6b5d5f325eb33a4ec43
-     d8e0a0fd108feb2e03b9ef4848b07086378a961ccc8c3e5cdba5d2ce2e3e68c1
-     2eae34797a69063faa34bcaf3bb32e799e15f4be8683744ceb8e0e9bec3629f6
-     d1eaccdaec05db0fa6f6284bfbe22a7ef5b4782fa5bd5ad025a22c5af9db0315
-     a16da623be58ff2f5821df6faa3d6b60af934f3dd0da6d53a73a5fef93eb3369
-     847e7cc2e8d3029f7e5601ba9754621b857592dc9685274359b4c25851cbc5b8
-     7a153b4023504b599db7783a5e2991ae2b39725c466cad52ad475010aeb48f39
-     6af1679c9553e8dd5855d13f996210a698be9c9bcfe77ae1994c38bd9cd03957
-     e9065aca837cb002753db78a1ca51d49eff6c2ee7626fcde8d9c261d89cb7d0f
-     9d275078a92fdc1cdb2da79936a8ef07efc8b1de994936846e14ef8c48cea965
-     30d8f9d9b5c3b830c344373d6777706cbc39fe618c54c9c3ff29f2efd4df2401
-     82822f9f8368cf93244e58a2951e6bd6aa03c83d834c88cbed3b93f4aac5a2c3
-     c62bfe7244882fddadaf0700f2252387fffdbd304b4818ca28f0f42c01a195bc
-     1efbd7f0a14b65efeaa6aaff6ba8e01f090fd4f4ee4efd5945a4e54e4512e466
-     d33bac7e2ed95d88a52229e017784046481c8855588d950575f864a559d491f5
-     ee4e0c0c26591a8df83bc644679a1cf4fad2ed7d7eb47ce8c97e69a09445431b
-     151db08d14c5e1e019c02d79b6cc5ddcfa5e163805a9823f1d6975d21aa920ef
-     677ddf77688cb2039f6b4c3a2872b5e23281bb8f76120e1141024ea4732181b4
-     9a0a21297f09ec67e1195d6293df31219c87bf229513a7c25d0d38fb08aa35d2
-     77766e0fe8b2a0282f4baa5a7b5be0f87bb6096a7ce628cfa7d6faf872557823
-     028fb4f6347e80c63b61aaaacb9f604a8971e443bd0984ec5aebb28274898e18
-     40a1966fb073531b2e0bd34376ffb0f2f229af4d21400dabc54ee8f76327b1bf
-     5274ba50a39df9cc47e8d279bfca34308d1fd4b3e9341287fe0803f29282ca43
-     a3c1fe16279b0f71e2617af4764f4b8bff2244f4251b6639b4cca348c478293a
-     ae4c3446c352fb8d3ade1a4bb83787889248e13d98048be9c4fecdba496bf624
-     b5cd5f5cf961e5207169347ebccf66b4ffc412f0378435684461dfa1750cf89b
-     c80a720efc426efdcc9dfe03ef1d0caca548e00b24e81378ee070937e1b71f7e
-     ecd67273f2684c26c149ef6fdd609780a68a7848cbb2fe830fe8f2c3c243aa8b
-     c6f2912ee0cdd3846c1220f73fbcb15d0222413cd9f07124e2abbf496ad3a502
-     8ec1c9a818827fed8b5967b4d58fcddae98faccff6c83c765c5ad7e1d5dabcbf
-     374c1e884d5fddb009f69a7d16e7dd296516263d6a3d8a2a9d781bb249ee3e22
-     e1985b8f685e05f5b5c501653a84ff0a517d032318faa4692dde085262e04bdd
-     4b777921d7f947d1c796575459a1d8d3745dd5a019847ee2b95b412f027da139
-     220741543312112daefb89dd2eb5a061a5a4d433d4041b0ef3ec14387f56638a
-     e79f6538b46b79f72e7dce4764301fe2fd8e926d8c4558267bb0e1c5ae583d45
-     c6520517d217764bbf7e51aa566350bedd278436c2171cfc8d3ff82570c2aeda
-     105618c35c2880bf35054b1ec231283a2ae8443998155799e2a68e5329e1511e
-     5bf9dd9cdb73a47732eb59a3e73e770225354f99224773eeffe78647097cb5cc
-     608062f7b0b98e3822f9e61ae14726582b50e23f134d31996f7fa3d1ea10a27e
-     8a740048dc0d12c8db9caf9514331839f86724e585ef0ec9a9b6ee7d98c54e26
-     d90092abb7bb4214d6d5d286d1325e53abd74727ed6255dd8b61e92afb826928
-     f7b1d9741e29baf73ea831aa411b7ec133931f44d5633b7881f16bf59b73e0c3
-     25780490e3c81f02d16374a2a5e13fff841f6c7f42b4110027c500d148604708
-     cb38f5859744c0c48665842a3c8112d5e6015d43334c575b6fbaef98e52a5ce4
-     e1e886d47be85c5529918708095b9e9476f14c2be7743e354ad415ea3a06af56
-     85b39e75a3f847c91ce8c6ce03f5f6c84c5a7f9147f6dee4450a85ae01c2127f
-     8be2a48424376b76c3adcb389b4faac1857b3b17e29f88cfa0196b227af781e5
-     852ad3ece1dc7aa9e2817b360752c30ca05120535a23d3f91002914688f39490
-     129a9cdf0e3eb9fd0607afeb9840c301ce789678da4ffe871d54f5c16e53634b
-     d67fc964c29b6c635bfaacbb86433443a9b9bed0c8914c86f4809e021215567a
-     f056b1ce1d879bba45eb59cfbfc45b00c1838fa490327e07c72d3da499d04fe1
-     b09fba2d7a58e73673163ae2494b094a726ba17f4001dd1eb37b366a49d9668d
-     21587c318affbb9399fa5feb538c8ac632519ff09ca1b659b882c73d5504c24d
-     665c43e39df169ab19650a70dfc2edde63af1fe3fff5902ab710527d1d1238b0
-     f85c8c040cd1c78c5a896aa3e3f10bee4c616df290e95f80dae154b8c6fed377
-     5ff227ea31ff8e33a207866a8a759c6b09496fe92423a022ef9b9357edcbaa2d
-     32f29c77b17cbc7b78b1e14846f53bbb1e3e008cf7bfb0af998ce7b0ebf072b6
-     0336f960314a7e7183dd86e2219e9f705fcdb46f036a8bca60bcc6eef11ee3a5
-     d2c779406802953d89ff9acd0308dd07fa50a66be5a7b98f007061559c060318
-     69b5f632a86eb12e56bad12c87497fc789d41477f06db7b0d07a4a23b088260d
-     9679ec7005f04f2255d58372240e9fd6d7d39e66ef161c2ecf891ef1122151e9
-     bb59aecc0fdfbf40f7085c9cb9bed8fb5d99b19b2c6b076ca866f145706260c0
-     e75f5b24ebf3e55afbfa7823ef600f2a4e0afc54460887d069245e90756b3d8a
-     524a7b7b207c707889ca8fcacf7ec9d34aaef3f4b65a44744a6ca1944211a4cc
-     cc3fe29a19d23c5f19965be52b5222d21113ac73dc0a82f7072661c615a501b3
-     a10aab5b33e271e03796edcda5e73cb57aa5998e5e1d9414ca0983ed6d7eedcc
-     4d8ed1c864808b363f130f09642de0a10f16120481285389f0b539a5ca99754a
-     6de2ae4f24b2c98c6939e40b97c7f8e176fe1489c23386e1857369f86808b02d
-     8671060bd8dc4fe924f38f23afa4532e6851fb78920e4c6ef9b1331a65b3b996
-     f172790f552e498384cdb99015d6af778bbfb830dbd9c84be53d5c5bf7e94b20
-     2080f9187243ba3423092f87c49dd85ebd0505ba5b64435519c30bc564e4f4ab
-     032836d248532c7b74abdc75fc0b56252d492e26c63bb549b7f0a454518390c3
-     7f47805748c7f229e0ad844b5520bfc8df93947f31899d4d27417b4232fc57b0
-     81d185153d518908cbe94f89ba7f24a9c362b446484451a80a44a1f9f4538874
-     5b6f70884de200457d9f151648af3f3cc41fea06b2ddb8fb767f47f192d5142b
-     db71a11303130ff9cde6e573b942fed449eb9700d23b40ce1068ec5a8e2a7aae
-     981159d3824419e0778b440c927ca8396cd599960dcd5cbe841c63a79e48a271
-     54293973c663a814b6324b6ff36f830542df69613325430ee68b6e85c3640e36
-     4256b3a69b00ea8497b7141ffe73cec9a6a9dbab5e6220a3a43775d40b1ac414
-     4bdd955911dd08b8127c0d2c64813fe2b8a0543a636b39989f81af59c8ff4250
-     76ef1a4d29824212fbc51f1dc4443cb0f960290fd8383fee6e86cc1a2708e730
-     540eac19a18ccbb8972566e3168e351b61c8e3a77e73e22fa3baf8df156f89e5
-     dfb25ac3e866e91a9bcbfcc1310cabe0dbedd705d9a53790c96ef2276cf4645d
-     5512ec7a9d2705e9b0e7ae11a19ed15bfef7b4a6fb19ae6458665ecf99e147aa
-     53a8f8c0734fff0b7870c5368eac15c53738d6ca79db3c8366b43a95aa9ad98f
-     2d66b0972b978a78ce9dae60133e4a6b7762eaf2e31c829d58c6f1565129e034
-     47c2033a6555b772f372c4068a7d7fa08367eb7b41a83173e6a71daf08f6756a
-     46bc636b3903d4e45b0bf0f2903a9022a6d0ba689c6196bf5c91e7cb3fd3e6ab
-     9d249373bdaf9d47c65ce169e265a99b3fedd75b6479f7ca524f5c5737e4d62d
-     1411857dda3506ecda3f0499fbc5dead69cead471f040eb193668a5a93e83eac
-     06a26798b0479d725724e189191e332b93f3e249479917c945c89a8d8eef3d78
-     cf47bbc6b3f25e972581fd0b55a3a5f8595f6412426f2e523a2688b37d10bdcf
-     586f1e6b4c91e3375a7740508c57946c5ead6f80f3d813fc82910336896bfa81
-     1c66815d8e216aa32df360c8f27577ab7f0145419c5ed784656a216f74eac067
-     a26b97da28f825071ddb1131bbca07b0a7df01dd7058e6645ff03997aad879d3
-     bb329887b6ec47d802eec3447fdf5040453fe8cfe1f2885afdfbec7956465fb9
-     2e5d7037803682fb769a442f7b1a74c314940ab4219b39476c6221cd60b94ac1
-     8dad2fda79a9ac2915ae24afb7a7202fe3101691f21ab0931a30f297902a040b
-     d255d29a4089d064f491c276fcb2a5d791eabd230cc7092792d3addc4e23650b
-     836f309f222e5511bb5e182cf3efbd9a4642024db25e4c1bca0846425a8a35d0
-     0d3ef2330110827e460bba8ddaf395c26608aecffd9f85c4ed121892aebc3189
-     7982c8e5df90524f491f9448f3f19187b88f1d52a31d79b2341403565ef617b8
-     ad8b9042dd204498f6a03d8096a5a5eb5585c5011a72b627cbf3d8903e530237
-     88001ca174a246c4e4dd70fd9f3aaef1b75f15ed76017f0bd3d2ec32df9c4729
-     df6ef7a78406c893be8cf27c3ddefb35d786e3f27797f116e0ced64732cf5645
-     22a89ec36e7bc6c7dbdf6d02ebfaf5ea71f6015360f6ff1546d433150fc19854
-     57bd1d39351735a3bc85cb65383d70c97a35bd62ceb6856eb0bae379cb4842ad
-     2ca9745518281298dae228a1ba99da3803f25ec22d8925b24ed06e6b6d9b313a
-     94d48647f6096304458c102478c00f3e2ceb730d13286409d51eca4e81e55610
-     29b0a21f94a3577a0accbbf304dd05fc19240829514e84d08076b44722c0a736
-     f0bebcdab04ba8b24b8d5b3c4f6b11355aa3351cb9ab2ea2a0368ced01da8359
-     1fb2b189197a3222fe2ea6ed64ed3242b1ec3a2a0dd86e3848f1d395b33de506
-     4d8d35d5b603342cbd05d67371f9a2dc0f9addff441518ade58a879502f326a1
-     4ef1fd637a09fa12637b9b9cc6a25b804d3673530a21c00cf3721d14370cc635
-     72d68432d66c783ec94f31816d86bac86ac64e48e7cb943443b8797602699d6c
-     3727ef4f67277ced029f1f7c0b6d9d9b98f8dd82775f704561ff4e27911e28e9
-     a0f4e91a327deee4c335e72f8e8685e4f678b42bdceef2624ece9617cb4c49de
-     4d75763e2ea9419e946b1f8d387a7f9a976b5612aa5f6db373c5e64c4865131c
-     2f148b7d17d9240e325e319cefaedabc321fe7716193670d2c8628ea59ec7349
-     29cf5e52de072cbc73bb4f1f2710bf1311e9c90aa15849bd0887e1a63ecf2e1c
-     76211b69e65f20a755d8332e831b77c58455f2a5b9cd0bf76c271e93a582a3a8
-     04ed3da2c85546fbb407b998f753897a3dab39c63095d26e3cf6bea77b9fafe0
-     5ee792801583548733c21ce2cb08800166368b2bbcfc23b4da63bd94e7e1ec0d
-     6a6d8bf6021f04ab970e8eb19131bb21b5624bc6397558fe1ab41f01b0fe9ffa
-     a7bf8d1e98c599dba7164bb71a64e5ab94cafc22bf70ad0821d96e9be1b1704f
-     c30171f33934e4a6f7911d792b2dde755573dd80301617e184a66fb27eb4f170
-     d939dd68d25ed333384c532d1eec23532b8169899a9ba537d44804be2c60f3c1
-     4f033536ffa28d8e79b33f03a85d834f242090729bae2532431d019bb9b5bd76
-     bd3d7b16bbfb9774a1bf4ff358d95b634db6eac5bbab03738b68187d73de78ed
-     763d341864c0b0b84baf2c9e4c317c402c6c6a98834840ab82050eed513028ce
-     e431455a81c34851d738f0d5b466efe1bfbe617f7e27b69453e019af73927c95
-     926c829af083c68060451b3b41945e63956c5330a48a717f03b6af60669aa8a0
-     b1806098a87ada54d270d2f5f1abd5428238426e64b6a40d82ad12a4c4372404
-     0334dffe9e3c1027b4ee59646a13261f907ac051c97f28288b42fa7fd196d972
-     0739352720287bc2f9bfb2fe618e83e391d5c245ff52c9b0890f3514142beee0
-     46bd55d18e2b8f1e719b61d2496bc479ab4c774e7d067d140bb5a93e171e1d10
-     061bebde246b20d87752dd4f089c265c611f92803746284f26b4fb18920ec633
-     dd3132be9f3ad085847342d77c337ebf4afcad49ae8ad51001f34ef60ad35e2e
-     4550730c312779c479d1690f71cea67a2a36f8d1bf62621b0e467a9d3669a2de
-     8d43329d0d1d552dc7f533fa691f9c33b4f6436dbd3023a7eb6b84ac9fde48a2
-     6832600b4db74dc69c767687c71e8bac97ef0c38e7456c3c1473070731c035ef
-     ae6adeba8af2f81d1f4e383f62fbfbbd639330193c023c06cb66e42448be2529
-     d953140897a33ccf8370d2736f547c8f7cd4dd7ac457a3968672559b2e02ad89
-     f1e8ceb47838ada632ed0326d152c5853f20d3a675612d4c75dc6eb18e1cc7ad
-     a31730bf6f57d25450caa21a33b1277df549572a9d9801ff2ccabd462a555b7a
-     b9e8208e1bee285c1f70fd2cab01a20198f669e5416ac6d74debaa639ead2cbd
-     1f513264b5ff69483ecc282b7a737115a89d49ef3c591a005ee2dbdda962c81c
-     13f7329217c9e6dff3f67af4b4284589ea080e7c152e567498c8d392da39faa7
-     28e2ae7bd45c17fc3e173a9ffe1f2e37d19cc4488ef0df0696a47b917eff8ad6
-     b9b7bd80b52632375055431da891da5d6da009ba29613db2e47cf7fcdeb1a2e8
-     93d9c507de666e42ace1f53c1a7914fb62680bd5b60674248a4cbd3a5cb5df98
-     717f1522b4ab0bce8871a7517a3c3b7331a4966894a60d1d1e0053ec8f4e5e48
-     1adecff0d6cd400e4014ae4fa03681bff6f33e5f17b953c524854a846766d94f
-     9a8d7a6df031d6308b1e679ff81510d46aec3632e1ec0ede2710d0118d62b258
-     6230eaf9c86167cd108eb8322ad94d44de601e46221f3f5b314a59ead78a2ae7
-     dc9eabc7eec657f66d6c0be8cac54867bfb18ac672e9e6e88f68d3fe3e55fefc
-     b3d0036f30a755b626ba508e065d306ffe5d39bd292ddfde50976934e4e638d2
-     cc14abcbf97a602a6ab1fac32c58e4dcc6b25a5b68856eae0b02d685ff52a35f
-     def0ec557a8e1f1641971fbfd89e0265d36be4632d34fcb9e5a7700cc12ec122
-     f8ce6dbcbbee1da99e3e3b20a06c5b190346a03f798aa876c2ae1c451ff84387
-     9db4067d5a5c49ce3cca6cd94578c56d7ab9e56a37e7bc0b1627ab6468a428a3
-     34f12d94a31db6bc58b3d34a1cb8e5c0cd1de3b272acc3f1bfd5e8f2a9bf2554
-     9a6a6717571fbf7b8857a9ed1a20f0e4cab5c658d7414168f3a917347e9e7787
-     84b3c40f1c4225dbe8cb33566f709710adb6c136fc3041c9cb071dba6b9d0095
-     655321acf5c22e0cd5e12f5d3c07bc0194d8906463a78c672b7fe79fdd9f4dd4
-     edc01aa78416806eeb5a3b57ad0cd889a871b5fcac05588e43c5c4eb995323db
-     81c6878a2f58967f33e31df315e13520ebe94f12762de27e1d4148beebf0ddb7
-     9ceb8ee73c30a7eb958d62a04c814d3449a26eef4b7b9696fecb7fad6475d547
-     73fd85938fd316022667bb9a54d7cc39423cdf168b61b71229b73d8fb58d3688
-     bdad7dbf0eea772e96e2e7a463803f5284d6132dd8e7fb614484f722d664acb2
-     3b5abd91358378b302c52af0fa7197155accd1b39e0257c7ff971119e194db1d
-     321c33b3e11040b1ad8c9f1898fd6e56be2cf4b0aeb6a40dc862d8d92e82f0c4
-     934a04de26b69c6de8cfbd1e6e56723c13c69bcd4d67864d27885af23e1078fe
-     de00679ac035f24a49254ec8fb730e89039dc1a2d88822c88be5e407c449d58c
-     1fa696b671810089bd70cb695e7ad632fb851a988fe2e8777baf7b16633f74d9
-     37fa1d1929bb3fdcc6911b5c3f8a98656b721a56bd83920af4d88134b0b487e2
-     fd76afc73107f428502e2b509b2b7e4b3fa5fac21655e322a83e7cc76c562034
-     d0a92eee01e89b435f691edd29522c06410ff481d37dbc22f58b9a205137081c
-     12947165ec8d8e26aa5a0c2d726fcd009871b5adc2be126a87ca33fc6eb5caab
-     3d35f5f65318878f7e756b8eaf662a288cb61cfa8be1d695b7d0b452f53e3519
-     78e146cf53a52605f06bbcc487f497cbe9683a5c2ad35c8cca0fcad114973c2f
-     e6b32cbb94779b4f07486ced06161eb4bbc8dd5d55af470c8699733b0cd81898
-     7b817bbd8e6c48b4ce3d414281690cb347aa826a279f9d086afb12906ec306b1
-     7e44d9fa19e9334d494bfe1b6eb4de0209ca733d79f9e27ae17a029030a09946
-     788f5c379b742dd0de86eb2df5b27d8f3397f32aa35e93938e15fdb10dc39693
-     5279d8ccb0c081dd457c4a8fcbffdb4ab92d32f9a2ad938f8ec032d9c97729cc
-     eff7cc1ebeb4cf03f0e127cea1e59c81ea85b39f1abc08efb1cbd08c15ece503
-     b6ed3144e182223ecf4af5af1180f66097846b23400f643e58dbab3bb5d0bdda
-     1f3877dda07e0934416e703cb71fd6cbe15df9f1eca99478396d73ef3fb0f6d8
-     8c773dbb21b4d57a48144bcd0a41bfcc6ff9b84267184916f71ef4823119085c
-     b9b048abc3cd7b87ded5a0a58c9f99848271f1d61fa84fb88c5bf687fc1aa499
-     2ddfeb61ce1da09b19a5f36c4d9f2d5396a035cf51f8cdd09630b86284c98db3
-     087823faee47f40f5462cf536c9c3455d43886f8376d80c452bbf03ca7152fd5
-     3b4fef189ec6916517da3d114ffab4c44995f58ad0fde65864f84029eb262c58
-     74022cd4d5e4134a5eb14a946d2744ccb3363de59d9b9373ebcacec06a84b31f
-     edbe25b3c1aca50e549b5c2cb81d8715631d5f0d40dc1c448d4faada1e57507e
-     39c523263b86e59720a1b1f7dbcb8451da144d443be41901a28acd7c50ffb2b6
-     b73404212f5d25f3aa7d6e4949d8fe48fb16e50787457d9be22a0a5dd43da61b
-     6ef0b09d9d846fdf3c6d687ebcfb00de0d88d9cdd5474b5aecefcf118269dfc6
-     ecbc068db68b618947195f93a889739981949f2d488adeb914839d6e0eff5eb9
-     8fb15c6061262a61aff735d592cb64cfe6a2b7e8dda8c4cb466ec1b1679059d0
-     155a0e57a1b08625a95d3e2e190bffa839b4f80d8ac9aebc57727440e2522885
-     ba8ac13f15198423adb9b51d8edbfaaa1befcbb6f0809c00e1a36099398563b0
-     981b452fae4babb1f8f74e39919acca02984c0a437fdd4f898c07174ba60d067
-     9fcc1064a3d2733559fce55a27debfc4dcf03dca52881ada047026977552aaa7
-     61fac211b43a8da81923175f7046311ba923e0dc0a9ee37d5934466536a8abe5
-     da441fff8e05adaf1040616501ffec43e4641282508977af6fa4a964ad5ec83a
-     1454f49d1a6095fa3156fd17ab2f2dce027ec8eef6d60777ee4bd8264ac50969
-     b505802f36ce44b7bd4dbcbac5b96bb615b3e1e6d97b77da39640e353fa0d6cd
-     8ae3ec930b51fdeaa83de4afa0a3837fd66c4bd7957d0ae22a5adaec8a1d5b77
-     838e6823df771f6d92ce3307126b99e434819549b6f7db031997b47a1a81b9e4
-     744c84ce67de3ef10c675edd16e6beb5604a78f832b3ad148d19dea60ca69f09
-     710c82f5c324c4baf7094de9eed03824bfa8cc62895b04c177cd026dcdeffdcd
-     f26f4b9de0011018b577f9306d2f8a91087a972985c7ab2d2282ca7562502c0e
-     d59dea7a7064bb6868ca2fc2abc1fe2aa7608fb5edbfa7c8cbcb32232970ddfd
-     30e067e53d385fc86a613e67c18e9c455dc15079e7e7fce207e57eabcc0c7e62
-     eb5f32803b9a7130ac6b4c4682d23cda7764742bf3af01e5a29c43ecb1e3e3cc
-     0caed2a4c81673e198d44302d396818e0f2d6e903487b17368f1e0b9740b278f
-     d383782fed096937ca69b44f38f14f57571144bcd31d057b92c8d1bcbf318e7c
-     73ea72ddbb20b73b89fb94b75f61e37568447c4841ec97ca7659e05b74bb2395
-     f1f9feb89288093e4bf803a8f22ad5cab6aee12ea87085d5fc8b306b212edf07
-     5b9cce9fb112e306f6f8640e6e63a734d9402dc78682cad9331179b9e0eb227e
-     4ff52f3ca675852a2c38ee493b97c8581fd582ea6bc5ee8914411d847bb42b7d
-     12133eae733bd0e917d38509e7bd892015024f483938fecd486cd57e865b92b6
-     4e94282d2d86b8e0de3db333c9f2ab48a4421733d8a8f31fd0582aed925fc506',
-   ])
-
-              Figure 12: Example SLH-DSA-SHA2-128f COSE Sign1
+              Figure 8: Example SLH-DSA-SHAKE-128s COSE Sign1
 
 Acknowledgments
 
    We would like to thank Roy Williams, Cedric Fournet, Simo Sorce,
-   Ilari Liusvaara, Neil Madden, Anders Rundgren, David Waite, and Russ
-   Housley for their review feedback.
+   Ilari Liusvaara, Neil Madden, Anders Rundgren, David Waite, Russ
+   Housley, Brian Sipos, Lucas Prabel, Filip Skokan, and Kris
+   Kwiatkowski for their review feedback.
 
 Contributors
 
