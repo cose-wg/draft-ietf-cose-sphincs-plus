@@ -380,7 +380,10 @@ The main differences are protocol and registry choices:
 
 These examples were generated using Cloudflare CIRCL and
 cross-validated against the Trail of Bits go-slh-dsa implementation.
-Source code is available in the `examples/` directory.
+The source code used to generate these examples is available in the
+`examples/` directory of the
+[cose-wg/draft-ietf-cose-sphincs-plus](https://github.com/cose-wg/draft-ietf-cose-sphincs-plus)
+repository.
 
 ## JOSE
 
