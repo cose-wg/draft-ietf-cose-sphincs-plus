@@ -558,8 +558,10 @@ Appendix A.  Relationship to SLH-DSA in CMS
 Appendix B.  Examples
 
    These examples were generated using Cloudflare CIRCL and cross-
-   validated against the Trail of Bits go-slh-dsa implementation.
-   Source code is available in the examples/ directory.
+   validated against the Trail of Bits go-slh-dsa implementation.  The
+   source code used to generate these examples is available in the
+   examples/ directory of the cose-wg/draft-ietf-cose-sphincs-plus
+   (https://github.com/cose-wg/draft-ietf-cose-sphincs-plus) repository.
 
 B.1.  JOSE
 
