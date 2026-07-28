@@ -9,8 +9,7 @@
 <meta content="Orie Steele" name="author">
 <meta content="Hannes Tschofenig" name="author">
 <meta content="
-       This document specifies JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) digital signature scheme defined in US NIST FIPS 205. SLH-DSA is a stateless hash-based signature scheme whose security rests on the properties of its underlying hash functions rather than on structured lattice assumptions, and it is intended for deployments that specifically need a hash-based signature scheme or that want algorithmic diversity alongside other post-quantum signature schemes. 
-       This document registers two SLH-DSA parameter sets at NIST security category 1, SLH-DSA-SHA2-128s and SLH-DSA-SHAKE-128s, as both JOSE and COSE algorithm identifiers. Keys for these algorithms use the Algorithm Key Pair (AKP) key type. Only pure SLH-DSA, with an empty context string, is specified; the pre-hash variant, HashSLH-DSA, is out of scope. 
+       Digital signatures are used within JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) to protect the integrity and authenticity of messages, such as JSON Web Signatures and signed COSE structures. This document specifies JOSE and COSE serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) digital signature scheme defined in US NIST FIPS 205. The conventions for the associated algorithm identifiers, signatures, public keys, and private keys are also specified. 
     " name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
 <meta content="JOSE" name="keyword">
@@ -1094,8 +1093,7 @@ svg {
 <h1 id="title">SLH-DSA for JOSE and COSE</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document specifies JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) digital signature scheme defined in US NIST FIPS 205. SLH-DSA is a stateless hash-based signature scheme whose security rests on the properties of its underlying hash functions rather than on structured lattice assumptions, and it is intended for deployments that specifically need a hash-based signature scheme or that want algorithmic diversity alongside other post-quantum signature schemes.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">This document registers two SLH-DSA parameter sets at NIST security category 1, SLH-DSA-SHA2-128s and SLH-DSA-SHAKE-128s, as both JOSE and COSE algorithm identifiers. Keys for these algorithms use the Algorithm Key Pair (AKP) key type. Only pure SLH-DSA, with an empty context string, is specified; the pre-hash variant, HashSLH-DSA, is out of scope.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">Digital signatures are used within JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) to protect the integrity and authenticity of messages, such as JSON Web Signatures and signed COSE structures. This document specifies JOSE and COSE serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) digital signature scheme defined in US NIST FIPS 205. The conventions for the associated algorithm identifiers, signatures, public keys, and private keys are also specified.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
