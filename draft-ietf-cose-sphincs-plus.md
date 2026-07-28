@@ -39,7 +39,6 @@ author:
     organization: University of the Bundeswehr Munich
     abbrev: UniBw M.
     city: Neubiberg
-    region: Bavaria
     country: Germany
     code: 85577
     email: hannes.tschofenig@gmx.net
@@ -47,8 +46,8 @@ author:
 contributor:
  -
     fullname: "Rafael Misoczki"
-    organization: Google
-    email: "rafaelmisoczki@google.com"
+    organization: Meta
+    email: "rafam@meta.com"
  -
     fullname: "Michael Osborne"
     organization: IBM
@@ -81,7 +80,7 @@ informative:
 
 --- abstract
 
-This document specifies JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) serializations for Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) digital signature scheme defined in US NIST FIPS 205.
+Digital signatures are used within JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE) to protect the integrity and authenticity of messages, such as JSON Web Signatures and signed COSE structures. This document specifies JOSE and COSE serializations for the Stateless Hash-Based Digital Signature Standard (SLH-DSA), a Post-Quantum Cryptography (PQC) digital signature scheme defined in US NIST FIPS 205. The conventions for the associated algorithm identifiers, signatures, public keys, and private keys are also specified.
 
 
 --- middle
@@ -177,8 +176,22 @@ The SLH-DSA signing function takes a context string `ctx` as input.
 For the algorithms registered in this document, the `ctx` parameter MUST be the empty string.
 Implementations that produce or accept a non-empty `ctx` value will not interoperate.
 
+Here the empty string is the zero-length byte string, that is, a `ctx` value
+whose length is zero. Some cryptographic interfaces represent an absent context
+as a nil or NULL value rather than as a zero-length byte string; where such a
+representation exists, it is equivalent to the empty context string for the
+algorithms registered in this document. Implementations MUST NOT substitute a
+placeholder value for the empty context string. In particular, a single zero
+byte is a context string of length one, not the empty context string. As
+described in Sections 10.2.1 and 10.3 of {{FIPS-205}}, pure SLH-DSA signing and
+verification construct the message input by prepending a one-byte domain
+separator, a one-byte encoding of the length of `ctx`, and `ctx` itself to the
+content to be signed. For the algorithms registered in this document that prefix
+is therefore two zero bytes, and a signature produced over any other prefix will
+not verify.
+
 Signatures are encoded as the byte strings produced by the signature generation algorithms in {{FIPS-205}}.
-When producing JSON Web Signatures, the signature byte strings are base64url encoded.
+When producing JSON Web Signatures, the signature byte strings are base64url encoded, as defined in {{Section 2 of RFC7515}}.
 When producing COSE signatures, no encoding is needed; see {{Section 4 of RFC9052}} for more details on how COSE signatures are created.
 For the algorithms registered in this document, the signature byte string is
 7856 bytes, as specified in Table 2 of {{FIPS-205}}. The corresponding
