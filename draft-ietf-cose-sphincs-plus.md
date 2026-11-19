@@ -452,4 +452,4 @@ repository.
 # Acknowledgments
 {:numbered="false"}
 
-We would like to thank Roy Williams, Cedric Fournet, Simo Sorce, Ilari Liusvaara, Neil Madden, Anders Rundgren, David Waite, Russ Housley, Brian Sipos, Lucas Prabel, Filip Skokan, and Kris Kwiatkowski for their review feedback.
+We would like to thank Emil Lundberg, John Preuß Mattsson, Filip Skokan, Brian Sipos, Simo Sorce, Scott Fluhrer, Cedric Fournet, Russ Housley, Christopher Inacio, Kris Kwiatkowski, Ilari Liusvaara, Neil Madden, Lucas Prabel, David Waite, Roy Williams, and Anders Rundgren for their valuable review feedback and contributions.
