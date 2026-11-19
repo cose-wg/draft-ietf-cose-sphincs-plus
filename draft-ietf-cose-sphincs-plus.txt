@@ -5,10 +5,10 @@
 CBOR Object Signing and Encryption                            M. Prorock
 Internet-Draft                                                  mesur.io
 Intended status: Standards Track                               O. Steele
-Expires: 29 January 2027                                    Tradeverifyd
+Expires: 23 May 2027                                        Tradeverifyd
                                                            H. Tschofenig
                                                                 UniBw M.
-                                                            28 July 2026
+                                                        19 November 2026
 
 
                        SLH-DSA for JOSE and COSE
@@ -58,7 +58,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 January 2027.
+   This Internet-Draft will expire on 23 May 2027.
 
 Copyright Notice
 
@@ -191,8 +191,8 @@ Table of Contents
    in this document MUST NOT be used with hash_slh_sign or
    hash_slh_verify.
 
-   Future documents may register additional SLH-DSA parameter sets —
-   including higher security categories or the "fast" variants — as
+   Future documents may register additional SLH-DSA parameter sets,
+   including higher security categories or the "fast" variants, as
    deployment experience identifies the need.
 
 4.  SLH-DSA Keys
@@ -225,9 +225,9 @@ Table of Contents
    Therefore, pub MUST be 32 bytes and priv, when present, MUST be 64
    bytes.
 
-   The compact size of SLH-DSA public keys can be useful when JWKs are
-   used to convey verification keys, including by protocols that use
-   JWKs independently of JWS signatures.
+   The compact size of SLH-DSA public keys can be useful when JSON Web
+   Keys (JWKs) [RFC7517] are used to convey verification keys, including
+   by protocols that use JWKs independently of JWS signatures.
 
    Thumbprints for SLH-DSA keys are computed according to the process
    described in [RFC9964].
@@ -299,11 +299,11 @@ Table of Contents
    way that limits the amount of data processed directly by the
    signature algorithm.  In particular, COSE applications that need to
    sign large payloads, detached content, or remotely held content may
-   use the COSE Hash Envelope mechanism [I-D.ietf-cose-hash-envelope].
-   JOSE applications with similar operational requirements can use a
-   detached JWS payload, or can define an application-specific signed
-   payload that carries the digest value, the digest algorithm, and the
-   rules for recomputing and comparing the digest.
+   use the COSE Hash Envelope mechanism [RFC9995].  JOSE applications
+   with similar operational requirements can use a detached JWS payload,
+   or can define an application-specific signed payload that carries the
+   digest value, the digest algorithm, and the rules for recomputing and
+   comparing the digest.
 
    Hash Envelope can provide operational properties similar to those
    sought from a pre-hash signature mode, such as reduced data transfer
@@ -334,7 +334,7 @@ Table of Contents
    algorithms registered in this document and the pub parameter MUST be
    present and MUST have the length specified in Section 4.
 
-   These checks correspond to the public-key validation requirement in
+   These checks correspond to the public key validation requirement in
    Section 3.1 of [FIPS-205], which requires implementations to verify
    that the public key is 2n bytes in length.  If assurance of private-
    key possession is obtained via regeneration, the private key checks
@@ -386,7 +386,7 @@ Table of Contents
    Registry.
 
    The following registration templates are provided in accordance with
-   the procedures described in [RFC9053] and [RFC9054].
+   the procedures described in [RFC9053].
 
 7.1.1.  SLH-DSA-SHA2-128s
 
@@ -498,23 +498,12 @@ Table of Contents
               Initial Algorithms", RFC 9053, DOI 10.17487/RFC9053,
               August 2022, <https://www.rfc-editor.org/rfc/rfc9053>.
 
-   [RFC9054]  Schaad, J., "CBOR Object Signing and Encryption (COSE):
-              Hash Algorithms", RFC 9054, DOI 10.17487/RFC9054, August
-              2022, <https://www.rfc-editor.org/rfc/rfc9054>.
-
    [RFC9964]  Prorock, M. and O. Steele, "ML-DSA for JSON Object Signing
               and Encryption (JOSE) and CBOR Object Signing and
               Encryption (COSE)", RFC 9964, DOI 10.17487/RFC9964, May
               2026, <https://www.rfc-editor.org/rfc/rfc9964>.
 
 8.2.  Informative References
-
-   [I-D.ietf-cose-hash-envelope]
-              Steele, O., Lasker, S., and H. Birkholz, "COSE Hash
-              Envelope", Work in Progress, Internet-Draft, draft-ietf-
-              cose-hash-envelope-10, 15 November 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              hash-envelope-10>.
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
@@ -537,6 +526,11 @@ Table of Contents
               DOI 10.17487/RFC9909, December 2025,
               <https://www.rfc-editor.org/rfc/rfc9909>.
 
+   [RFC9995]  Steele, O., Lasker, S., and H. Birkholz, "CBOR Object
+              Signing and Encryption (COSE) Hash Envelope", RFC 9995,
+              DOI 10.17487/RFC9995, July 2026,
+              <https://www.rfc-editor.org/rfc/rfc9995>.
+
 Appendix A.  Relationship to SLH-DSA in CMS
 
    [RFC9814] specifies conventions for using SLH-DSA with the
@@ -547,7 +541,7 @@ Appendix A.  Relationship to SLH-DSA in CMS
    Both specifications use the FIPS 205 public key value PK.seed ||
    PK.root and private key value SK.seed || SK.prf || PK.seed ||
    PK.root.  In [RFC9814], these values appear as the SLH-DSA public and
-   private key contents associated with ASN.1 public-key and private-key
+   private key contents associated with ASN.1 public key and private key
    containers.  In this document, the same values are carried in AKP pub
    and priv key parameters.
 
