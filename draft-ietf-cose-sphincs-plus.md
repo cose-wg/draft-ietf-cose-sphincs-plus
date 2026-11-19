@@ -63,7 +63,6 @@ normative:
   RFC7518: JWA
   RFC9052: COSE
   RFC9053: COSE-Alg
-  RFC9054: COSE-Header-Parameters
   RFC9964: ML-DSA
   FIPS-205:
     title: "Stateless Hash-Based Digital Signature Standard"
@@ -72,7 +71,7 @@ normative:
 informative:
   IANA.jose: IANA.jose
   IANA.cose: IANA.cose
-  I-D.ietf-cose-hash-envelope:
+  RFC9995:
   RFC9814:
   RFC9909:
 
@@ -136,8 +135,8 @@ in Section 10.3 of {{FIPS-205}}, instantiated with the parameter set of the
 same name from Table 2 of {{FIPS-205}}. The algorithms registered in this
 document MUST NOT be used with `hash_slh_sign` or `hash_slh_verify`.
 
-Future documents may register additional SLH-DSA parameter sets — including
-higher security categories or the "fast" variants — as deployment
+Future documents may register additional SLH-DSA parameter sets, including
+higher security categories or the "fast" variants, as deployment
 experience identifies the need.
 
 # SLH-DSA Keys
@@ -163,9 +162,9 @@ For the two algorithms registered in this document, `n` is 16 bytes.
 Therefore, `pub` MUST be 32 bytes and `priv`, when present, MUST be 64
 bytes.
 
-The compact size of SLH-DSA public keys can be useful when JWKs are used to
-convey verification keys, including by protocols that use JWKs independently
-of JWS signatures.
+The compact size of SLH-DSA public keys can be useful when JSON Web Keys
+(JWKs) {{-JWK}} are used to convey verification keys, including by protocols
+that use JWKs independently of JWS signatures.
 
 Thumbprints for SLH-DSA keys are computed according to the process described in {{-ML-DSA}}.
 
@@ -228,7 +227,7 @@ application can already structure the signed content in a way that limits
 the amount of data processed directly by the signature algorithm. In
 particular, COSE applications that need to sign large payloads, detached
 content, or remotely held content may use the COSE Hash Envelope mechanism
-{{I-D.ietf-cose-hash-envelope}}. JOSE applications with similar operational
+{{RFC9995}}. JOSE applications with similar operational
 requirements can use a detached JWS payload, or can define an
 application-specific signed payload that carries the digest value, the
 digest algorithm, and the rules for recomputing and comparing the digest.
@@ -261,7 +260,7 @@ document, the `alg` parameter MUST identify one of the SLH-DSA algorithms
 registered in this document and the `pub` parameter MUST be present and MUST
 have the length specified in {{slh-dsa-keys}}.
 
-These checks correspond to the public-key validation requirement in Section
+These checks correspond to the public key validation requirement in Section
 3.1 of {{FIPS-205}}, which requires implementations to verify that the
 public key is `2n` bytes in length. If assurance of private-key possession
 is obtained via regeneration, the private key checks in Section 3.1 of
@@ -305,7 +304,7 @@ originate from a trusted and cryptographically secure source of randomness.
 
 IANA is requested to add the following entries to the COSE Algorithms Registry.
 
-The following registration templates are provided in accordance with the procedures described in {{-COSE-Alg}} and {{-COSE-Header-Parameters}}.
+The following registration templates are provided in accordance with the procedures described in {{-COSE-Alg}}.
 
 ### SLH-DSA-SHA2-128s
 
@@ -364,7 +363,7 @@ SLH-DSA key material and signatures, but applies it to JOSE and COSE.
 Both specifications use the FIPS 205 public key value `PK.seed || PK.root`
 and private key value `SK.seed || SK.prf || PK.seed || PK.root`. In
 {{RFC9814}}, these values appear as the SLH-DSA public and private key
-contents associated with ASN.1 public-key and private-key containers. In this
+contents associated with ASN.1 public key and private key containers. In this
 document, the same values are carried in AKP `pub` and `priv` key parameters.
 
 The main differences are protocol and registry choices:
